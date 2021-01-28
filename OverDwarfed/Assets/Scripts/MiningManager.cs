@@ -10,7 +10,9 @@ public class MiningManager : MonoBehaviour
     private Tilemap blockTilemap;
     private static List<TileInfo> tileTypes;
     private BlockHp[,] blockData;
+    private int2 blockDataArraySize;
     private const int breakStages = 4;
+
 
     private void Awake()
     {
@@ -36,6 +38,7 @@ public class MiningManager : MonoBehaviour
     public void Mine(Vector3 position, int damage)
     {
         Vector3Int tilePosition = blockTilemap.WorldToCell(position);
+        tilePosition = new Vector3Int(Mathf.Clamp(tilePosition.x, 0, blockDataArraySize.x), Mathf.Clamp(tilePosition.y, 0, blockDataArraySize.y), 0);
         int2 index = new int2(tilePosition.x, tilePosition.y);
 
         blockData[index.x, index.y].health -= damage;
@@ -55,6 +58,8 @@ public class MiningManager : MonoBehaviour
     public void InitializeBlockData(int sizeX, int sizeY)
     {
         blockData = new BlockHp[sizeX, sizeY];
+        blockDataArraySize = new int2(sizeX - 1, sizeY - 1);
+
         for (int y = 0; y < sizeY; y++)
         {
             for (int x = 0; x < sizeX; x++)

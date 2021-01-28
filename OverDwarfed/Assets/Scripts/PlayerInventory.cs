@@ -5,11 +5,11 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory instance;
-    public Dictionary<int, int> InventorySlots;
+    public Dictionary<int, int> InventorySlots; //need dictionary for every player 
 
     private void Awake()
     {
-        instance = this;
+        instance = this; //remove instance later
     }
     private void Start()
     {
@@ -26,33 +26,39 @@ public class PlayerInventory : MonoBehaviour
         {
             InventorySlots.Add(id, amount);
         }
-        Debug.Log(InventorySlots[id]);
     }
-    public bool CanBuy(int[] _itemCostId, int[] _itemCostAmount)
+    public bool Buy(Recipe recipe)
     {
-        bool isAbleToBuy = true;
-
-        foreach(int element in _itemCostId) 
+        if (CanBuy(recipe))
         {
-            if (InventorySlots.ContainsKey(_itemCostId[element])) 
+            SpendResources(recipe);
+            return true;
+        }
+        else return false;   
+    }
+    public bool CanBuy(Recipe recipe)
+    {
+        foreach(Cost cost in recipe.CostList) 
+        {
+            if (InventorySlots.ContainsKey(cost.itemCostId)) 
             { 
-                if(InventorySlots[element] >= _itemCostAmount[element])
+                if(InventorySlots[cost.itemCostId] >= cost.itemCostAmount)
                 {
                     continue;
                 }
             }
-            isAbleToBuy = false;
+            return false;
         }
-        return isAbleToBuy;
+        return true;
     }
-    public void SpendResources(int[] _itemCostId, int[] _itemCostAmount) 
+    public void SpendResources(Recipe recipe) 
     {
-        foreach (int element in _itemCostId)
+        foreach (Cost cost in recipe.CostList)
         {
-            InventorySlots[element] -= _itemCostAmount[element];
-            if (InventorySlots[element] == 0)
+            InventorySlots[cost.itemCostId] -= cost.itemCostAmount;
+            if (InventorySlots[cost.itemCostId] == 0)
             {
-                InventorySlots.Remove(element);
+                InventorySlots.Remove(cost.itemCostId);
             }
         }
     }

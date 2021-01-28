@@ -7,7 +7,7 @@ public class Mining : MonoBehaviour
     private readonly float miningDistance = 2f;
     private readonly int miningDamage = 1;
 
-    private float reloadTime = 0.4f;
+    private float reloadTime = 0.1f;
     private float lastHit = 0;
 
     private void Start()
@@ -27,7 +27,7 @@ public class Mining : MonoBehaviour
         if (Physics2D.Raycast(transform.position, direction, miningDistance, destuctableBlocksLayer))
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, miningDistance, destuctableBlocksLayer);
-            MiningManager.instance.Mine(hit.point + direction * 0.05f, miningDamage);
+            MiningManager.instance.Mine(hit.point + direction * 2f, miningDamage);
 
             lastHit = Time.time;
         }
