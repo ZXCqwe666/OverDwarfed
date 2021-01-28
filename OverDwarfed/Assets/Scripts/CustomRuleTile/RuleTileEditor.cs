@@ -186,7 +186,7 @@ namespace UnityEditor
 							case RuleTile.TilingRule.Neighbor.This:
 								GUI.DrawTexture(r, arrows[y * 3 + x]);
 								break;
-							case RuleTile.TilingRule.Neighbor.NotThis:
+							case RuleTile.TilingRule.Neighbor.AnyTile:
 								GUI.DrawTexture(r, arrows[10]);
 								break;
 							case RuleTile.TilingRule.Neighbor.Empty:
@@ -273,10 +273,6 @@ namespace UnityEditor
 			}
 			if (tilingRule.m_Output == RuleTile.TilingRule.OutputSprite.Random)
 			{
-				GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "Noise");
-				tilingRule.m_PerlinScale = EditorGUI.Slider(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_PerlinScale, 0.001f, 0.999f);
-				y += k_SingleLineHeight;
-
 				GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "Shuffle");
 				tilingRule.m_RandomTransform = (RuleTile.TilingRule.Transform)EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_RandomTransform);
 				y += k_SingleLineHeight;

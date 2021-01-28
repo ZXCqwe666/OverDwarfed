@@ -17,7 +17,6 @@ namespace UnityEngine
 			public Neighbor[] m_Neighbors;
 			public Sprite[] m_Sprites;
 			public float m_AnimationSpeed;
-			public float m_PerlinScale;
 			public Transform m_RuleTransform;
 			public OutputSprite m_Output;
 			public Tile.ColliderType m_ColliderType;
@@ -29,7 +28,6 @@ namespace UnityEngine
 				m_Neighbors = new Neighbor[8];
 				m_Sprites = new Sprite[1];
 				m_AnimationSpeed = 1f;
-				m_PerlinScale = 0.5f;
 				m_ColliderType = Tile.ColliderType.Sprite;
 
 				for (int i = 0; i < m_Neighbors.Length; i++)
@@ -37,7 +35,7 @@ namespace UnityEngine
 			}
 
 			public enum Transform { Fixed, Rotated, MirrorX, MirrorY }
-			public enum Neighbor { DontCare, This, NotThis, Empty }
+			public enum Neighbor { DontCare, This, AnyTile, Empty }
 			public enum OutputSprite { Single, Random, Animation }
 		}
 
@@ -64,8 +62,6 @@ namespace UnityEngine
 						case TilingRule.OutputSprite.Random:
 							int index = Random.Range(0, rule.m_Sprites.Length);
 							tileData.sprite = rule.m_Sprites[index];
-							if (rule.m_RandomTransform != TilingRule.Transform.Fixed)
-								transform = ApplyRandomTransform(rule.m_RandomTransform, transform, rule.m_PerlinScale, position);
 							break;
 					}
 					tileData.transform = transform;
@@ -203,21 +199,12 @@ namespace UnityEngine
 
 			return true;
 		}
-		// When this returns true, that means that the rule does not match
-		// IE this is testing if any of the rules are broken
-		// If the rule matches that means that the sprite associated to the rule will be the new main sprite
-		// These are the rules which are being checked if they are broken
-		// This -    should only be triggered for the same tile type,
-		//           which is not the case when the tile is not this
-		// NotThis - should only be triggered for another tile, which is not empty
-		//           IE broken when it is this or null(empty)
-		// Empty -   should only be triggered when there is no tile
-		//           IE broken when it is this or not null(empty)
+
 		private bool RuleBroken(TilingRule rule, int index, TileBase tile)
 		{
 			return (rule.m_Neighbors[index] == TilingRule.Neighbor.This && tile != this)
 				|| (rule.m_Neighbors[index] == TilingRule.Neighbor.Empty && (tile == this))
-				|| (rule.m_Neighbors[index] == TilingRule.Neighbor.NotThis && (tile == this || tile == null))
+				|| (rule.m_Neighbors[index] == TilingRule.Neighbor.AnyTile && (tile == null))
 				;
 		}
 

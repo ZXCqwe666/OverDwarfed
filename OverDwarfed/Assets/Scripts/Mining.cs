@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Mining : MonoBehaviour
 {
-    public Tilemap tilemap;
-    void Start() 
-    { 
-        tilemap = GameObject.Find("Grid").transform.Find("Tilemap").GetComponent<Tilemap>(); 
+    public LayerMask destuctableBlocksLayer;
+    private Camera mainCam;
+    private readonly float miningDistance = 2f;
+    private readonly int miningDamage = 1;
+
+    private void Start()
+    {
+        mainCam = Camera.main;
     }
     void Update() 
     { 
-        Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
         if (Input.GetMouseButtonDown(0))
-        { 
-            Vector3Int selectedTile = tilemap.WorldToCell(point); 
-            tilemap.SetTile(selectedTile, null); 
-        } 
+        {
+            Vector2 direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, miningDistance, destuctableBlocksLayer);
+            Debug.Log(hit.point);
+            MiningManager.instance.Mine(hit.point, miningDamage);
+        }
     }
 }
