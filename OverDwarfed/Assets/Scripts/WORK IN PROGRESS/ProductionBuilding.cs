@@ -1,49 +1,47 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using NUnit.Framework;
 
 public class ProductionBuilding : MonoBehaviour
 {
     public int[] ids, itemCost;
-    private Recipe goldIngotRecipe = new Recipe(new List<Cost>() { new Cost(0, 1) }, 1, 5);
+    private List<Recipe> recipeList = new List<Recipe>() { new Recipe(new List<Cost>() { new Cost(0, 1) }, 1, 5) };
 
-    private int itemsToProduce = 0;
-    private bool isProducing;
-    private int currentRecipeId;
+    private int itemsToProduce, currentRecipeId;
+    private bool isProducing, isInfinite;
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StopAllCoroutines();
-            StartCoroutine(Produce(goldIngotRecipe, false));
-        }    
+        StartProduction(0, 0, true);
     }
-    public void StartProduction(int recipeId, Recipe recipe, int amount, bool isInfinite)
+    public void StartProduction(int recipeId, int amount, bool _isInfinite) // This method is perfect
     {
-        if(isProducing == false && currentRecipeId != recipeId)
+        if(currentRecipeId != recipeId)
             CancelProduction();
 
-        currentRecipeId = recipeId;
         itemsToProduce += amount;
+        currentRecipeId = recipeId;
+        isInfinite = _isInfinite;
 
         if (isProducing == false)
-            StartCoroutine(Produce(goldIngotRecipe, false));
+        {
+            isProducing = true;
+            StartCoroutine(Produce(recipeList[recipeId]));
+        }
     }
-    public IEnumerator Produce(Recipe recipe, bool isInfinite)
+    public IEnumerator Produce(Recipe recipe)
     {
-        while (itemsToProduce > 0 || isInfinite && PlayerInventory.instance.CanBuy(recipe) )
+        while ((itemsToProduce > 0 || isInfinite)) // removed canBuy to allow for waiting for res to come
         {
             yield return new WaitForSeconds(recipe.creationTime);
 
-            if (PlayerInventory.instance.Buy(recipe))
+            if (PlayerInventory.instance.Buy(recipe)) // if you can buy item now spawnIt  else wait for res another time;
             {
-                itemsToProduce--;
                 ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId);
+                if(isInfinite == false) itemsToProduce--;
             }
-            else CancelProduction();
         }
+        CancelProduction();
     }
     private void CancelProduction()
     {

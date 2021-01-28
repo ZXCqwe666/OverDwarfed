@@ -33,12 +33,10 @@ public class MiningManager : MonoBehaviour
             blockData[index.x, index.y].health -= damage;
             if (blockData[index.x, index.y].health <= 0)
             {
-                if(blockTilemap.GetTile(tilePosition) != null)
-                {
-                    ItemSpawner.instance.SpawnLootTable(tilePosition + new Vector3(0.5f, 0.5f, 0f),
-                    tileTypes[blockData[index.x, index.y].tileTypeId].itemDropIds, tileTypes[blockData[index.x, index.y].tileTypeId].itemDropChances);
-                    blockTilemap.SetTile(tilePosition, null);
-                }
+                blockData[index.x, index.y].isEmpty = true;
+                blockTilemap.SetTile(tilePosition, null);
+                ItemSpawner.instance.SpawnLootTable(tilePosition + new Vector3(0.5f, 0.5f, 0f),
+                tileTypes[blockData[index.x, index.y].tileTypeId].itemDropIds, tileTypes[blockData[index.x, index.y].tileTypeId].itemDropChances);
             }
             else
             {

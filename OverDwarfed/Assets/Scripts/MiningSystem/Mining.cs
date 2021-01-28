@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Mining : MonoBehaviour
 {
-    private const float colliderPenetration = 0.05f;
+    private const float colliderPenetration = 2.05f;
 
     private Camera mainCam; 
     public LayerMask destuctableBlocksLayer;
