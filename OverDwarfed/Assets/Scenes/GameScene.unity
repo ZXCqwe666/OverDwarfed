@@ -123,6 +123,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &38280556
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 38280557}
+  m_Layer: 0
+  m_Name: ReycastPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &38280557
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38280556}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3469956005743643841}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &944739107 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2456346716754930113, guid: 12e4f3a5d1224064b9681c3bd45fc839, type: 3}
@@ -1156,6 +1186,11 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!4 &3469956005743643841 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4734177387371683756, guid: 517c871fb45c85743b33a23b64382a96, type: 3}
+  m_PrefabInstance: {fileID: 3469956005743643835}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3469956005743643842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,7 +1205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 2032277150}
   castDistance: 1
-  raycastPoint: {fileID: 0}
+  raycastPoint: {fileID: 38280557}
   layer:
     serializedVersion: 2
     m_Bits: 4294967295
