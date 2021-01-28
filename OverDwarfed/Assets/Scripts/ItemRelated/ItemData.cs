@@ -8,4 +8,7 @@ public class ItemData : ScriptableObject
     public float colliderRadius;
     public string itemName;
     public int id;
+
+    public bool destroysAfterTime;
+    public float selfDestructTime;
 }

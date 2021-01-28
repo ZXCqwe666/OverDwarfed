@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class ProductionBuilding : MonoBehaviour
 {
-    public int[] ids, itemCost;
     private List<Recipe> recipeList = new List<Recipe>() { new Recipe(new List<Cost>() { new Cost(0, 1) }, 1, 5) };
-
     private int itemsToProduce, currentRecipeId;
     private bool isProducing, isInfinite;
 

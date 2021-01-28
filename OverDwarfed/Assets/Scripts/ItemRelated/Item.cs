@@ -9,5 +9,7 @@ public class Item : MonoBehaviour
         id = _itemData.id;
         GetComponent<Animator>().runtimeAnimatorController = _itemData.worldAnimator;
         GetComponent<CircleCollider2D>().radius = _itemData.colliderRadius;
+        if(_itemData.destroysAfterTime)
+        Destroy(gameObject, _itemData.selfDestructTime);
     }
 }
