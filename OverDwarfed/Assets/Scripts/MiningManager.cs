@@ -43,6 +43,8 @@ public class MiningManager : MonoBehaviour
         if(blockData[index.x, index.y].health <= 0)
         {
             blockTilemap.SetTile(tilePosition, null); // SPAWN ITEMS ON DROP 
+            ItemSpawner.instance.SpawnLootTable(tilePosition + new Vector3(0.5f, 0.5f, 0f), 
+                tileTypes[blockData[index.x, index.y].tileTypeId].itemDropIds, tileTypes[blockData[index.x, index.y].tileTypeId].itemDropChances); 
         }
         else
         {

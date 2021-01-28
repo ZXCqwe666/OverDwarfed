@@ -8,6 +8,6 @@ public class TileInfo : ScriptableObject
     public const int breakStages = 4;
 
     public int maxHealth;
-    public ItemData[] dropPool;
-    public int[] dropChances;
+    public int[] itemDropIds;
+    public int[] itemDropChances;
 }
