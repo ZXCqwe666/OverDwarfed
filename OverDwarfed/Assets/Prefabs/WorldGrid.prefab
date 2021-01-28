@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6486416276009859497}
   - component: {fileID: 945288672}
   - component: {fileID: 6064029704830388488}
+  - component: {fileID: 1220107662}
   m_Layer: 0
   m_Name: WorldGrid
   m_TagString: Untagged
@@ -71,6 +72,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32bb974e2a83cd346b0f440d979e86fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1220107662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486416276009859478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b20e67d2a2ba954f8b144dccc3329e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6486416277095373522
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +98,7 @@ GameObject:
   - component: {fileID: 6076363797383442477}
   - component: {fileID: 1721245035612177010}
   - component: {fileID: 5705920930469184778}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: blocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,7 +271,7 @@ CompositeCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_GeometryType: 1
-  m_GenerationType: 1
+  m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 5705920930469184778}

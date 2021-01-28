@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -20,12 +19,9 @@ public class PlayerInventory : MonoBehaviour
         if (InventorySlots.ContainsKey(id)) 
         {
             InventorySlots[id] += amount;
-            Mathf.Clamp(amount, 0, 999);
+            Mathf.Clamp(InventorySlots[id], 1, 999);
         }
-        else 
-        {
-            InventorySlots.Add(id, amount);
-        }
+        else InventorySlots.Add(id, amount);
     }
     public bool Buy(Recipe recipe)
     {
@@ -40,13 +36,8 @@ public class PlayerInventory : MonoBehaviour
     {
         foreach(Cost cost in recipe.CostList) 
         {
-            if (InventorySlots.ContainsKey(cost.itemCostId)) 
-            { 
-                if(InventorySlots[cost.itemCostId] >= cost.itemCostAmount)
-                {
-                    continue;
-                }
-            }
+            if (InventorySlots.ContainsKey(cost.itemCostId) && InventorySlots[cost.itemCostId] >= cost.itemCostAmount)
+                continue;
             return false;
         }
         return true;
@@ -56,10 +47,8 @@ public class PlayerInventory : MonoBehaviour
         foreach (Cost cost in recipe.CostList)
         {
             InventorySlots[cost.itemCostId] -= cost.itemCostAmount;
-            if (InventorySlots[cost.itemCostId] == 0)
-            {
+            if (InventorySlots[cost.itemCostId] <= 0)
                 InventorySlots.Remove(cost.itemCostId);
-            }
         }
     }
 }

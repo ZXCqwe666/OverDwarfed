@@ -369,23 +369,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0a89588ca4078340b8a2c31c12ba449, type: 3}
---- !u!1 &1220107657 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6486416276009859478, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
-  m_PrefabInstance: {fileID: 6486416276678167625}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1220107662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220107657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b20e67d2a2ba954f8b144dccc3329e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &332521137120622879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -568,10 +551,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1721245035612177010, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
-      propertyPath: m_GenerationType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6486416276009859478, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
       propertyPath: m_Name
       value: WorldGrid
@@ -619,10 +598,6 @@ PrefabInstance:
     - target: {fileID: 6486416276009859496, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6486416277095373522, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}

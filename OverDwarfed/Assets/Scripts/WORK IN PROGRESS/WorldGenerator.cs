@@ -23,7 +23,9 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int x = 0; x < sizeX; x++)
             {
+                if(Random.Range(0,4f) > 1.5f)
                 blockTilemap.SetTile(new Vector3Int(x, y, 0), stoneTile);
+                else blockTilemap.SetTile(new Vector3Int(x, y, 0), null);
             }
         }
         compositeCollider.GenerateGeometry();

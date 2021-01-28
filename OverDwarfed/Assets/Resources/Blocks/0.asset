@@ -17,6 +17,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9f782204b61af3b41868adc3d4343830, type: 2}
   - {fileID: 11400000, guid: 08b1951bd1e0ea641a2c0962479615e2, type: 2}
   - {fileID: 11400000, guid: 477c025546553ec42a733655a645c20c, type: 2}
-  maxHealth: 4
+  blockName: stone
+  maxHealth: 9
   itemDropIds: 000000000000000000000000
   itemDropChances: 640000001900000019000000
