@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProductionBuilding : MonoBehaviour
 {
-    private List<Recipe> recipeList = new List<Recipe>() { new Recipe(new List<Cost>() { new Cost(0, 1) }, 1, 5) };
+    private List<int> recipeIdList;
     private int itemsToProduce, currentRecipeId;
     private bool isProducing, isInfinite;
 
@@ -12,9 +12,12 @@ public class ProductionBuilding : MonoBehaviour
     {
         StartProduction(0, 0, true);
     }
-    public void StartProduction(int recipeId, int amount, bool _isInfinite) // This method is perfect
+    public void StartProduction(int recipeId, int amount, bool _isInfinite) 
     {
-        if(currentRecipeId != recipeId)
+        if (!recipeIdList.Contains(recipeId))
+            Debug.LogError("Wrong Production call");
+
+        if (currentRecipeId != recipeId)
             CancelProduction();
 
         itemsToProduce += amount;
@@ -24,16 +27,16 @@ public class ProductionBuilding : MonoBehaviour
         if (isProducing == false)
         {
             isProducing = true;
-            StartCoroutine(Produce(recipeList[recipeId]));
+            StartCoroutine(Produce(CraftingRecipeList.instance.recipes[recipeId]));
         }
     }
     public IEnumerator Produce(Recipe recipe)
     {
-        while ((itemsToProduce > 0 || isInfinite)) // removed canBuy to allow for waiting for res to come
+        while ((itemsToProduce > 0 || isInfinite))
         {
             yield return new WaitForSeconds(recipe.creationTime);
 
-            if (PlayerInventory.instance.Buy(recipe)) // if you can buy item now spawnIt  else wait for res another time;
+            if (PlayerInventory.instance.Buy(recipe)) 
             {
                 ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId);
                 if(isInfinite == false) itemsToProduce--;
@@ -47,25 +50,10 @@ public class ProductionBuilding : MonoBehaviour
         itemsToProduce = 0;
         StopAllCoroutines();
     }
-}
-public struct Cost
-{
-    public int itemCostId, itemCostAmount;
-    public Cost(int _id, int _amount)
+    public void InitializeProductionBuilding(int[] ids)
     {
-        itemCostId = _id;
-        itemCostAmount = _amount;
-    }    
-}
-public struct Recipe
-{
-    public List<Cost> CostList;
-    public int resultItemId;
-    public float creationTime;
-    public Recipe(List<Cost> _CostList, int _resultItemId, float _creationTime)
-    {
-        CostList = _CostList;
-        resultItemId = _resultItemId;
-        creationTime = _creationTime;
+        recipeIdList = new List<int>();
+        foreach (int id in ids)
+            recipeIdList.Add(id);
     }
 }

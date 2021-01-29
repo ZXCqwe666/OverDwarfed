@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4222510814405329968}
   - component: {fileID: 4222510814405329971}
+  - component: {fileID: 850222010}
   m_Layer: 0
   m_Name: BuildingSystem
   m_TagString: Untagged
@@ -126,6 +127,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca67b52e117ee149991cb035623313f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  productionScript: {fileID: 0}
   blockerLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &850222010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4222510814405329970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c906051bef64c4946895e865910cc6c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

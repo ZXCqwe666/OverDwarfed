@@ -31,19 +31,25 @@ public class BuildingSystem : MonoBehaviour
     {
         if (blueprintActive && canPlaceBuilding)
         {
-            //if (PlayerInventory.instance.Buy(selectedData.recipeId)) // add call to static list from Recipe collection;
-            //{
+            if (PlayerInventory.instance.Buy(CraftingRecipeList.instance.recipes[selectedData.recipeId])) // add call to static list from Recipe collection;
+            {
                 GameObject building = Instantiate(buildingPrefab, position, Quaternion.identity, transform);
                 building.GetComponent<SpriteRenderer>().sprite = selectedData.buildingSprite;
+
                 BoxCollider2D collider = building.GetComponent<BoxCollider2D>();
                 collider.size = selectedData.colliderSize;
                 collider.offset = selectedData.colliderOffset;
-                //building.GetComponent<Building>().buildingdata = selectedData;
+
+                if (selectedData.isProductionBuilding)
+                {
+                    building.AddComponent<ProductionBuilding>();
+                    building.GetComponent<ProductionBuilding>().InitializeProductionBuilding(selectedData.recipeIds);
+                } 
 
                 if (Input.GetKey(KeyCode.LeftShift) == false) // TEMPORARY CONTROLS
                     SetSpriteAndActivity(null, false);
-            //}
-            //else SetSpriteAndActivity(null, false);
+            }
+            else SetSpriteAndActivity(null, false);
         }
     }
     private void UpdateBlueprintPosition()
@@ -65,7 +71,7 @@ public class BuildingSystem : MonoBehaviour
     public void UpdateBlueprint(int index)
     {
         selectedData = buildings[index];
-        //if (PlayerInventory.instance.CanBuy(// put recipe call here)
+        if (PlayerInventory.instance.CanBuy(CraftingRecipeList.instance.recipes[selectedData.recipeId]))
         {
             cellOffset = new Vector2(selectedData.size.x / 2, selectedData.size.y / 2);
             SetSpriteAndActivity(selectedData.buildingSprite, true);
