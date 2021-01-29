@@ -7,7 +7,7 @@ using System.Collections;
 
 public class MapGenerator : MonoBehaviour
 {
-	private const int smoothValue = 4;
+	private const int smoothValue = 4, randomFillPercent = 52;
 	private const float genStepTime = 0.05f;
 
 	private Tilemap blockTilemap;
@@ -17,9 +17,7 @@ public class MapGenerator : MonoBehaviour
 	private int2 mapSize;
 	private bool[,] map;
 
-	[Range(0, 100)]
-	public int randomFillPercent;
-	public int smoothingIterations;
+	public int smoothingIterations; // 
 	public int2 generatedMapSize;
 
 

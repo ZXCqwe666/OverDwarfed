@@ -84,11 +84,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: 477c025546553ec42a733655a645c20c, type: 2}
-  randomFillPercent: 50
-  smoothingIterations: 4
+  smoothingIterations: 2
   generatedMapSize:
-    x: 500
-    y: 100
+    x: 300
+    y: 75
 --- !u!1 &6486416277095373522
 GameObject:
   m_ObjectHideFlags: 0
