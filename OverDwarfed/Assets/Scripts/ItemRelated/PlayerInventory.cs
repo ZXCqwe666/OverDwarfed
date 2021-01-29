@@ -6,6 +6,9 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory instance;
     public Dictionary<int, int> InventorySlots; //need dictionary for every player 
 
+    public delegate void OnInventoryChanged();
+    public OnInventoryChanged onInventoryChangedCallback;
+
     private void Awake()
     {
         instance = this; //remove instance later
@@ -22,6 +25,8 @@ public class PlayerInventory : MonoBehaviour
             Mathf.Clamp(InventorySlots[id], 1, 999);
         }
         else InventorySlots.Add(id, amount);
+        if(onInventoryChangedCallback != null)
+            onInventoryChangedCallback.Invoke();
     }
     public bool Buy(Recipe recipe)
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 
 [CreateAssetMenu]
 public class ItemData : ScriptableObject
@@ -11,4 +12,12 @@ public class ItemData : ScriptableObject
 
     public bool destroysAfterTime;
     public float selfDestructTime;
+
+    public bool isPickaxe;
+    
+    public bool isHammer;
+
+    public bool isWeapon;
+    public float attackInterval;
+    public int2 damageRange;
 }

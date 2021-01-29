@@ -16,7 +16,7 @@ public class Mining : MonoBehaviour
     }
     void Update() 
     { 
-        if (Input.GetMouseButton(0) && lastHit + reloadTime < Time.time) 
+        if (Input.GetMouseButton(0) && lastHit + reloadTime < Time.time) //check if current slot contains pickaxe 
             MineBlock();
     }
     private void MineBlock()
