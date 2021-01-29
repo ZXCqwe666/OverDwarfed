@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
-  m_Name: 0
+  m_Name: 2
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 2285274930178780495, guid: 86244afa6b4812a418103e93192c83ca, type: 3}
-  worldAnimator: {fileID: 9100000, guid: 0761e13dd6ba86f43b244b7fb6f1889b, type: 2}
+  itemIcon: {fileID: -2801247489012236490, guid: 830cab7473691fc4790c7022161a3fea, type: 3}
+  worldAnimator: {fileID: 0}
   colliderRadius: 0.25
-  itemName: goldCoin
-  id: 0
-  destroysAfterTime: 0
-  selfDestructTime: 0
+  itemName: stone
+  id: 2
+  destroysAfterTime: 1
+  selfDestructTime: 60
   isPickaxe: 0
   isHammer: 0
   isWeapon: 0

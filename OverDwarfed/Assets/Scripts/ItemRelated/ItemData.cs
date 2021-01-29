@@ -8,15 +8,13 @@ public class ItemData : ScriptableObject
     public RuntimeAnimatorController worldAnimator;
     public float colliderRadius;
     public string itemName;
-    public int id;
+    public int id; // used to collect dropped item
 
     public bool destroysAfterTime;
     public float selfDestructTime;
 
     public bool isPickaxe;
-    
     public bool isHammer;
-
     public bool isWeapon;
     public float attackInterval;
     public int2 damageRange;

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ee45b452f0f13a408758b12bb56ec31, type: 3}
-  m_Name: stone_3
+  m_Name: ironOre
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -3922674033870408897, guid: 129eb5c3b9973324e853e739d5ac8aa5, type: 3}
+  m_DefaultSprite: {fileID: 5272992927666150645, guid: 129eb5c3b9973324e853e739d5ac8aa5, type: 3}
   m_DefaultColliderType: 2
   m_TilingRules: []

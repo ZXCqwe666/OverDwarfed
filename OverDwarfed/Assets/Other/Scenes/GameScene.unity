@@ -256,8 +256,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 24
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 1
-  m_MatchWidthOrHeight: 0
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -315,24 +315,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca67b52e117ee149991cb035623313f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1412192339 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6571371482947689796, guid: 517c871fb45c85743b33a23b64382a96, type: 3}
-  m_PrefabInstance: {fileID: 3469956005743643835}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1412192340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1412192339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 484bc7df99c782f419caa86ccf7d3b2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 10
 --- !u!1 &1975007337
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,18 +568,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 2668125572129429931, guid: 12e4f3a5d1224064b9681c3bd45fc839, type: 3}
-      propertyPath: m_AssetsPPU
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 2668125572129429931, guid: 12e4f3a5d1224064b9681c3bd45fc839, type: 3}
-      propertyPath: m_RefResolutionX
-      value: 384
-      objectReference: {fileID: 0}
-    - target: {fileID: 2668125572129429931, guid: 12e4f3a5d1224064b9681c3bd45fc839, type: 3}
-      propertyPath: m_RefResolutionY
-      value: 216
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12e4f3a5d1224064b9681c3bd45fc839, type: 3}
 --- !u!1001 &3469956005743643835
@@ -768,6 +738,18 @@ PrefabInstance:
     - target: {fileID: 6486416276009859496, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486416277095373527, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486416277095373527, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486416277095373527, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7e8ab4ee80abaf40a1ca71b441bc68a, type: 3}

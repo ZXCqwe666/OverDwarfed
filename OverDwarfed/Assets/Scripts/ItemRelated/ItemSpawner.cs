@@ -27,7 +27,7 @@ public class ItemSpawner : MonoBehaviour
     }
     public void SpawnItem(Vector3 position, int id)
     {
-        GameObject item = Instantiate(Resources.Load<GameObject>("Items/Item"), position + RandomOffset(), Quaternion.identity, transform);
+        GameObject item = Instantiate(Resources.Load<GameObject>("Items/item"), position + RandomOffset(), Quaternion.identity, transform);
         item.GetComponent<Item>().InitializeItem(items[id]);
     }
     public void SpawnLootTable(Vector3 position, int[] ids, int [] chances)

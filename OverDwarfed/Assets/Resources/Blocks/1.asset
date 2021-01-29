@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5950b0c59da42014da2c630c40ed6650, type: 3}
-  m_Name: 0
+  m_Name: 1
   m_EditorClassIdentifier: 
   destructionStages:
-  - {fileID: 11400000, guid: df2dcce22204bee4391e6c5b340eabca, type: 2}
-  - {fileID: 11400000, guid: 9f782204b61af3b41868adc3d4343830, type: 2}
-  - {fileID: 11400000, guid: 08b1951bd1e0ea641a2c0962479615e2, type: 2}
-  - {fileID: 11400000, guid: 477c025546553ec42a733655a645c20c, type: 2}
-  blockName: stone
-  maxHealth: 9
-  itemDropIds: 020000000200000002000000
+  - {fileID: 11400000, guid: 837540a8e9961f6429fedee1a88bdaf1, type: 2}
+  - {fileID: 11400000, guid: 76251afc7ab2ad248931f9fb2805a7fd, type: 2}
+  - {fileID: 11400000, guid: 18a9e883aa99efa43bdabd2420c3851d, type: 2}
+  - {fileID: 11400000, guid: 7c122ac23f04bf540b338ee4852dbf77, type: 2}
+  blockName: ironOre
+  maxHealth: 12
+  itemDropIds: 030000000300000003000000
   itemDropChances: 640000001900000019000000

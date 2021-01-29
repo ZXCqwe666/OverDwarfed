@@ -1,47 +1,47 @@
-﻿using UnityEngine;
+﻿using Random = UnityEngine.Random;
+using Unity.Mathematics;
+using UnityEngine;
 
-public static class Noise
+namespace MapGeneration
 {
-	public static float[,] GenerateNoiseMap(int size, NoiseData data)
+	public static class Noise
 	{
-		float[,] noiseMap = new float[size, size];
-
-		for (int y = 0; y < size; y++)
+		public static float[,] GenerateNoiseMap(int2 size, NoiseData data)
 		{
-			for (int x = 0; x < size; x++)
+			float[,] noiseMap = new float[size.x, size.y];
+			Vector2 offset = new Vector2(Random.Range(0, 100000), Random.Range(0, 100000));
+
+			for (int y = 0; y < size.y; y++)
 			{
-				float impact = 1;
-				float spread = 1;
-				float noiseValue = 0;
-
-				for (int i = 0; i < data.octaves; i++)
+				for (int x = 0; x < size.x; x++)
 				{
-					float sampleX = (x + data.offset.x) / data.scale * spread;
-					float sampleY = (y - data.offset.y) / data.scale * spread;
+					float impact = 1, spread = 1, noiseValue = 0;
 
-					float perlinValue = Mathf.PerlinNoise(sampleX, sampleY);
-					noiseValue += perlinValue * impact;
+					for (int i = 0; i < data.octaves; i++)
+					{
+						float sampleX = (x + offset.x) / data.scale * spread;
+						float sampleY = (y - offset.y) / data.scale * spread;
 
-					impact *= data.impact;
-					spread *= data.spread;
+						float perlinValue = Mathf.PerlinNoise(sampleX, sampleY);
+						noiseValue += perlinValue * impact;
+
+						impact *= data.impact;
+						spread *= data.spread;
+					}
+					noiseMap[x, y] = Mathf.Clamp(noiseValue, 0f, 1f);
 				}
-				noiseMap[x, y] = noiseValue;
 			}
+			return noiseMap;
 		}
-		return noiseMap;
 	}
 	public struct NoiseData
 	{
 		public int octaves;
 		public float scale, impact, spread;
-		public Vector2 offset;
-		public NoiseData(int _octaves, float _scale, float _impact, float _spread, Vector2 _offset)
+		public NoiseData(int _octaves, float _scale, float _impact, float _spread)
 		{
-			octaves = _octaves;
-			scale = _scale;
-			impact = _impact;
-			spread = _spread;
-			offset = _offset;
+			octaves = _octaves; scale = _scale;
+			impact = _impact; spread = _spread;
 		}
 	}
 }

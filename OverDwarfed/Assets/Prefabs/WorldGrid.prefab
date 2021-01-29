@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6064029704830388488}
   - component: {fileID: 1220107662}
   - component: {fileID: 6486416276678167628}
+  - component: {fileID: 5840762619916468629}
   m_Layer: 0
   m_Name: WorldGrid
   m_TagString: Untagged
@@ -83,11 +84,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee22184363ba3f4aa9d76e007194e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 477c025546553ec42a733655a645c20c, type: 2}
   smoothingIterations: 2
   generatedMapSize:
     x: 300
     y: 75
+--- !u!114 &5840762619916468629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486416276009859478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 712a627f9556a6348ae4cd588234bf84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6486416277095373522
 GameObject:
   m_ObjectHideFlags: 0

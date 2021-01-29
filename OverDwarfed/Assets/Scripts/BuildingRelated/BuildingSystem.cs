@@ -13,8 +13,6 @@ public class BuildingSystem : MonoBehaviour
     private Vector2 cellPosition, previousCellPosition, cellOffset;
     private bool blueprintActive, canPlaceBuilding;
 
-    public ProductionBuilding productionScript;
-
     public LayerMask blockerLayer;
 
     private void Start()

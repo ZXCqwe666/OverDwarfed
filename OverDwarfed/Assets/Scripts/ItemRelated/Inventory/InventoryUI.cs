@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -14,6 +12,5 @@ public class InventoryUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        Debug.Log("UI updated");
     }
 }

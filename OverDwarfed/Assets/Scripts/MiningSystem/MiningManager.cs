@@ -7,48 +7,47 @@ using System.Linq;
 public class MiningManager : MonoBehaviour
 {
     public static MiningManager instance;
+    public static List<TileInfo> tileTypes;
 
-    private static List<TileInfo> tileTypes;
     private Tilemap blockTilemap;
     private BlockHp[,] blockData;
-    private int2 blockDataArraySize;
+    private int2 blockArraySize;
     private const int breakStages = 4;
 
     private void Awake()
     {
         instance = this;
-    }
-    private void Start()
-    {
-        InitializeMiningManager();
+        InitializeMiningManager(); // used by both MapGen and BiomList
     }
     public void Mine(Vector3 position, int damage)
     {
         Vector3Int tilePosition = blockTilemap.WorldToCell(position);
-        tilePosition = new Vector3Int(Mathf.Clamp(tilePosition.x, 0, blockDataArraySize.x), Mathf.Clamp(tilePosition.y, 0, blockDataArraySize.y), 0);
+        tilePosition = new Vector3Int(Mathf.Clamp(tilePosition.x, 0, blockArraySize.x), Mathf.Clamp(tilePosition.y, 0, blockArraySize.y), 0);
         int2 index = new int2(tilePosition.x, tilePosition.y);
 
-        if(blockData[index.x, index.y].isEmpty == false)
+        if (blockData[index.x, index.y].isEmpty == false)
         {
             blockData[index.x, index.y].health -= damage;
-            if (blockData[index.x, index.y].health <= 0)
+            BlockHp block = blockData[index.x, index.y];
+
+            if (block.health <= 0)
             {
                 blockData[index.x, index.y].isEmpty = true;
                 blockTilemap.SetTile(tilePosition, null);
                 ItemSpawner.instance.SpawnLootTable(tilePosition + new Vector3(0.5f, 0.5f, 0f),
-                tileTypes[blockData[index.x, index.y].tileTypeId].itemDropIds, tileTypes[blockData[index.x, index.y].tileTypeId].itemDropChances);
+                tileTypes[block.tileTypeId].itemDropIds, tileTypes[block.tileTypeId].itemDropChances);
             }
             else
             {
-                int breakIndex = Mathf.CeilToInt(blockData[index.x, index.y].health / (float)tileTypes[blockData[index.x, index.y].tileTypeId].maxHealth * breakStages);
-                blockTilemap.SetTile(tilePosition, tileTypes[blockData[index.x, index.y].tileTypeId].destructionStages[breakIndex - 1]);
+                int breakIndex = Mathf.CeilToInt(block.health / (float)tileTypes[block.tileTypeId].maxHealth * breakStages);
+                blockTilemap.SetTile(tilePosition, tileTypes[block.tileTypeId].destructionStages[breakIndex - 1]);
             }
         }
     }
     public void InitializeBlockData(int sizeX, int sizeY)
     {
         blockData = new BlockHp[sizeX, sizeY];
-        blockDataArraySize = new int2(sizeX - 1, sizeY - 1);
+        blockArraySize = new int2(sizeX - 1, sizeY - 1);
 
         for (int y = 0; y < sizeY; y++)
         {
