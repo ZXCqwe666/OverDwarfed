@@ -20,14 +20,18 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (i < inventory.InventorySlots.Count)
-            {
-                slots[i].AddItem(inventory.InventorySlots[i]);
-            }
-            else
-            {
-                slots[i].ClearSlot();
-            }
+
+            slots[i].ClearSlot();
+            Debug.Log("Cleared");
         }
+
+        int k = 0;
+        foreach (int key in inventory.InventorySlots.Keys)
+        {
+            slots[k].AddItem(key, inventory.InventorySlots[key], ItemSpawner.instance.items[key].itemIcon);
+            k++;
+            Debug.Log("ItemAdded");
+        }
+        Debug.Log("Updated");
     }
 }
