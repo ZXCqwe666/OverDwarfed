@@ -14,4 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 1124301899265702535, guid: 129eb5c3b9973324e853e739d5ac8aa5, type: 3}
   m_DefaultColliderType: 2
-  m_TilingRules: []
+  m_TilingRules:
+  - m_Neighbors: 0000000000000000000000000000000000000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 1124301899265702535, guid: 129eb5c3b9973324e853e739d5ac8aa5, type: 3}
+    m_AnimationSpeed: 1
+    m_RuleTransform: 0
+    m_Output: 0
+    m_ColliderType: 1
+    m_RandomTransform: 0

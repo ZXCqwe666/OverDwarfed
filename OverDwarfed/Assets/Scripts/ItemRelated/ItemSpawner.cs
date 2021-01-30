@@ -5,6 +5,7 @@ public class ItemSpawner : MonoBehaviour
 {
     public static ItemSpawner instance;
     private List<ItemData> items;
+    private GameObject itemPrefab;
 
     private void Awake()
     {
@@ -24,10 +25,11 @@ public class ItemSpawner : MonoBehaviour
                 items.Add(loadedItem);
             else break;
         }
+        itemPrefab = Resources.Load<GameObject>("Items/item");
     }
     public void SpawnItem(Vector3 position, int id)
     {
-        GameObject item = Instantiate(Resources.Load<GameObject>("Items/item"), position + RandomOffset(), Quaternion.identity, transform);
+        GameObject item = Instantiate(itemPrefab, position + RandomOffset(), Quaternion.identity, transform);
         item.GetComponent<Item>().InitializeItem(items[id]);
     }
     public void SpawnLootTable(Vector3 position, int[] ids, int [] chances)
