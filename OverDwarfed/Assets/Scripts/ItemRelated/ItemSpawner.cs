@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     public static ItemSpawner instance;
-    private List<ItemData> items;
+    public List<ItemData> items;
     private GameObject itemPrefab;
 
     private void Awake()
