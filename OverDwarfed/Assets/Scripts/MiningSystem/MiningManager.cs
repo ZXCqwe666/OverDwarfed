@@ -61,7 +61,7 @@ public class MiningManager : MonoBehaviour
                     blockData[x, y] = new BlockHp(tileTypes.IndexOf(matchingName[0]));
                     else blockData[x, y] = new BlockHp(-1);
                 }
-                else blockData[x, y] = new BlockHp(-1); // -1 means EmptyTime
+                else blockData[x, y] = new BlockHp(-1); // -1 means EmptyTile
             }
         }
     }

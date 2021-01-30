@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory instance;
     public Dictionary<int, int> InventorySlots; //need dictionary for every player 
+    private const int capacity =  32; //inventory cells 
 
-    public delegate void OnInventoryChanged();
-    public OnInventoryChanged onInventoryChangedCallback;
+    public delegate void InventoryChanged(object sender, InventoryChangeArgs inventoryChange);
+    public InventoryChanged onInventoryChanged;
 
     private void Awake()
     {
@@ -19,14 +21,32 @@ public class PlayerInventory : MonoBehaviour
     }
     public void AddItem(int id, int amount) 
     {
-        if (InventorySlots.ContainsKey(id)) 
+        if (InventorySlots.Count < capacity)
         {
-            InventorySlots[id] += amount;
-            Mathf.Clamp(InventorySlots[id], 1, 999);
+            if (InventorySlots.ContainsKey(id))
+            {
+                InventorySlots[id] += amount;
+                Mathf.Clamp(InventorySlots[id], 1, 999);
+            }
+            else InventorySlots.Add(id, amount);
+
+            onInventoryChanged?.Invoke(this, new InventoryChangeArgs(id, amount, false));
         }
-        else InventorySlots.Add(id, amount);
-        if(onInventoryChangedCallback != null)
-            onInventoryChangedCallback.Invoke();
+    }
+    public void RemoveItem(int id, int amount)
+    {
+        if (InventorySlots.ContainsKey(id))
+        {
+            InventorySlots[id] -= amount;
+
+            if (InventorySlots[id] <= 0)
+            {
+                InventorySlots.Remove(id);
+                onInventoryChanged?.Invoke(this, new InventoryChangeArgs(id, 0, true));
+            }
+            else 
+                onInventoryChanged?.Invoke(this,new InventoryChangeArgs(id, -amount, false));
+        }
     }
     public bool Buy(Recipe recipe)
     {
@@ -50,10 +70,19 @@ public class PlayerInventory : MonoBehaviour
     public void SpendResources(Recipe recipe) 
     {
         foreach (Cost cost in recipe.CostList)
-        {
-            InventorySlots[cost.itemCostId] -= cost.itemCostAmount;
-            if (InventorySlots[cost.itemCostId] <= 0)
-                InventorySlots.Remove(cost.itemCostId);
-        }
+        RemoveItem(cost.itemCostId, cost.itemCostAmount);
+    }
+}
+public class InventoryChangeArgs : EventArgs
+{
+    public int id;
+    public int amount;
+    public bool removeItem;
+
+    public InventoryChangeArgs(int _id, int _amount, bool _removeItem)
+    {
+        id = _id;
+        amount = _amount;
+        removeItem = _removeItem;
     }
 }

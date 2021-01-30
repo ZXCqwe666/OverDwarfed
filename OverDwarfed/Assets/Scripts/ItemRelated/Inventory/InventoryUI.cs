@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
     private Transform itemParent;
     private PlayerInventory inventory;
-    private InventorySlot[] slots;
+    private List<InventorySlot> slots;
 
     private void Start()
     {
@@ -15,24 +17,35 @@ public class InventoryUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
             itemParent.gameObject.SetActive(!itemParent.gameObject.activeSelf);
     }
-    private void UpdateUI()
+    private void UpdateSlot(object sender, InventoryChangeArgs inventoryChange)
     {
-        for (int i = 0; i < slots.Length; i++)
-            slots[i].ClearSlot();
-
-        int k = 0;
-        foreach (int key in inventory.InventorySlots.Keys)
+        List<InventorySlot> slot = new List<InventorySlot>();
+        slot = slots.Where(wslot => wslot.itemId == inventoryChange.id).ToList();
+        if (slot.Count > 0)
         {
-            slots[k].AddItem(key, inventory.InventorySlots[key], ItemSpawner.instance.items[key].itemIcon);
-            k++;
+            if (inventoryChange.removeItem) slot[0].ClearSlot();
+            else slot[0].UpdateItemAmount(inventoryChange.amount); 
+        }
+        else
+        {
+            foreach (InventorySlot _slot in slots)
+                if (_slot.isEmpty)
+                {
+                    _slot.AddItem(inventoryChange.id, inventoryChange.amount, ItemSpawner.instance.items[inventoryChange.id].itemIcon);
+                    break;
+                }
         }
     }
     private void InitializeInventoryUI()
     {
         inventory = PlayerInventory.instance;
-        inventory.onInventoryChangedCallback += UpdateUI;
+        inventory.onInventoryChanged += UpdateSlot;
+
         itemParent = transform.Find("ItemsParent");
         itemParent.gameObject.SetActive(false);
-        slots = itemParent.GetComponentsInChildren<InventorySlot>();
+
+        slots = new List<InventorySlot>();
+        for(int i = 0; i < itemParent.childCount; i++)
+            slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());    
     }
 }
