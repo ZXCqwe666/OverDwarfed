@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour
     private void UpdateSlot(object sender, InventoryChangeArgs inventoryChange)
     {
         List<InventorySlot> slot = new List<InventorySlot>();
-        slot = slots.Where(wslot => wslot.itemId == inventoryChange.id).ToList();
+        slot = slots.Where(wslot => wslot.isEmpty == false && wslot.itemId == inventoryChange.id).ToList();
         if (slot.Count > 0)
         {
             if (inventoryChange.removeItem) slot[0].ClearSlot();
@@ -28,7 +28,7 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            foreach (InventorySlot _slot in slots)
+            foreach (InventorySlot _slot in slots) 
                 if (_slot.isEmpty)
                 {
                     _slot.AddItem(inventoryChange.id, inventoryChange.amount, ItemSpawner.instance.items[inventoryChange.id].itemIcon);

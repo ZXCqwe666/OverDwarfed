@@ -193,6 +193,7 @@ MonoBehaviour:
   destuctableBlocksLayer:
     serializedVersion: 2
     m_Bits: 256
+  dynamite: {fileID: 7945573006882603821, guid: 4ae1da478469d1240ab889eb60daf5f2, type: 3}
 --- !u!114 &9110342049849177633
 MonoBehaviour:
   m_ObjectHideFlags: 0
