@@ -48,7 +48,9 @@ namespace MapGeneration
 			FillTiles(ref map, ref edgeMap); yield return new WaitForSeconds(genStepTime);
 			FillAreaAround(); yield return new WaitForSeconds(genStepTime);
 			CarveStartingArea(); yield return new WaitForSeconds(genStepTime);
+
 			MiningManager.instance.InitializeBlockData(mapSize.x, mapSize.y);
+			blockTilemap.GetComponent<TilemapCollider2D>().enabled = true;
 		}
 		private void RandomMapFill(ref bool[,] mapArray, int _randomFillPercent)
 		{
@@ -91,21 +93,19 @@ namespace MapGeneration
 		{
 			int wallCount = 0;
 			for (int neighbourX = pos.x - 1; neighbourX <= pos.x + 1; neighbourX++)
+			for (int neighbourY = pos.y - 1; neighbourY <= pos.y + 1; neighbourY++)
+			if (neighbourX >= 0 && neighbourX < mapSize.x && neighbourY >= 0 && neighbourY < mapSize.y)
 			{
-				for (int neighbourY = pos.y - 1; neighbourY <= pos.y + 1; neighbourY++)
-				{
-					if (neighbourX >= 0 && neighbourX < mapSize.x && neighbourY >= 0 && neighbourY < mapSize.y)
-					{
-						if ((neighbourX != pos.x || neighbourY != pos.y) && map[neighbourX, neighbourY])
-							wallCount++;
-					}
-					else wallCount++;
-				}
-			} return wallCount;
+				if ((neighbourX != pos.x || neighbourY != pos.y) && map[neighbourX, neighbourY])
+					wallCount++;
+			}
+			else wallCount++;
+			return wallCount;
 		}
 		private void ResetPreviosGeneration()
 		{
 			Random.InitState(Random.Range(int.MinValue, int.MaxValue));
+			blockTilemap.GetComponent<TilemapCollider2D>().enabled = false;
 			blockTilemap.ClearAllTiles();
 		}
 		private void FillAreaAround()

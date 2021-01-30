@@ -4,7 +4,6 @@ using UnityEngine;
 public class CraftingRecipeList : MonoBehaviour
 {
     public static CraftingRecipeList instance;
-
     public List<Recipe> recipes;
 
     private void Awake()

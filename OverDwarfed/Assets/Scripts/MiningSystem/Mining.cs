@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using UnityEngine.EventSystems;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Mining : MonoBehaviour
@@ -21,6 +22,8 @@ public class Mining : MonoBehaviour
     }
     private void MineBlock()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         Vector2 direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized; 
         RaycastHit2D raycast = Physics2D.Raycast(transform.position, direction, miningDistance, destuctableBlocksLayer);
         if (raycast)
