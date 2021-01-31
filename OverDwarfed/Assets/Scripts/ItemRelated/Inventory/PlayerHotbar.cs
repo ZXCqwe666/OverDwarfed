@@ -8,7 +8,6 @@ public class PlayerHotbar : MonoBehaviour
     private const int hotbarSize = 5;
 
     private List<Image> slots;
-    private List<int> itemIdInSlot;
     private int currentSlot;
 
     private void Awake()
@@ -51,8 +50,6 @@ public class PlayerHotbar : MonoBehaviour
     }
     private void InitializePlayerHotbar()
     {
-        //itemIdInSlot = new List<int>();
-
         slots = new List<Image>();
         for (int i = 0; i < hotbarSize; i++)
             slots.Add(transform.Find(i.ToString()).GetComponent<Image>());
