@@ -8,7 +8,7 @@ public class InventoryUI : MonoBehaviour
     public static InventoryUI instance;
 
     public List<InventorySlot> slots;
-    private Transform itemParent;
+    private Transform itemParent, hotbarSlotsHolder;
     public bool isOpen = false;
 
     private void Awake()
@@ -107,8 +107,11 @@ public class InventoryUI : MonoBehaviour
 
         itemParent = transform.Find("ItemsParent");
         itemParent.gameObject.SetActive(isOpen);
+        hotbarSlotsHolder = transform.Find("SlotsHolder");
 
         slots = new List<InventorySlot>();
+        for (int i = 0; i < hotbarSlotsHolder.childCount; i++)
+        slots.Add(hotbarSlotsHolder.GetChild(i).GetComponent<InventorySlot>());
         for (int i = 0; i < itemParent.childCount; i++)
         slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());
     }

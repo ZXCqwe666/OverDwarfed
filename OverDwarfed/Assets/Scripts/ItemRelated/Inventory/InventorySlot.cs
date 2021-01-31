@@ -9,7 +9,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     private Text text;
 
     public int itemId, amount;
-    public bool isEmpty;
+    public bool isEmpty, isHotbarSlot;
 
     private void Start()
     {
@@ -64,7 +64,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     }
     private IEnumerator HoldDrop()
     {
-        while (Input.GetMouseButton(1) && isEmpty == false && InventoryUI.instance.isOpen)
+        while (Input.GetMouseButton(1) && isEmpty == false && (InventoryUI.instance.isOpen || isHotbarSlot))
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
@@ -90,7 +90,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(Input.GetMouseButton(0) && Input.GetMouseButton(1) == false) // LMB == true RMB == false
+        if (Input.GetMouseButton(0) && Input.GetMouseButton(1) == false) // LMB == true RMB == false
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
@@ -111,7 +111,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     {
         while (_lastPointerData != null)
         {
-            if (InventoryUI.instance.isOpen == false)
+            if (InventoryUI.instance.isOpen == false && isHotbarSlot == false ) 
                 CancelDrag();
             yield return new WaitForEndOfFrame();
         }
