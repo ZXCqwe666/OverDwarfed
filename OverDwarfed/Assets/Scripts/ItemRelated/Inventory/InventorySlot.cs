@@ -4,14 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
-{ 
-
-    private RectTransform rectTransform;
-    private CanvasGroup canvasGroup;
-    private Canvas canvas;
-    private Vector2 startPosition;
-
-    private const float holdDuration = 0.1f;
+{
     private Image icon;
     private Text text;
 
@@ -22,101 +15,126 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     {
         InitializeItemSlot();
     }
+    public void AddItem(int _itemId, int _amount, Sprite _itemIcon)
+    {
+        isEmpty = false;
+        icon.sprite = _itemIcon;
+        icon.color = Color.white;
+        itemId = _itemId;
+        SetItemAmount(_amount);
+    }
+    public void SetItemAmount(int _amount)
+    {
+        amount = _amount;
+        text.text = amount.ToString();
+        if (amount <= 0) ClearSlot();
+    }
+    public void ClearSlot()
+    {
+        isEmpty = true;
+        icon.color = Color.clear;
+        text.text = "";
+        amount = 0;
+    }
+
+    #region Initialization
     private void InitializeItemSlot()
     {
+        icon = GetComponent<Image>();
+        text = transform.Find("Amount").GetComponent<Text>();
+        ClearSlot();
+
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         startPosition = rectTransform.anchoredPosition;
+    }
+    #endregion
+    #region HoldDropping
 
-        icon = GetComponent<Image>();
-        text = transform.Find("Amount").GetComponent<Text>();
-        ClearSlot();
-    }
-    public void AddItem(int _itemId, int _amount, Sprite _itemIcon)
-    {
-        isEmpty = false;
+    private const float holdDuration = 0.1f;
 
-        itemId = _itemId;
-        UpdateItemAmount(_amount);
-
-        icon.sprite = _itemIcon;
-        icon.color = Color.white;
-    }
-    public void UpdateItemAmount(int _amount)
-    {
-        amount += _amount;
-        text.text = amount.ToString();
-    }
-    public void ClearSlot()
-    {
-        icon.color = Color.clear;
-        text.text = "";
-        isEmpty = true;
-        amount = 0;
-    }
-    private IEnumerator HoldDrop()
-    {
-        while (Input.GetMouseButton(1))
-        {
-            DropItem();
-            yield return new WaitForSeconds(holdDuration);
-        }
-    }
-    public void DropItem()
-    {
-        if (isEmpty == false)
-            PlayerInventory.instance.RemoveItem(itemId, 1, true);
-    }
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && Input.GetMouseButton(0) == false) // LMB == false RMB == true
         {
             StopCoroutine(HoldDrop());
             StartCoroutine(HoldDrop());
         }
     }
+    private IEnumerator HoldDrop()
+    {
+        while (Input.GetMouseButton(1) && isEmpty == false && InventoryUI.instance.isOpen)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                PlayerInventory.instance.RemoveItem(itemId, amount, true);
+                SetItemAmount(0);
+            }
+            else
+            {
+                PlayerInventory.instance.RemoveItem(itemId, 1, true);
+                SetItemAmount(amount - 1);
+            }
+            yield return new WaitForSeconds(holdDuration);
+        }
+    }
+    #endregion
+    #region DragAndDrop
+
+    private PointerEventData _lastPointerData;
+    private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
+    private Canvas canvas;
+    private Vector2 startPosition;
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = 0.6f;
+        if(Input.GetMouseButton(0) && Input.GetMouseButton(1) == false) // LMB == true RMB == false
+        {
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.alpha = 0.6f;
+            _lastPointerData = eventData;
+            StartCoroutine(CheckInventoryOpen());
+        }
     }
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;    
+        if(_lastPointerData != null)
+            rectTransform.anchoredPosition += _lastPointerData.delta / canvas.scaleFactor;
     }
     public void OnEndDrag(PointerEventData eventData)
+    {
+        CancelDrag();
+    }
+    private IEnumerator CheckInventoryOpen()
+    {
+        while (_lastPointerData != null)
+        {
+            if (InventoryUI.instance.isOpen == false)
+                CancelDrag();
+            yield return new WaitForEndOfFrame();
+        }
+    }
+    private void CancelDrag()
     {
         rectTransform.anchoredPosition = startPosition;
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
+        _lastPointerData = null;      
     }
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("on drop");
-
-        if (eventData.pointerDrag != null) // я пустой
+        if (eventData.pointerDrag != null)
         {
             InventorySlot slotWePutting = eventData.pointerDrag.GetComponent<InventorySlot>();
-            if (slotWePutting == this) Debug.LogError("qweqe");
-
-            if (slotWePutting.isEmpty == false)
+            if(slotWePutting.isEmpty == false)
             {
-                if (isEmpty == true) // putting slot in empty slot
-                {
-                    AddItem(slotWePutting.itemId, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.itemId].itemIcon); // can drag empty tile 
-                    slotWePutting.ClearSlot();
-                }
-                else // swapping slots
-                {
-                    int thisId = itemId;
-                    int thisAmount = amount;
-                    ClearSlot();
-                    AddItem(slotWePutting.itemId, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.itemId].itemIcon);
-                    slotWePutting.ClearSlot();
-                    slotWePutting.AddItem(thisId, thisAmount, ItemSpawner.instance.items[thisId].itemIcon);
-                }
+                int thisId = itemId, thisAmount = amount;
+                AddItem(slotWePutting.itemId, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.itemId].itemIcon);
+                slotWePutting.AddItem(thisId, thisAmount, ItemSpawner.instance.items[thisId].itemIcon);
             }
         }
     }
+    #endregion
 }

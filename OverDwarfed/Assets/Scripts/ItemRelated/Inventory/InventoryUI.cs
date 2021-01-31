@@ -1,56 +1,116 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    private Transform itemParent;
-    private PlayerInventory inventory;
-    private List<InventorySlot> slots;
+    public static InventoryUI instance;
 
+    public List<InventorySlot> slots;
+    private Transform itemParent;
+    public bool isOpen = false;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         InitializeInventoryUI();
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-            itemParent.gameObject.SetActive(!itemParent.gameObject.activeSelf);
+        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))
+            StartCoroutine(ChangeOpenState()); 
     }
-    private void UpdateSlot(object sender, InventoryChangeArgs inventoryChange)
+    private IEnumerator ChangeOpenState()
     {
-        List<InventorySlot> slot = new List<InventorySlot>();
-        slot = slots.Where(wslot => wslot.isEmpty == false && wslot.itemId == inventoryChange.id).ToList();
-        if (slot.Count > 0)
+        isOpen = !itemParent.gameObject.activeSelf;
+        yield return new WaitForSeconds(Time.fixedDeltaTime * 2f);
+        itemParent.gameObject.SetActive(isOpen);
+    }
+    #region SlotsUpdating
+    private void UpdateSlot(object sender, ChangeArgs inventoryChange)
+    {
+        List<InventorySlot> slotsWithThisId = new List<InventorySlot>(), emptySlots = new List<InventorySlot>();
+        slotsWithThisId = slots.Where(wslot => wslot.isEmpty == false && wslot.itemId == inventoryChange.id).ToList();
+        emptySlots = slots.Where(wslot => wslot.isEmpty).ToList();
+
+        int stackSize = ItemSpawner.instance.items[inventoryChange.id].stackSize;
+        int amountChange = inventoryChange.amount;
+
+        if(amountChange > 0) // adding
         {
-            if (inventoryChange.removeItem) slot[0].ClearSlot();
-            else slot[0].UpdateItemAmount(inventoryChange.amount); 
-        }
-        else
-        {
-            foreach (InventorySlot _slot in slots) 
-                if (_slot.isEmpty)
+            foreach (InventorySlot slot in slotsWithThisId)
+            {
+                if (slot.amount < stackSize && amountChange > 0)
                 {
-                    _slot.AddItem(inventoryChange.id, inventoryChange.amount, ItemSpawner.instance.items[inventoryChange.id].itemIcon);
-                    break;
+                    int fitAmount = stackSize - slot.amount;
+
+                    if(fitAmount >= amountChange)
+                    {
+                        slot.SetItemAmount(slot.amount + amountChange);
+                        amountChange = 0;
+                    }
+                    else
+                    {
+                        slot.SetItemAmount(stackSize);
+                        amountChange -= fitAmount;
+                    }
                 }
+            }
+            foreach(InventorySlot slot in emptySlots)
+            {
+                if(amountChange > 0)
+                {
+                    if(amountChange >= stackSize)
+                    {
+                        slot.AddItem(inventoryChange.id, stackSize, ItemSpawner.instance.items[inventoryChange.id].itemIcon);
+                        amountChange -= stackSize;
+                    }
+                    else
+                    {
+                        slot.AddItem(inventoryChange.id, amountChange, ItemSpawner.instance.items[inventoryChange.id].itemIcon);
+                        amountChange = 0;
+                    }
+                }
+            }
+        }
+        else // removing
+        {
+            for (int i = slotsWithThisId.Count - 1; i > 0; i--)
+            {
+                if(amountChange < 0)
+                {
+                    int canRemove = slotsWithThisId[i].amount;
+
+                    if (amountChange < -canRemove)
+                    {
+                        slotsWithThisId[i].SetItemAmount(0);
+                        amountChange += canRemove;
+                    }
+                    else
+                    {
+                        slotsWithThisId[i].SetItemAmount(slotsWithThisId[i].amount + amountChange);
+                        amountChange = 0;
+                    }
+                }
+            }
         }
     }
+    #endregion
+    #region Initialization
     private void InitializeInventoryUI()
     {
-        inventory = PlayerInventory.instance;
-        inventory.onInventoryChanged += UpdateSlot;
+        PlayerInventory.instance.onInventoryChanged += UpdateSlot;
 
         itemParent = transform.Find("ItemsParent");
-        itemParent.gameObject.SetActive(false);
+        itemParent.gameObject.SetActive(isOpen);
 
         slots = new List<InventorySlot>();
-        Transform hotbar = GameObject.Find("Canvas/Hotbar").transform;
-        for (int i = 0; i < hotbar.childCount; i++)
-            slots.Add(hotbar.Find(i.ToString() + "/InventorySlot." + (i + 32).ToString()).GetComponent<InventorySlot>());
-
         for (int i = 0; i < itemParent.childCount; i++)
-            slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());
+        slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());
     }
+    #endregion
 }
-  

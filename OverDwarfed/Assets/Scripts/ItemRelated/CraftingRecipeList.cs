@@ -14,29 +14,30 @@ public class CraftingRecipeList : MonoBehaviour
     {
         recipes = new List<Recipe>()
         {
-            new Recipe(new List<Cost>(){new Cost(0,1)}, 1, 5f), //ingot
-            new Recipe(new List<Cost>(){new Cost(0,5)}, 0, 0f), //furnace
+            new Recipe(new List<Cost>(){new Cost(4, 2)}, 1, 1, 5f), //ingot
+            new Recipe(new List<Cost>(){new Cost(2, 30), new Cost(3, 10)}, 0, 0, 0f), //furnace
         };
     }
 }
 public struct Cost
 {
-    public int itemCostId, itemCostAmount;
+    public int id, amount;
     public Cost(int _id, int _amount)
     {
-        itemCostId = _id;
-        itemCostAmount = _amount;
+        id = _id;
+        amount = _amount;
     }
 }
-public struct Recipe
+public struct Recipe 
 {
     public List<Cost> CostList;
-    public int resultItemId;
+    public int resultItemId, resultItemAmount;
     public float creationTime;
-    public Recipe(List<Cost> _CostList, int _resultItemId, float _creationTime)
+    public Recipe(List<Cost> _CostList, int _resultItemId, int _resultsItemAmount, float _creationTime)
     {
         CostList = _CostList;
         resultItemId = _resultItemId;
+        resultItemAmount = _resultsItemAmount;
         creationTime = _creationTime;
     }
 }

@@ -9,6 +9,7 @@ public class ItemData : ScriptableObject
     public float colliderRadius;
     public string itemName;
     public int id; // used to collect dropped item
+    public int stackSize;
 
     public bool destroysAfterTime;
     public float selfDestructTime;

@@ -17,5 +17,13 @@ MonoBehaviour:
   colliderRadius: 0.25
   itemName: goldenIngot
   id: 1
+  stackSize: 5
   destroysAfterTime: 0
   selfDestructTime: 0
+  isPickaxe: 0
+  isHammer: 0
+  isWeapon: 0
+  attackInterval: 0
+  damageRange:
+    x: 0
+    y: 0

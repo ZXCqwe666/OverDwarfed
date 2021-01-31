@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using System;
 
 public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory instance;
-    public Dictionary<int, int> InventorySlots; //need dictionary for every player 
-    private const int capacity = 32, stackSize = 64; //inventory cells 
 
-    public delegate void InventoryChanged(object sender, InventoryChangeArgs inventoryChange);
+    private Dictionary<int, int> InventorySlots;
+    public delegate void InventoryChanged(object sender, ChangeArgs inventoryChange);
     public InventoryChanged onInventoryChanged;
 
     private void Awake()
     {
-        instance = this; //remove instance later // change ITEM drop position Later!!!!
+        instance = this;
     }
     private void Start()
     {
@@ -21,37 +21,27 @@ public class PlayerInventory : MonoBehaviour
     }
     public bool CanAdd(int id)
     {
-        if (InventorySlots.ContainsKey(id) == false && InventorySlots.Count >= capacity ||
-            InventorySlots.ContainsKey(id) && InventorySlots[id] >= stackSize)
-            return false;
-        return true;
-    }
-    public void AddItem(int id, int amount) 
-    {
-        if (InventorySlots.ContainsKey(id))
-        {
-            InventorySlots[id] += amount;
-            Mathf.Clamp(InventorySlots[id], 1, stackSize);
-        }
-        else InventorySlots.Add(id, amount);
+        bool hasEmptySlot = (InventoryUI.instance.slots.Where(w => w.isEmpty).ToList().Count > 0) ? true : false;
 
-        onInventoryChanged?.Invoke(this, new InventoryChangeArgs(id, amount, false));
+        return (InventorySlots.ContainsKey(id) == false && hasEmptySlot || // есть место для новой вещи
+            InventorySlots.ContainsKey(id) && InventorySlots[id] % ItemSpawner.instance.items[id].stackSize != 0 || // cтак не забит
+            InventorySlots.ContainsKey(id) && InventorySlots[id] % ItemSpawner.instance.items[id].stackSize == 0 && hasEmptySlot); // стак забит но есть слот
     }
-    public void RemoveItem(int id, int amount, bool shouldDrop)
+    public void AddItem(int id, int amount)
+    {
+        if (InventorySlots.ContainsKey(id)) 
+             InventorySlots[id] += amount;
+        else InventorySlots.Add(id, amount);
+        onInventoryChanged?.Invoke(this, new ChangeArgs(id, amount));
+    }
+    public void RemoveItem(int id, int amount, bool slotDropping)
     {
         if (InventorySlots.ContainsKey(id))
         {
             InventorySlots[id] -= amount;
-
-            if (InventorySlots[id] <= 0)
-            {
-                InventorySlots.Remove(id);
-                onInventoryChanged?.Invoke(this, new InventoryChangeArgs(id, 0, true));
-            }
-            else 
-                onInventoryChanged?.Invoke(this,new InventoryChangeArgs(id, -amount, false));
-
-            if (shouldDrop) ItemSpawner.instance.SpawnItem(transform.position + Vector3.down * 1.5f, id); // change drop position Later
+            if (slotDropping) ItemSpawner.instance.SpawnItem(transform.position + Vector3.down * 1.5f, id, amount); // temp position
+            else onInventoryChanged?.Invoke(this, new ChangeArgs(id, -amount));
+            if (InventorySlots[id] <= 0) InventorySlots.Remove(id);
         }
     }
     public bool Buy(Recipe recipe)
@@ -61,32 +51,29 @@ public class PlayerInventory : MonoBehaviour
             SpendResources(recipe);
             return true;
         }
-        else return false;   
+        else return false;
     }
     public bool CanBuy(Recipe recipe)
     {
-        foreach(Cost cost in recipe.CostList) 
+        foreach (Cost cost in recipe.CostList)
         {
-            if (InventorySlots.ContainsKey(cost.itemCostId) && InventorySlots[cost.itemCostId] >= cost.itemCostAmount)
-                continue;
+            if (InventorySlots.ContainsKey(cost.id) && InventorySlots[cost.id] >= cost.amount) continue;
             return false;
         }
         return true;
     }
-    public void SpendResources(Recipe recipe) 
+    private void SpendResources(Recipe recipe)
     {
         foreach (Cost cost in recipe.CostList)
-        RemoveItem(cost.itemCostId, cost.itemCostAmount, false);
+            RemoveItem(cost.id, cost.amount, false);
     }
 }
-public class InventoryChangeArgs : EventArgs
+public class ChangeArgs : EventArgs
 {
     public int id, amount;
-    public bool removeItem;
-    public InventoryChangeArgs(int _id, int _amount, bool _removeItem)
+    public ChangeArgs(int _id, int _amount)
     {
         id = _id;
         amount = _amount;
-        removeItem = _removeItem;
     }
 }

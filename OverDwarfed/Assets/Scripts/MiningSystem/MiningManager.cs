@@ -49,20 +49,18 @@ public class MiningManager : MonoBehaviour
         blockData = new BlockHp[sizeX, sizeY];
         blockArraySize = new int2(sizeX - 1, sizeY - 1);
 
+        for (int x = 0; x < sizeX; x++)
         for (int y = 0; y < sizeY; y++)
         {
-            for (int x = 0; x < sizeX; x++)
+            TileBase sampledTile = blockTilemap.GetTile(new Vector3Int(x, y, 0));
+            if (sampledTile != null)
             {
-                TileBase sampledTile = blockTilemap.GetTile(new Vector3Int(x, y, 0));
-                if (sampledTile != null)
-                {
-                    List<TileInfo> matchingName = tileTypes.Where(tile => tile.blockName == sampledTile.name).ToList();
-                    if(matchingName.Count > 0)
+                List<TileInfo> matchingName = tileTypes.Where(tile => tile.blockName == sampledTile.name).ToList();
+                if (matchingName.Count > 0)
                     blockData[x, y] = new BlockHp(tileTypes.IndexOf(matchingName[0]));
-                    else blockData[x, y] = new BlockHp(-1);
-                }
-                else blockData[x, y] = new BlockHp(-1); // -1 means EmptyTile
+                else blockData[x, y] = new BlockHp(-1);
             }
+            else blockData[x, y] = new BlockHp(-1); // -1 means EmptyTile
         }
     }
     private void InitializeMiningManager()

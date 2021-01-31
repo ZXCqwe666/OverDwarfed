@@ -10,7 +10,7 @@ public class ProductionBuilding : MonoBehaviour
 
     private void Start()
     {
-        StartProduction(0, 0, true);
+        StartProduction(0, 1, true);
     }
     public void StartProduction(int recipeId, int amount, bool _isInfinite) 
     {
@@ -38,7 +38,7 @@ public class ProductionBuilding : MonoBehaviour
 
             if (PlayerInventory.instance.Buy(recipe)) 
             {
-                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId);
+                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId, 1);
                 if(isInfinite == false) itemsToProduce--;
             }
         }
