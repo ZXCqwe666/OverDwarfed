@@ -7,7 +7,6 @@ public class PlayerHotbar : MonoBehaviour
     public static PlayerHotbar instance;
     private const int hotbarSize = 5;
 
-    private Transform panel;
     private List<Image> slots;
     private List<int> itemIdInSlot;
     private int currentSlot;
@@ -48,16 +47,15 @@ public class PlayerHotbar : MonoBehaviour
     private void ChangeSelectedSlot()
     {
         for (int i = 0; i < hotbarSize; i++)
-            slots[i].color = (i == currentSlot) ? Color.red : Color.white;
+            slots[i].color = (i == currentSlot) ? Color.white : Color.clear;
     }
     private void InitializePlayerHotbar()
     {
-        panel = GameObject.Find("Canvas/HotBar/Panel").transform;
-        itemIdInSlot = new List<int>();
+        //itemIdInSlot = new List<int>();
 
         slots = new List<Image>();
         for (int i = 0; i < hotbarSize; i++)
-            slots.Add(panel.Find(i.ToString()).GetComponent<Image>());
+            slots.Add(transform.Find(i.ToString()).GetComponent<Image>());
 
         currentSlot = 0;
         ChangeSelectedSlot();

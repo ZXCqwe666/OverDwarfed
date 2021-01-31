@@ -45,7 +45,14 @@ public class InventoryUI : MonoBehaviour
         itemParent.gameObject.SetActive(false);
 
         slots = new List<InventorySlot>();
-        for(int i = 0; i < itemParent.childCount; i++)
-            slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());    
+        //SPAGETTI??????????????????????????????
+        Transform hotbar = GameObject.Find("Canvas/Hotbar").transform;
+        for (int i = 0; i < hotbar.childCount; i++)
+            slots.Add(hotbar.Find(i.ToString() + "/InventorySlot." + (i + 32).ToString()).GetComponent<InventorySlot>());
+
+        for (int i = 0; i < itemParent.childCount; i++)
+            slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());
+
     }
 }
+  
