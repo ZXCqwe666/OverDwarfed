@@ -21,7 +21,7 @@ MonoBehaviour:
   destroysAfterTime: 1
   selfDestructTime: 60
   isPickaxe: 0
-  isHammer: 0
+  isHammer: 1
   isWeapon: 0
   attackInterval: 0
   damageRange:

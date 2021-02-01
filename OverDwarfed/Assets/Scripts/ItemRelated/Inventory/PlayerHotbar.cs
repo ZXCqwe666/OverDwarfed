@@ -8,7 +8,7 @@ public class PlayerHotbar : MonoBehaviour
     private const int hotbarSize = 5;
 
     private List<Image> slots;
-    private int currentSlot;
+    public int currentSlot;
 
     private void Awake()
     {

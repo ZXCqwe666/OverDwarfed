@@ -34,7 +34,7 @@ public class InventoryUI : MonoBehaviour
     private void UpdateSlot(object sender, ChangeArgs inventoryChange)
     {
         List<InventorySlot> slotsWithThisId = new List<InventorySlot>(), emptySlots = new List<InventorySlot>();
-        slotsWithThisId = slots.Where(wslot => wslot.isEmpty == false && wslot.itemId == inventoryChange.id).ToList();
+        slotsWithThisId = slots.Where(wslot => wslot.isEmpty == false && wslot.id == inventoryChange.id).ToList();
         emptySlots = slots.Where(wslot => wslot.isEmpty).ToList();
 
         int stackSize = ItemSpawner.instance.items[inventoryChange.id].stackSize;

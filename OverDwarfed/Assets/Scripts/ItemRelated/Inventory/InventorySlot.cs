@@ -9,7 +9,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     private Image icon;
     private Text text;
 
-    public int itemId, amount;
+    public int id, amount;
     public bool isEmpty, isHotbarSlot;
 
     private void Start()
@@ -21,7 +21,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         isEmpty = false;
         icon.sprite = _itemIcon;
         icon.color = Color.white;
-        itemId = _itemId;
+        id = _itemId;
         SetItemAmount(_amount);
     }
     public void SetItemAmount(int _amount)
@@ -69,12 +69,12 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                PlayerInventory.instance.RemoveItem(itemId, amount, true);
+                PlayerInventory.instance.RemoveItem(id, amount, true);
                 SetItemAmount(0);
             }
             else
             {
-                PlayerInventory.instance.RemoveItem(itemId, 1, true);
+                PlayerInventory.instance.RemoveItem(id, 1, true);
                 SetItemAmount(amount - 1);
             }
             yield return new WaitForSeconds(holdDuration);
@@ -116,7 +116,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, results);
         if (results.Count == 0 && InventoryUI.instance.startedDrag)
         {
-            PlayerInventory.instance.RemoveItem(itemId, amount, true);
+            PlayerInventory.instance.RemoveItem(id, amount, true);
             SetItemAmount(0);
         }
     }
@@ -144,8 +144,8 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
             InventorySlot slotWePutting = eventData.pointerDrag.GetComponent<InventorySlot>();
             if(slotWePutting.isEmpty == false)
             {
-                int thisId = itemId, thisAmount = amount;
-                AddItem(slotWePutting.itemId, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.itemId].itemIcon);
+                int thisId = id, thisAmount = amount;
+                AddItem(slotWePutting.id, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.id].itemIcon);
                 slotWePutting.AddItem(thisId, thisAmount, ItemSpawner.instance.items[thisId].itemIcon);
             }
         }

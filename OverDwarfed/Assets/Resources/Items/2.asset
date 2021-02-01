@@ -20,10 +20,10 @@ MonoBehaviour:
   stackSize: 32
   destroysAfterTime: 1
   selfDestructTime: 60
-  isPickaxe: 0
+  isPickaxe: 1
   isHammer: 0
-  isWeapon: 0
-  attackInterval: 0
+  isWeapon: 1
+  attackInterval: 0.25
   damageRange:
-    x: 0
-    y: 0
+    x: 3
+    y: 5

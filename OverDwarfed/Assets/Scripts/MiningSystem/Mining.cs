@@ -1,16 +1,16 @@
-﻿using UnityEngine.EventSystems;
+﻿using Random = UnityEngine.Random;
+using UnityEngine.EventSystems;
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using System.Collections;
 
 public class Mining : MonoBehaviour
 {
-    private const float colliderPenetration = 2.05f;
+    private const float colliderPenetration = 0.05f, miningDistance = 2f;
 
-    private Camera mainCam; 
     public LayerMask destuctableBlocksLayer;
-    private int2 miningDamage = new int2(3, 5);
-    private float miningDistance = 2f, reloadTime = 0.45f, lastHit = 0f;
+    private Camera mainCam; 
+    private float lastHit = 0f;
 
     public GameObject dynamite;
     private void Start()
@@ -19,24 +19,27 @@ public class Mining : MonoBehaviour
     }
     void Update() 
     { 
-        if (Input.GetMouseButton(0) && lastHit + reloadTime < Time.time) //check if current slot contains pickaxe 
+        if (Input.GetMouseButton(0)) //check if current slot contains pickaxe 
             MineBlock();
-        if (Input.GetMouseButton(1) && lastHit + reloadTime < Time.time) // rofl bombing
+        if (Input.GetMouseButton(1) && lastHit + 0.45f < Time.time) // rofl bombing
             BoomMining();
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Apocal());
     }
     private void MineBlock()
     {
+        ItemData selectedItem = ItemSpawner.instance.items[InventoryUI.instance.slots[PlayerHotbar.instance.currentSlot].id];
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-
-        Vector2 direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, direction, miningDistance, destuctableBlocksLayer);
-        if (raycast)
+        if (selectedItem.isPickaxe)
         {
-            MiningManager.instance.Mine(raycast.point + direction * colliderPenetration, UnityEngine.Random.Range(miningDamage.x, miningDamage.y + 1));
-            lastHit = Time.time;
+            Vector2 direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+            RaycastHit2D raycast = Physics2D.Raycast(transform.position, direction, miningDistance, destuctableBlocksLayer);
+            if (raycast && lastHit + selectedItem.attackInterval < Time.time)
+            {
+                MiningManager.instance.Mine(raycast.point + direction * colliderPenetration, Random.Range(selectedItem.damageRange.x, selectedItem.damageRange.y + 1));
+                lastHit = Time.time;
+            }
         }
     }
     private void BoomMining()

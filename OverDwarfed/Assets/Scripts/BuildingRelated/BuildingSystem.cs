@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BuildingSystem : MonoBehaviour
 {
+    public static BuildingSystem instance;
+
     private Camera mainCam;
     private GameObject buildingPrefab;
     private Transform buildingBlueprint;
@@ -15,6 +17,10 @@ public class BuildingSystem : MonoBehaviour
 
     public LayerMask blockerLayer;
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         InitializeBuildingSystem();
@@ -63,7 +69,7 @@ public class BuildingSystem : MonoBehaviour
     }
     private void CheckPlacing()
     {
-        canPlaceBuilding = Physics2D.OverlapArea(cellPosition - cellOffset + Vector2.one * 0.1f, cellPosition + cellOffset - Vector2.one * 0.1f, blockerLayer);
+        canPlaceBuilding = !Physics2D.OverlapArea(cellPosition - cellOffset + Vector2.one * 0.1f, cellPosition + cellOffset - Vector2.one * 0.1f, blockerLayer);
         blueprintRenderer.color = canPlaceBuilding ? new Color(0f, 0.5f, 0f) : new Color(0.5f, 0f, 0f);
     }
     public void UpdateBlueprint(int index)
@@ -75,7 +81,7 @@ public class BuildingSystem : MonoBehaviour
             SetSpriteAndActivity(selectedData.buildingSprite, true);
         }
     }
-    private void SetSpriteAndActivity(Sprite blueprintSprite, bool isActive)
+    public void SetSpriteAndActivity(Sprite blueprintSprite, bool isActive)
     {
         blueprintRenderer.sprite = blueprintSprite;
         blueprintActive = isActive;
