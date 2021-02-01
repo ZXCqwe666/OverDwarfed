@@ -7,6 +7,27 @@ public class ItemSpawner : MonoBehaviour
     public List<ItemData> items;
     private GameObject itemPrefab;
 
+    public void SpawnItem(Vector3 position, int id, int amount)
+    {
+        GameObject item = Instantiate(itemPrefab, position + RandomOffset(), Quaternion.identity, transform);
+        item.GetComponent<Item>().InitializeItem(items[id], amount);
+    }
+    public void SpawnLootTable(Vector3 position, int[] ids, int [] chances)
+    {
+        if (ids.Length != chances.Length) Debug.LogError("IDs doesn't match chances amount"); // FOR TESTING ERRORS IN SCR OBJECTS
+
+        for (int i = 0; i < ids.Length; i++)
+        {
+            if (Random.Range(1, 101) <= chances[i])
+            SpawnItem(position, ids[i], 1);   
+        }
+    }
+    private Vector3 RandomOffset()
+    {
+        return new Vector3(Random.Range(-0.45f, 0.45f), Random.Range(-0.45f, 0.45f), 0f);
+    }
+
+    #region Initialization
     private void Awake()
     {
         instance = this;
@@ -27,26 +48,5 @@ public class ItemSpawner : MonoBehaviour
             else break;
         }
     }
-    public void SpawnItem(Vector3 position, int id, int amount)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            GameObject item = Instantiate(itemPrefab, position + RandomOffset(), Quaternion.identity, transform);
-            item.GetComponent<Item>().InitializeItem(items[id]);
-        }
-    }
-    public void SpawnLootTable(Vector3 position, int[] ids, int [] chances)
-    {
-        if (ids.Length != chances.Length) Debug.LogError("IDs doesn't match chances amount"); // FOR TESTING ERRORS IN SCR OBJECTS
-
-        for (int i = 0; i < ids.Length; i++)
-        {
-            if (Random.Range(1, 101) <= chances[i])
-            SpawnItem(position, ids[i], 1);   
-        }
-    }
-    private Vector3 RandomOffset()
-    {
-        return new Vector3(Random.Range(-0.45f, 0.45f), Random.Range(-0.45f, 0.45f), 0f);
-    }
+    #endregion
 }

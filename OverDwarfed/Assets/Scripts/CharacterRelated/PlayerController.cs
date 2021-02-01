@@ -22,10 +22,10 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer == 9)
         {
-            int itemId = collision.GetComponent<Item>().id;
-            if (PlayerInventory.instance.CanAdd(itemId))
+            Item item = collision.GetComponent<Item>();
+            if (PlayerInventory.instance.CanAdd(item.id)) // can add allows 1
             {
-                PlayerInventory.instance.AddItem(itemId, 1);
+                PlayerInventory.instance.AddItem(item.id, item.amount);
                 Destroy(collision.gameObject);
             }
         }
