@@ -33,9 +33,8 @@ public class InventoryUI : MonoBehaviour
     #region SlotsUpdating
     private void UpdateSlot(object sender, ChangeArgs inventoryChange)
     {
-        List<InventorySlot> slotsWithThisId = new List<InventorySlot>(), emptySlots = new List<InventorySlot>();
-        slotsWithThisId = slots.Where(wslot => wslot.isEmpty == false && wslot.id == inventoryChange.id).ToList();
-        emptySlots = slots.Where(wslot => wslot.isEmpty).ToList();
+        List<InventorySlot> emptySlots = new List<InventorySlot>(), slotsWithThisId = new List<InventorySlot>();
+        FillLists(ref emptySlots, ref slotsWithThisId, inventoryChange.id);
 
         int stackSize = ItemSpawner.instance.items[inventoryChange.id].stackSize;
         int amountChange = inventoryChange.amount;
@@ -79,10 +78,11 @@ public class InventoryUI : MonoBehaviour
         }
         else // removing
         {
-            for (int i = slotsWithThisId.Count - 1; i > 0; i--)
+            for (int i = slotsWithThisId.Count - 1; i >= 0; i--)
             {
                 if(amountChange < 0)
                 {
+                    Debug.Log(i);
                     int canRemove = slotsWithThisId[i].amount;
 
                     if (amountChange < -canRemove)
@@ -93,11 +93,16 @@ public class InventoryUI : MonoBehaviour
                     else
                     {
                         slotsWithThisId[i].SetItemAmount(slotsWithThisId[i].amount + amountChange);
-                        amountChange = 0;
+                        return;
                     }
                 }
             }
         }
+    }
+    public void FillLists(ref List<InventorySlot> emptySlots, ref List<InventorySlot> slotsWithThisId, int changeId)
+    {
+        emptySlots = slots.Where(slot => slot.isEmpty).ToList();
+        slotsWithThisId = slots.Where(slot => slot.isEmpty == false && slot.id == changeId).ToList();
     }
     #endregion
     #region Initialization

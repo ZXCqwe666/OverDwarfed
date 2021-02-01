@@ -102,10 +102,11 @@ public class Item : MonoBehaviour
         gameObject.layer = itemLayerIndex;
         UpdateAmountDisplay();
     }
-    private void UpdateAmountDisplay()
+    public void UpdateAmountDisplay()
     {
         if (amount > 1)
             amountSprite.sprite = NumbersSprites.instance.numbers[amount - 1];
+        else amountSprite.sprite = null;
         transform.localScale = Vector3.one * (1f + 0.025f * Mathf.Clamp(amount, 0f, 10f) - 0.025f);
     }
 }

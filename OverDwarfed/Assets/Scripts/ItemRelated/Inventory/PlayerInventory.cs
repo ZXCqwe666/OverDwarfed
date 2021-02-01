@@ -19,13 +19,16 @@ public class PlayerInventory : MonoBehaviour
     {
         InventorySlots = new Dictionary<int, int>();
     }
-    public bool CanAdd(int id)
+    public int CanAddCapacity(int id)
     {
-        bool hasEmptySlot = (InventoryUI.instance.slots.Where(w => w.isEmpty).ToList().Count > 0) ? true : false;
+        List<InventorySlot> emptySlots = new List<InventorySlot>(), slotsWithThisId = new List<InventorySlot>();
+        InventoryUI.instance.FillLists(ref emptySlots, ref slotsWithThisId, id);
+        int stackSize = ItemSpawner.instance.items[id].stackSize;
 
-        return (InventorySlots.ContainsKey(id) == false && hasEmptySlot || // есть место для новой вещи
-            InventorySlots.ContainsKey(id) && InventorySlots[id] % ItemSpawner.instance.items[id].stackSize != 0 || // cтак не забит
-            InventorySlots.ContainsKey(id) && InventorySlots[id] % ItemSpawner.instance.items[id].stackSize == 0 && hasEmptySlot); // стак забит но есть слот
+        int capacity = emptySlots.Count * stackSize;
+        foreach (InventorySlot slot in slotsWithThisId)
+            capacity += stackSize - slot.amount;
+        return capacity;
     }
     public void AddItem(int id, int amount)
     {

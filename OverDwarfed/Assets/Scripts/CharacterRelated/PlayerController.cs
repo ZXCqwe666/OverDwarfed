@@ -23,10 +23,19 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.layer == 9)
         {
             Item item = collision.GetComponent<Item>();
-            if (PlayerInventory.instance.CanAdd(item.id)) // can add allows 1
+            int capacity = PlayerInventory.instance.CanAddCapacity(item.id);
+            Debug.Log(capacity);
+
+            if(capacity >= item.amount)
             {
                 PlayerInventory.instance.AddItem(item.id, item.amount);
                 Destroy(collision.gameObject);
+            }
+            else
+            {
+                PlayerInventory.instance.AddItem(item.id, capacity);
+                item.amount -= capacity;
+                item.UpdateAmountDisplay();
             }
         }
     }
