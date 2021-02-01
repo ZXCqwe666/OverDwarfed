@@ -1,4 +1,5 @@
-﻿using UnityEngine.EventSystems;
+﻿using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
@@ -92,6 +93,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     {
         if (Input.GetMouseButton(0) && Input.GetMouseButton(1) == false) // LMB == true RMB == false
         {
+            InventoryUI.instance.startedDrag = true;
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
             _lastPointerData = eventData;
@@ -105,7 +107,18 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     }
     public void OnEndDrag(PointerEventData eventData)
     {
+        RaycastForEdgeDrop();
         CancelDrag();
+    }
+    void RaycastForEdgeDrop()
+    {
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, results);
+        if (results.Count == 0 && InventoryUI.instance.startedDrag)
+        {
+            PlayerInventory.instance.RemoveItem(itemId, amount, true);
+            SetItemAmount(0);
+        }
     }
     private IEnumerator CheckInventoryOpen()
     {
@@ -118,14 +131,15 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     }
     private void CancelDrag()
     {
+        InventoryUI.instance.startedDrag = false;
         rectTransform.anchoredPosition = startPosition;
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
-        _lastPointerData = null;      
+        _lastPointerData = null;
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag != null)
+        if (eventData.pointerDrag != null && InventoryUI.instance.startedDrag)
         {
             InventorySlot slotWePutting = eventData.pointerDrag.GetComponent<InventorySlot>();
             if(slotWePutting.isEmpty == false)

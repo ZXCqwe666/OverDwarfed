@@ -58,14 +58,15 @@ public class Item : MonoBehaviour
                         amount += canTake;
                         itemsAround[index].amount -= canTake;
                         itemsAround[index].UpdateAmountDisplay();
+                        amounts[index] -= canTake;
                     }
                     else
                     {
                         amount += itemsAround[index].amount;
                         Destroy(itemsAround[index].gameObject);
+                        amounts[index] = 0;
                     }
                     amountsLowerOrEqual.RemoveAt(indexInLOE);
-                    amounts.RemoveAt(index);
                 }
 
                 List<float> amountsHigher = amounts.Where(am => am > amount && am < stackSize).ToList();
@@ -78,21 +79,22 @@ public class Item : MonoBehaviour
 
                     if (amount > fitAmount)
                     {
-                        itemsAround[index].amount += fitAmount;
+                        itemsAround[index].amount = stackSize;
                         amount -= fitAmount;
+                        amounts[index] = stackSize;
                     }
                     else
                     {
                         itemsAround[index].amount += amount;
+                        amounts[index] += amount;
                         amount = 0;
                     }
                     itemsAround[index].UpdateAmountDisplay();
                     amountsHigher.RemoveAt(indexInHigher);
-                    amounts.RemoveAt(index);
                 }
                 if (amount == 0) // полностью истощен
                 {
-                    Destroy(gameObject, 0.025f);
+                    Destroy(gameObject, Time.deltaTime);
                     return;
                 }
             }
@@ -104,5 +106,6 @@ public class Item : MonoBehaviour
     {
         if (amount > 1)
             amountSprite.sprite = NumbersSprites.instance.numbers[amount - 1];
+        transform.localScale = Vector3.one * (1f + 0.025f * Mathf.Clamp(amount, 0f, 10f) - 0.025f);
     }
 }

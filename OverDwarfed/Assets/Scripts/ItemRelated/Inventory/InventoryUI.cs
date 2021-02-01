@@ -9,7 +9,7 @@ public class InventoryUI : MonoBehaviour
 
     public List<InventorySlot> slots;
     private Transform itemParent, hotbarSlotsHolder;
-    public bool isOpen = false;
+    public bool isOpen = false, startedDrag = false;
 
     private void Awake()
     {
