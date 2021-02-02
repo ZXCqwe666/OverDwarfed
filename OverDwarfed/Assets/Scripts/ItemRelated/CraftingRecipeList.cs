@@ -15,7 +15,8 @@ public class CraftingRecipeList : MonoBehaviour
         recipes = new List<Recipe>()
         {
             new Recipe(new List<Cost>(){new Cost(4, 2)}, 1, 1, 5f), //ingot
-            new Recipe(new List<Cost>(){new Cost(2, 30), new Cost(3, 10)}, 0, 0, 0f), //furnace
+            new Recipe(new List<Cost>(){new Cost(2, 1)}, 0, 0, 0f), //furnace
+            new Recipe(new List<Cost>(){new Cost(2, 2)}, 5, 1, 2.5f), //stoneBlock
         };
     }
 }

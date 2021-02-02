@@ -82,7 +82,6 @@ public class InventoryUI : MonoBehaviour
             {
                 if(amountChange < 0)
                 {
-                    Debug.Log(i);
                     int canRemove = slotsWithThisId[i].amount;
 
                     if (amountChange < -canRemove)

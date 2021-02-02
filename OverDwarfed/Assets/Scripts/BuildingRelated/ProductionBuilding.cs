@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProductionBuilding : MonoBehaviour
 {
-    private List<int> recipeIdList;
+    public List<int> recipeIdList;
     private int itemsToProduce, currentRecipeId;
     private bool isProducing, isInfinite;
 

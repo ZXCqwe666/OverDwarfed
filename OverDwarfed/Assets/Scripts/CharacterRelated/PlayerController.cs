@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
         {
             Item item = collision.GetComponent<Item>();
             int capacity = PlayerInventory.instance.CanAddCapacity(item.id);
-            Debug.Log(capacity);
 
             if(capacity >= item.amount)
             {

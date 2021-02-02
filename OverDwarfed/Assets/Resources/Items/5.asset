@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
-  m_Name: 1
+  m_Name: 5
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: -3555541240784048651, guid: a9846b1739f7029439d5e2240ce2f71e, type: 3}
-  worldAnimator: {fileID: 9100000, guid: 964027678f02dd44ab522afa916a4ec0, type: 2}
+  itemIcon: {fileID: -6169938456338436740, guid: 830cab7473691fc4790c7022161a3fea, type: 3}
+  worldAnimator: {fileID: 0}
   colliderRadius: 0.25
-  itemName: goldenIngot
-  id: 1
+  itemName: stoneBlock
+  id: 5
   stackSize: 32
-  destroysAfterTime: 0
-  selfDestructTime: 0
+  destroysAfterTime: 1
+  selfDestructTime: 60
   isPickaxe: 0
   isHammer: 0
   isWeapon: 0
