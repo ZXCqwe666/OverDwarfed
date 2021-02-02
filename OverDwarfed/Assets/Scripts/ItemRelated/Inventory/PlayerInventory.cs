@@ -70,6 +70,26 @@ public class PlayerInventory : MonoBehaviour
         foreach (Cost cost in recipe.CostList)
             RemoveItem(cost.id, cost.amount, false);
     }
+    public int CanBuyAmount(Recipe recipe)
+    {
+        List<int> buyAmounts = new List<int>();
+
+        foreach (Cost cost in recipe.CostList)
+        {
+            if (InventorySlots.ContainsKey(cost.id) && InventorySlots[cost.id] >= cost.amount)
+            {
+                buyAmounts.Add(InventorySlots[cost.id] / cost.amount);
+            }
+            else return 0;
+        }
+        return buyAmounts.Min();
+    }
+    public int GetResourceCount(int id)
+    {
+        if (InventorySlots.ContainsKey(id))
+            return InventorySlots[id];
+        else return 0;
+    }
 }
 public class ChangeArgs : EventArgs
 {

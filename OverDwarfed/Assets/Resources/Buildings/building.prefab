@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 332521136318183616}
   - component: {fileID: -3279538671458074173}
   - component: {fileID: -9014132051088859061}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 8888081172769879582}
   - component: {fileID: 3906846268942879728}
   - component: {fileID: 5293566770073514008}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 8777378861543384896}
   - component: {fileID: 8736250389859640669}
   - component: {fileID: 7000125756498370762}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 1208205623701553005}
   - component: {fileID: 7435313003499191945}
   - component: {fileID: 7807682066636904648}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ButtonCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

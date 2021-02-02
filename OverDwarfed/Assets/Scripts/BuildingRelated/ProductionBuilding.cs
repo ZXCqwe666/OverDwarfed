@@ -4,42 +4,39 @@ using UnityEngine;
 
 public class ProductionBuilding : MonoBehaviour
 {
-    public List<int> recipeIdList;
+    public List<int> recipeIdList;                // мб забирать ресурсы
     private int itemsToProduce, currentRecipeId;
     private bool isProducing, isInfinite;
 
-    private void Start()
+    public void StartProduction(Recipe recipe, bool single, bool half, bool max, bool infinite) 
     {
-        StartProduction(0, 1, true);
-    }
-    public void StartProduction(int recipeId, int amount, bool _isInfinite) 
-    {
-        if (!recipeIdList.Contains(recipeId))
-            Debug.LogError("Wrong Production call");
+        if (currentRecipeId != recipe.id) CancelProduction();
+        if (half || max || infinite) itemsToProduce = 0;
 
-        if (currentRecipeId != recipeId)
-            CancelProduction();
+        currentRecipeId = recipe.id;
+        isInfinite = infinite;
 
-        itemsToProduce += amount;
-        currentRecipeId = recipeId;
-        isInfinite = _isInfinite;
+        int canBuy = PlayerInventory.instance.CanBuyAmount(recipe);
+        if (half) { itemsToProduce = Mathf.CeilToInt(canBuy / 2f); }
+        if (single) itemsToProduce += 1;
+        if (max) itemsToProduce = canBuy;
 
         if (isProducing == false)
         {
             isProducing = true;
-            StartCoroutine(Produce(CraftingRecipeList.instance.recipes[recipeId]));
+            StartCoroutine(Produce(recipe));
         }
     }
     public IEnumerator Produce(Recipe recipe)
     {
-        while ((itemsToProduce > 0 || isInfinite))
+        while (itemsToProduce > 0 || isInfinite)
         {
             yield return new WaitForSeconds(recipe.creationTime);
 
             if (PlayerInventory.instance.Buy(recipe)) 
             {
-                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId, 1);
-                if(isInfinite == false) itemsToProduce--;
+                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId, recipe.resultItemAmount);
+                if(isInfinite == false) itemsToProduce -= 1;
             }
         }
         CancelProduction();

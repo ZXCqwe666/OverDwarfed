@@ -7,7 +7,7 @@ public class FpsCounter : MonoBehaviour
     private Text m_Text;
     private void Start()
     {
-        Application.targetFrameRate = 240; //Screen.currentResolution.refreshRate + 60; ///MB change later
+        //Application.targetFrameRate = 240; //Screen.currentResolution.refreshRate + 60; ///MB change later
         refresh = 0.05f;
         m_Text = GetComponent<Text>();
     }

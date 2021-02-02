@@ -14,9 +14,9 @@ public class CraftingRecipeList : MonoBehaviour
     {
         recipes = new List<Recipe>()
         {
-            new Recipe(new List<Cost>(){new Cost(4, 2)}, 1, 1, 5f), //ingot
-            new Recipe(new List<Cost>(){new Cost(2, 1)}, 0, 0, 0f), //furnace
-            new Recipe(new List<Cost>(){new Cost(2, 2)}, 5, 1, 2.5f), //stoneBlock
+            new Recipe(0, new List<Cost>(){new Cost(4, 2)}, 1, 1, 5f), //ingot
+            new Recipe(1, new List<Cost>(){new Cost(2, 1)}, 0, 0, 0f), //furnace
+            new Recipe(2, new List<Cost>(){new Cost(2, 2)}, 5, 1, 2.5f), //stoneBlock
         };
     }
 }
@@ -32,13 +32,14 @@ public struct Cost
 public struct Recipe 
 {
     public List<Cost> CostList;
-    public int resultItemId, resultItemAmount;
+    public int resultItemId, resultItemAmount, id;
     public float creationTime;
-    public Recipe(List<Cost> _CostList, int _resultItemId, int _resultsItemAmount, float _creationTime)
+    public Recipe(int _id, List<Cost> _CostList, int _resultItemId, int _resultsItemAmount, float _creationTime)
     {
         CostList = _CostList;
         resultItemId = _resultItemId;
         resultItemAmount = _resultsItemAmount;
         creationTime = _creationTime;
+        id = _id;
     }
 }

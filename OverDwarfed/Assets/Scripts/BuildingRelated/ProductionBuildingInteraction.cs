@@ -3,23 +3,20 @@ using UnityEngine;
 
 public class ProductionBuildingInteraction : MonoBehaviour
 {
+    private const float interactDistance = 3f;
+
     private ProductionBuilding productionBuilding;
-    private Transform buttonCanvas, player;
+    private Transform player, buttonCanvas;
     private Button button;
-    private bool isCanvasShown = false;
+    private bool isButtonActive;
 
     void Start()
     {
         InitializeProductionBuildingInteraction();
     }
-    private void FixedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && isCanvasShown)
-            CraftingUI.instance.ChangeOpenState(productionBuilding);
-    }
     private void OnMouseOver()
     {
-        ChangeButtonState(Vector3.Distance(transform.position, player.position) < 3f);
+        ChangeButtonState(Vector3.Distance(transform.position, player.position) < interactDistance);
     }
     private void OnMouseExit()
     {
@@ -27,18 +24,18 @@ public class ProductionBuildingInteraction : MonoBehaviour
     }
     private void ChangeButtonState(bool isActive)
     {
-        if (isCanvasShown != isActive)
+        if (isButtonActive != isActive)
         {
             buttonCanvas.gameObject.SetActive(isActive);
-            isCanvasShown = !isCanvasShown;
+            isButtonActive = isActive;
         }
     }
     private void InitializeProductionBuildingInteraction()
     {
+        productionBuilding = GetComponent<ProductionBuilding>();
+        player = FindObjectOfType<PlayerController>().transform;
         buttonCanvas = transform.Find("ButtonCanvas");
         button = buttonCanvas.Find("Button").GetComponent<Button>();
-        button.onClick.AddListener(() => { CraftingUI.instance.ChangeOpenState(productionBuilding); });
-        player = FindObjectOfType<PlayerController>().transform;
-        productionBuilding = GetComponent<ProductionBuilding>();
+        button.onClick.AddListener(() => { CraftingUI.instance.EnableCraftingUI(productionBuilding); });
     }
 }

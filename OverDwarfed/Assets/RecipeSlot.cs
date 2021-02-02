@@ -1,13 +1,20 @@
-﻿using UnityEngine.UI;
+﻿using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class RecipeSlot : MonoBehaviour
 {
     public Transform popUpList;
-    private Button infoButton;
     private Text recipeName;
-    public Image resultIcon;
-    public int id;
+    private Image resultIcon;
+    private Button infoButton;
+
+    private List<Image> costImages;
+    private List<Text> resNeededText;
+
+    private Recipe recipe;
+    private Button produceOne, produceHalf, produceMax, produceInfinite;
+    private ProductionBuilding currentBuilding;
 
     public void ClearRecipeSlot()
     {
@@ -16,23 +23,57 @@ public class RecipeSlot : MonoBehaviour
         popUpList.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
-    public void UpdateRecipeSlot(Recipe recipe)
+    public void UpdateRecipeSlot(Recipe _recipe, ProductionBuilding _building)
     {
-        ItemData resultItem = ItemSpawner.instance.items[recipe.resultItemId];
+        gameObject.SetActive(true);
+        currentBuilding = _building;
+        recipe = _recipe;
+        ItemData resultItem = ItemSpawner.instance.items[_recipe.resultItemId];
         resultIcon.sprite = resultItem.itemIcon;
         recipeName.text = resultItem.itemName;
-        gameObject.SetActive(true);
+    }
+    public void UpdatePopUpList()
+    {
+        foreach (Image image in costImages) image.color = Color.clear;
+        foreach (Text text in resNeededText) text.text = "";
+        for (int i = 0; i < recipe.CostList.Count; i++)
+        {
+            int itemId = recipe.CostList[i].id;
+            costImages[i].color = Color.white;
+            costImages[i].sprite = ItemSpawner.instance.items[itemId].itemIcon;
+            resNeededText[i].text = PlayerInventory.instance.GetResourceCount(itemId).ToString() + " / " + recipe.CostList[i].amount.ToString();
+        }
     }
     #region Initialization
     public void InitializeRecipeSlot(int _id)
     {
-        id = _id; 
         popUpList = transform.Find("PopUpList");
-        infoButton = GetComponent<Button>();
         recipeName = transform.Find("RecipeName").GetComponent<Text>();
         resultIcon = transform.Find("ResultIcon").GetComponent<Image>(); 
-        infoButton.onClick.AddListener(() => { CraftingUI.instance.ClosePopUpSlot(id); });
-        infoButton.onClick.AddListener(() => { popUpList.gameObject.SetActive(!popUpList.gameObject.activeSelf); });
+        infoButton = transform.Find("PopUpListButton").GetComponent<Button>();
+
+        infoButton.onClick.AddListener(() => { CraftingUI.instance.SetPopUpListActivity(_id); });
+        infoButton.onClick.AddListener(UpdatePopUpList);
+
+        costImages = new List<Image>(); resNeededText = new List<Text>();
+        Transform costList = popUpList.Find("CostList");
+        Transform buttonList = popUpList.Find("ButtonList");
+
+        for (int i = 0; i < costList.childCount; i++)
+        {
+            Transform cost = costList.GetChild(i);
+            costImages.Add(cost.transform.Find("CostImage").GetComponent<Image>());
+            resNeededText.Add(cost.transform.Find("ResNeededText").GetComponent<Text>());
+        }
+        produceOne = buttonList.Find("One").GetComponent<Button>();
+        produceHalf = buttonList.Find("Half").GetComponent<Button>();
+        produceMax = buttonList.Find("Max").GetComponent<Button>();
+        produceInfinite = buttonList.Find("Infinite").GetComponent<Button>();
+
+        produceOne.onClick.AddListener(() => { currentBuilding.StartProduction(recipe, true, false, false, false); });
+        produceHalf.onClick.AddListener(() => { currentBuilding.StartProduction(recipe, false, true, false, false); });
+        produceMax.onClick.AddListener(() => { currentBuilding.StartProduction(recipe, false, false, true, false); });
+        produceInfinite.onClick.AddListener(() => { currentBuilding.StartProduction(recipe, false, false, false, true); });
     }
     #endregion 
 }
