@@ -4,15 +4,10 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ItemData : ScriptableObject
 {
-    public Sprite itemIcon;
-    public RuntimeAnimatorController worldAnimator;
-    public float colliderRadius;
+    public Item item; // used to collect dropped item
     public string itemName;
-    public int id; // used to collect dropped item
+    public Sprite itemSprite;
     public int stackSize;
-
-    public bool destroysAfterTime;
-    public float selfDestructTime;
 
     public bool isPickaxe;
     public bool isHammer;

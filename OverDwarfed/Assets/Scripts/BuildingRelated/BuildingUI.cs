@@ -16,16 +16,6 @@ public class BuildingUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B)) 
             ChangeButtonHolderState();
     }
-    private void InitializeBuildingUI()
-    {
-        buildingUIParent = transform.Find("BuildingUIParent");
-        buttonHolder = buildingUIParent.Find("ButtonHolder");
-        Button buildingUIParentButton = buildingUIParent.GetComponent<Button>();
-        buildingUIParentButton.onClick.AddListener(ChangeButtonHolderState);
-
-        for (int i = 0; i < buttonHolder.childCount - 1; i++)
-            buttonHolder.GetChild(i).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(0); });
-    }
     private void ChangeUIParentState()
     {
         buildingUIParent.gameObject.SetActive(!buildingUIParent.gameObject.activeSelf);
@@ -35,5 +25,19 @@ public class BuildingUI : MonoBehaviour
         buttonHolder.gameObject.SetActive(!buttonHolder.gameObject.activeSelf);
         if (buttonHolder.gameObject.activeSelf)
             BuildingSystem.instance.SetSpriteAndActivity(null, false);
+    }
+    private void InitializeBuildingUI()
+    {
+        buildingUIParent = transform.Find("BuildingUIParent");
+        buttonHolder = buildingUIParent.Find("ButtonHolder");
+        Button buildingUIParentButton = buildingUIParent.GetComponent<Button>();
+        buildingUIParentButton.onClick.AddListener(ChangeButtonHolderState);
+
+        buttonHolder.GetChild(0).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(0); });
+        buttonHolder.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(1); });
+        buttonHolder.GetChild(2).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(2); });
+        buttonHolder.GetChild(3).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(3); });
+        buttonHolder.GetChild(4).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(4); });
+        buttonHolder.GetChild(5).GetComponent<Button>().onClick.AddListener(() => { BuildingSystem.instance.UpdateBlueprint(5); });
     }
 }

@@ -28,8 +28,8 @@ public class RecipeSlot : MonoBehaviour
         gameObject.SetActive(true);
         currentBuilding = _building;
         recipe = _recipe;
-        ItemData resultItem = ItemSpawner.instance.items[_recipe.resultItemId];
-        resultIcon.sprite = resultItem.itemIcon;
+        ItemData resultItem = ItemSpawner.instance.items[_recipe.resultItem];
+        resultIcon.sprite = resultItem.itemSprite;
         recipeName.text = resultItem.itemName;
     }
     public void UpdatePopUpList()
@@ -38,10 +38,10 @@ public class RecipeSlot : MonoBehaviour
         foreach (Text text in resNeededText) text.text = "";
         for (int i = 0; i < recipe.CostList.Count; i++)
         {
-            int itemId = recipe.CostList[i].id;
+            Item item = recipe.CostList[i].item;
             costImages[i].color = Color.white;
-            costImages[i].sprite = ItemSpawner.instance.items[itemId].itemIcon;
-            resNeededText[i].text = PlayerInventory.instance.GetResourceCount(itemId).ToString() + " / " + recipe.CostList[i].amount.ToString();
+            costImages[i].sprite = ItemSpawner.instance.items[item].itemSprite;
+            resNeededText[i].text = PlayerInventory.instance.GetResourceCount(item).ToString() + " / " + recipe.CostList[i].amount.ToString();
         }
     }
     #region Initialization

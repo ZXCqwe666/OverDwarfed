@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
+  m_Name: 24
+  m_EditorClassIdentifier: 
+  item: 24
+  itemName: forbidden crown
+  itemSprite: {fileID: 6355480216337973169, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  stackSize: 1
+  isPickaxe: 0
+  isHammer: 0
+  isWeapon: 0
+  attackInterval: 0
+  damageRange:
+    x: 0
+    y: 0

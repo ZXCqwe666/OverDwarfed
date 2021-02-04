@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3dc1a4f0573e64b944bd4eee2f84f7, type: 3}
+  m_Name: 3
+  m_EditorClassIdentifier: 
+  recipeId: 3
+  maxHealth: 1
+  buildingSprite: {fileID: -4582500603917788525, guid: 4924422131c1a1745b42e61929a872b9, type: 3}
+  size: {x: 1, y: 1}
+  colliderSize: {x: 0, y: 0}
+  colliderOffset: {x: 0, y: 0}
+  isProductionBuilding: 1
+  recipeIds: 13000000140000001500000016000000

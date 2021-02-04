@@ -12,18 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: -2801247489012236490, guid: 830cab7473691fc4790c7022161a3fea, type: 3}
-  worldAnimator: {fileID: 0}
-  colliderRadius: 0.25
-  itemName: stone
-  id: 2
+  item: 2
+  itemName: rock
+  itemSprite: {fileID: -68751727340038015, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
   stackSize: 32
-  destroysAfterTime: 1
-  selfDestructTime: 60
-  isPickaxe: 1
+  isPickaxe: 0
   isHammer: 0
-  isWeapon: 1
-  attackInterval: 0.25
+  isWeapon: 0
+  attackInterval: 0
   damageRange:
-    x: 3
-    y: 5
+    x: 0
+    y: 0

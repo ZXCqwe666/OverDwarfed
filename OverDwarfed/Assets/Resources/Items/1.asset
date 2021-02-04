@@ -12,14 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: -3555541240784048651, guid: a9846b1739f7029439d5e2240ce2f71e, type: 3}
-  worldAnimator: {fileID: 9100000, guid: 964027678f02dd44ab522afa916a4ec0, type: 2}
-  colliderRadius: 0.25
-  itemName: goldenIngot
-  id: 1
+  item: 1
+  itemName: coal
+  itemSprite: {fileID: 5508725064705088119, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
   stackSize: 32
-  destroysAfterTime: 0
-  selfDestructTime: 0
   isPickaxe: 0
   isHammer: 0
   isWeapon: 0

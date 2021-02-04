@@ -35,7 +35,7 @@ public class MiningManager : MonoBehaviour
                 blockData[index.x, index.y].isEmpty = true;
                 blockTilemap.SetTile(tilePosition, null);
                 ItemSpawner.instance.SpawnLootTable(tilePosition + new Vector3(0.5f, 0.5f, 0f),
-                tileTypes[block.tileTypeId].itemDropIds, tileTypes[block.tileTypeId].itemDropChances);
+                tileTypes[block.tileTypeId].itemsDropped, tileTypes[block.tileTypeId].itemDropChances);
             }
             else
             {

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee45b452f0f13a408758b12bb56ec31, type: 3}
   m_Name: ironOre
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 5272992927666150645, guid: 129eb5c3b9973324e853e739d5ac8aa5, type: 3}
+  m_DefaultSprite: {fileID: -75911164829219746, guid: c49b9b976bbaed841ab8b2f57e7d02c2, type: 3}
   m_DefaultColliderType: 2
   m_TilingRules:
   - m_Neighbors: 0000000000000000000000000000000000000000000000000000000000000000
     m_Sprites:
-    - {fileID: 5272992927666150645, guid: 129eb5c3b9973324e853e739d5ac8aa5, type: 3}
+    - {fileID: -75911164829219746, guid: c49b9b976bbaed841ab8b2f57e7d02c2, type: 3}
     m_AnimationSpeed: 1
     m_RuleTransform: 0
     m_Output: 0
-    m_ColliderType: 1
+    m_ColliderType: 2
     m_RandomTransform: 0

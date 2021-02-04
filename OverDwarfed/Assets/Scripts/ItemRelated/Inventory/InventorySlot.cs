@@ -9,25 +9,23 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     private Image icon;
     private Text text;
 
-    public int id, amount;
+    public Item item;
+    public int amount;
     public bool isEmpty, isHotbarSlot;
 
-    private void Start()
-    {
-        InitializeItemSlot();
-    }
-    public void AddItem(int _itemId, int _amount, Sprite _itemIcon)
+    public void AddItem(Item _item, int _amount, Sprite _itemIcon)
     {
         isEmpty = false;
         icon.sprite = _itemIcon;
         icon.color = Color.white;
-        id = _itemId;
+        item = _item;
         SetItemAmount(_amount);
     }
     public void SetItemAmount(int _amount)
     {
         amount = _amount;
-        text.text = amount.ToString();
+        text.text = _amount.ToString();
+        if (amount == 1) text.text = "";
         if (amount <= 0) ClearSlot();
     }
     public void ClearSlot()
@@ -39,7 +37,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
     }
 
     #region Initialization
-    private void InitializeItemSlot()
+    public void InitializeItemSlot()
     {
         icon = GetComponent<Image>();
         text = transform.Find("Amount").GetComponent<Text>();
@@ -69,12 +67,12 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                PlayerInventory.instance.RemoveItem(id, amount, true);
+                PlayerInventory.instance.RemoveItem(item, amount, true);
                 SetItemAmount(0);
             }
             else
             {
-                PlayerInventory.instance.RemoveItem(id, 1, true);
+                PlayerInventory.instance.RemoveItem(item, 1, true);
                 SetItemAmount(amount - 1);
             }
             yield return new WaitForSeconds(holdDuration);
@@ -116,7 +114,7 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, results);
         if (results.Count == 0 && InventoryUI.instance.startedDrag)
         {
-            PlayerInventory.instance.RemoveItem(id, amount, true);
+            PlayerInventory.instance.RemoveItem(item, amount, true);
             SetItemAmount(0);
         }
     }
@@ -144,9 +142,9 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
             InventorySlot slotWePutting = eventData.pointerDrag.GetComponent<InventorySlot>();
             if(slotWePutting.isEmpty == false)
             {
-                int thisId = id, thisAmount = amount;
-                AddItem(slotWePutting.id, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.id].itemIcon);
-                slotWePutting.AddItem(thisId, thisAmount, ItemSpawner.instance.items[thisId].itemIcon);
+                Item thisItem = item; int thisAmount = amount;
+                AddItem(slotWePutting.item, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.item].itemSprite);
+                slotWePutting.AddItem(thisItem, thisAmount, ItemSpawner.instance.items[thisItem].itemSprite);
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Random = UnityEngine.Random;
 using UnityEngine.EventSystems;
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Mining : MonoBehaviour
@@ -16,6 +15,7 @@ public class Mining : MonoBehaviour
     private void Start()
     {
         mainCam = Camera.main;
+        PlayerInventory.instance.AddItem(Item.stone_pickaxe, 1);
     }
     void Update() 
     { 
@@ -28,7 +28,7 @@ public class Mining : MonoBehaviour
     }
     private void MineBlock()
     {
-        ItemData selectedItem = ItemSpawner.instance.items[InventoryUI.instance.slots[PlayerHotbar.instance.currentSlot].id];
+        ItemData selectedItem = ItemSpawner.instance.items[InventoryUI.instance.slots[PlayerHotbar.instance.currentSlot].item];
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         if (selectedItem.isPickaxe)

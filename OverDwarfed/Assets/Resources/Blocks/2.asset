@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 2
   m_EditorClassIdentifier: 
   destructionStages:
-  - {fileID: 11400000, guid: 74986ce471c99ae49bce4965fe7c3de2, type: 2}
-  - {fileID: 11400000, guid: 2755de381754ebe41a0977d7b396d9f5, type: 2}
-  - {fileID: 11400000, guid: da25b4fb7ea6548428b6316a4954a89e, type: 2}
-  - {fileID: 11400000, guid: 8dcef5038a0e4604384d6b88848763fe, type: 2}
-  blockName: goldOre
-  maxHealth: 21
-  itemDropIds: 0400000004000000
-  itemDropChances: 6400000019000000
+  - {fileID: 11400000, guid: 837540a8e9961f6429fedee1a88bdaf1, type: 2}
+  - {fileID: 11400000, guid: 76251afc7ab2ad248931f9fb2805a7fd, type: 2}
+  - {fileID: 11400000, guid: 18a9e883aa99efa43bdabd2420c3851d, type: 2}
+  - {fileID: 11400000, guid: 7c122ac23f04bf540b338ee4852dbf77, type: 2}
+  blockName: ironOre
+  maxHealth: 15
+  itemsDropped: 040000000400000004000000
+  itemDropChances: 640000001900000019000000

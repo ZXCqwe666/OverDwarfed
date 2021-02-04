@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProductionBuilding : MonoBehaviour
 {
-    public List<int> recipeIdList;                // мб забирать ресурсы
+    public List<int> recipeIdList;
     private int itemsToProduce, currentRecipeId;
     private bool isProducing, isInfinite;
 
@@ -35,7 +35,7 @@ public class ProductionBuilding : MonoBehaviour
 
             if (PlayerInventory.instance.Buy(recipe)) 
             {
-                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItemId, recipe.resultItemAmount);
+                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItem, recipe.resultItemAmount);
                 if(isInfinite == false) itemsToProduce -= 1;
             }
         }

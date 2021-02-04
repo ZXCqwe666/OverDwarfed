@@ -34,9 +34,9 @@ public class InventoryUI : MonoBehaviour
     private void UpdateSlot(object sender, ChangeArgs inventoryChange)
     {
         List<InventorySlot> emptySlots = new List<InventorySlot>(), slotsWithThisId = new List<InventorySlot>();
-        FillLists(ref emptySlots, ref slotsWithThisId, inventoryChange.id);
+        FillLists(ref emptySlots, ref slotsWithThisId, inventoryChange.item);
 
-        int stackSize = ItemSpawner.instance.items[inventoryChange.id].stackSize;
+        int stackSize = ItemSpawner.instance.items[inventoryChange.item].stackSize;
         int amountChange = inventoryChange.amount;
 
         if(amountChange > 0) // adding
@@ -65,12 +65,12 @@ public class InventoryUI : MonoBehaviour
                 {
                     if(amountChange >= stackSize)
                     {
-                        slot.AddItem(inventoryChange.id, stackSize, ItemSpawner.instance.items[inventoryChange.id].itemIcon);
+                        slot.AddItem(inventoryChange.item, stackSize, ItemSpawner.instance.items[inventoryChange.item].itemSprite);
                         amountChange -= stackSize;
                     }
                     else
                     {
-                        slot.AddItem(inventoryChange.id, amountChange, ItemSpawner.instance.items[inventoryChange.id].itemIcon);
+                        slot.AddItem(inventoryChange.item, amountChange, ItemSpawner.instance.items[inventoryChange.item].itemSprite);
                         amountChange = 0;
                     }
                 }
@@ -98,10 +98,10 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-    public void FillLists(ref List<InventorySlot> emptySlots, ref List<InventorySlot> slotsWithThisId, int changeId)
+    public void FillLists(ref List<InventorySlot> emptySlots, ref List<InventorySlot> slotsWithThisId, Item changedItem)
     {
         emptySlots = slots.Where(slot => slot.isEmpty).ToList();
-        slotsWithThisId = slots.Where(slot => slot.isEmpty == false && slot.id == changeId).ToList();
+        slotsWithThisId = slots.Where(slot => slot.isEmpty == false && slot.item == changedItem).ToList();
     }
     #endregion
     #region Initialization
@@ -118,6 +118,8 @@ public class InventoryUI : MonoBehaviour
         slots.Add(hotbarSlotsHolder.GetChild(i).GetComponent<InventorySlot>());
         for (int i = 0; i < itemParent.childCount; i++)
         slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());
+        foreach (InventorySlot slot in slots)
+            slot.InitializeItemSlot();
     }
     #endregion
 }

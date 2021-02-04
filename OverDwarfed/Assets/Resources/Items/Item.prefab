@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 724877471033313221}
   - component: {fileID: 724877471033313220}
-  - component: {fileID: 724877471033313219}
   - component: {fileID: 724877471033313218}
   - component: {fileID: -914628927850751715}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,25 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &724877471033313219
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 724877471033313217}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 2
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!58 &724877471033313218
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -112,7 +92,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 724877471033313217}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -120,7 +100,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.25
 --- !u!114 &-914628927850751715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,10 +113,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ca138c711c0a7245bf7999868514661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amountSprite: {fileID: 1072748488374861652}
   itemLayer:
     serializedVersion: 2
     m_Bits: 512
-  amountSprite: {fileID: 1072748488374861652}
   id: 0
   amount: 0
 --- !u!1 &4008195911194168541

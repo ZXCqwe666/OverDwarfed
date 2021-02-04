@@ -12,7 +12,4 @@ public class BuildingData : ScriptableObject
 
     public bool isProductionBuilding;
     public int[] recipeIds;
-
-    public bool isTurret;
-    public float damage, aimRadius, reloadTime;
 }

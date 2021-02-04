@@ -9,6 +9,6 @@ public class TileInfo : ScriptableObject
     public string blockName;
 
     public int maxHealth;
-    public int[] itemDropIds;
+    public Item[] itemsDropped;
     public int[] itemDropChances;
 }

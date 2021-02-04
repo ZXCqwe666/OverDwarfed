@@ -12,14 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
   m_Name: 5
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: -6169938456338436740, guid: 830cab7473691fc4790c7022161a3fea, type: 3}
-  worldAnimator: {fileID: 0}
-  colliderRadius: 0.25
-  itemName: stoneBlock
-  id: 5
-  stackSize: 32
-  destroysAfterTime: 1
-  selfDestructTime: 60
+  item: 5
+  itemName: iron ingot
+  itemSprite: {fileID: -7833671090200325546, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  stackSize: 16
   isPickaxe: 0
   isHammer: 0
   isWeapon: 0

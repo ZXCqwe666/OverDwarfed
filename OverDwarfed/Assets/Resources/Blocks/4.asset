@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5950b0c59da42014da2c630c40ed6650, type: 3}
+  m_Name: 4
+  m_EditorClassIdentifier: 
+  destructionStages:
+  - {fileID: 11400000, guid: 572d9164b8684ec458a0b38d687f5216, type: 2}
+  - {fileID: 11400000, guid: 94d4d55cc984b1e44863527e2fd75a61, type: 2}
+  - {fileID: 11400000, guid: aba4b5e646c01424eac9721e3c377470, type: 2}
+  - {fileID: 11400000, guid: f158b1ee50c63a845816300d22ee29ad, type: 2}
+  blockName: crystalOre
+  maxHealth: 27
+  itemsDropped: 0800000008000000080000000800000008000000
+  itemDropChances: 6400000025000000250000002500000025000000

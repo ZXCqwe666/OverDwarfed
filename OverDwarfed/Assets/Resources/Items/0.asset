@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c77960d3a4e2c4d9b3f44fd64494cc, type: 3}
   m_Name: 0
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 2285274930178780495, guid: 86244afa6b4812a418103e93192c83ca, type: 3}
-  worldAnimator: {fileID: 9100000, guid: 0761e13dd6ba86f43b244b7fb6f1889b, type: 2}
-  colliderRadius: 0.25
-  itemName: goldCoin
   id: 0
-  stackSize: 5
+  itemName: log
+  itemSprite: {fileID: 6761164967045977113, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  stackSize: 32
   destroysAfterTime: 0
   selfDestructTime: 0
   isPickaxe: 0

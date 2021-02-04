@@ -7,7 +7,7 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory instance;
 
-    private Dictionary<int, int> InventorySlots;
+    private Dictionary<Item, int> InventorySlots;
     public delegate void InventoryChanged(object sender, ChangeArgs inventoryChange);
     public InventoryChanged onInventoryChanged;
 
@@ -17,34 +17,34 @@ public class PlayerInventory : MonoBehaviour
     }
     private void Start()
     {
-        InventorySlots = new Dictionary<int, int>();
+        InventorySlots = new Dictionary<Item, int>();
     }
-    public int CanAddCapacity(int id)
+    public int CanAddCapacity(Item item)
     {
         List<InventorySlot> emptySlots = new List<InventorySlot>(), slotsWithThisId = new List<InventorySlot>();
-        InventoryUI.instance.FillLists(ref emptySlots, ref slotsWithThisId, id);
-        int stackSize = ItemSpawner.instance.items[id].stackSize;
+        InventoryUI.instance.FillLists(ref emptySlots, ref slotsWithThisId, item);
+        int stackSize = ItemSpawner.instance.items[item].stackSize;
 
         int capacity = emptySlots.Count * stackSize;
         foreach (InventorySlot slot in slotsWithThisId)
             capacity += stackSize - slot.amount;
         return capacity;
     }
-    public void AddItem(int id, int amount)
+    public void AddItem(Item item, int amount)
     {
-        if (InventorySlots.ContainsKey(id)) 
-             InventorySlots[id] += amount;
-        else InventorySlots.Add(id, amount);
-        onInventoryChanged?.Invoke(this, new ChangeArgs(id, amount));
+        if (InventorySlots.ContainsKey(item)) 
+             InventorySlots[item] += amount;
+        else InventorySlots.Add(item, amount);
+        onInventoryChanged?.Invoke(this, new ChangeArgs(item, amount));
     }
-    public void RemoveItem(int id, int amount, bool slotDropping)
+    public void RemoveItem(Item item, int amount, bool slotDropping)
     {
-        if (InventorySlots.ContainsKey(id))
+        if (InventorySlots.ContainsKey(item))
         {
-            InventorySlots[id] -= amount;
-            if (slotDropping) ItemSpawner.instance.SpawnItem(transform.position + Vector3.down * 1.5f, id, amount); // temp position
-            else onInventoryChanged?.Invoke(this, new ChangeArgs(id, -amount));
-            if (InventorySlots[id] <= 0) InventorySlots.Remove(id);
+            InventorySlots[item] -= amount;
+            if (slotDropping) ItemSpawner.instance.SpawnItem(transform.position + Vector3.down * 1.5f, item, amount); // temp position
+            else onInventoryChanged?.Invoke(this, new ChangeArgs(item, -amount));
+            if (InventorySlots[item] <= 0) InventorySlots.Remove(item);
         }
     }
     public bool Buy(Recipe recipe)
@@ -60,7 +60,7 @@ public class PlayerInventory : MonoBehaviour
     {
         foreach (Cost cost in recipe.CostList)
         {
-            if (InventorySlots.ContainsKey(cost.id) && InventorySlots[cost.id] >= cost.amount) continue;
+            if (InventorySlots.ContainsKey(cost.item) && InventorySlots[cost.item] >= cost.amount) continue;
             return false;
         }
         return true;
@@ -68,7 +68,7 @@ public class PlayerInventory : MonoBehaviour
     private void SpendResources(Recipe recipe)
     {
         foreach (Cost cost in recipe.CostList)
-            RemoveItem(cost.id, cost.amount, false);
+            RemoveItem(cost.item, cost.amount, false);
     }
     public int CanBuyAmount(Recipe recipe)
     {
@@ -76,27 +76,28 @@ public class PlayerInventory : MonoBehaviour
 
         foreach (Cost cost in recipe.CostList)
         {
-            if (InventorySlots.ContainsKey(cost.id) && InventorySlots[cost.id] >= cost.amount)
+            if (InventorySlots.ContainsKey(cost.item) && InventorySlots[cost.item] >= cost.amount)
             {
-                buyAmounts.Add(InventorySlots[cost.id] / cost.amount);
+                buyAmounts.Add(InventorySlots[cost.item] / cost.amount);
             }
             else return 0;
         }
         return buyAmounts.Min();
     }
-    public int GetResourceCount(int id)
+    public int GetResourceCount(Item item)
     {
-        if (InventorySlots.ContainsKey(id))
-            return InventorySlots[id];
+        if (InventorySlots.ContainsKey(item))
+            return InventorySlots[item];
         else return 0;
     }
 }
 public class ChangeArgs : EventArgs
 {
-    public int id, amount;
-    public ChangeArgs(int _id, int _amount)
+    public Item item;
+    public int amount;
+    public ChangeArgs(Item _item, int _amount)
     {
-        id = _id;
+        item = _item;
         amount = _amount;
     }
 }
