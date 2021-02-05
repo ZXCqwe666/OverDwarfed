@@ -53,7 +53,6 @@ public class PlayerHotbar : MonoBehaviour
         slots = new List<Image>();
         for (int i = 0; i < hotbarSize; i++)
             slots.Add(transform.Find(i.ToString()).GetComponent<Image>());
-
         currentSlot = 0;
         ChangeSelectedSlot();
     }

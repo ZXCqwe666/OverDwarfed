@@ -15,6 +15,7 @@ MonoBehaviour:
   item: 21
   itemName: crossbow
   itemSprite: {fileID: -4058434812019303673, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  itemIcon: {fileID: 3480430022700880335, guid: 671f07d06cd1b7246b3b3d0e90cf53e1, type: 3}
   stackSize: 1
   isPickaxe: 0
   isHammer: 0

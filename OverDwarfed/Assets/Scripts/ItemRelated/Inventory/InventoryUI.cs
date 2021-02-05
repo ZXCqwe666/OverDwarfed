@@ -65,12 +65,12 @@ public class InventoryUI : MonoBehaviour
                 {
                     if(amountChange >= stackSize)
                     {
-                        slot.AddItem(inventoryChange.item, stackSize, ItemSpawner.instance.items[inventoryChange.item].itemSprite);
+                        slot.AddItem(inventoryChange.item, stackSize, ItemSpawner.instance.items[inventoryChange.item].itemIcon);
                         amountChange -= stackSize;
                     }
                     else
                     {
-                        slot.AddItem(inventoryChange.item, amountChange, ItemSpawner.instance.items[inventoryChange.item].itemSprite);
+                        slot.AddItem(inventoryChange.item, amountChange, ItemSpawner.instance.items[inventoryChange.item].itemIcon);
                         amountChange = 0;
                     }
                 }
@@ -115,9 +115,9 @@ public class InventoryUI : MonoBehaviour
 
         slots = new List<InventorySlot>();
         for (int i = 0; i < hotbarSlotsHolder.childCount; i++)
-        slots.Add(hotbarSlotsHolder.GetChild(i).GetComponent<InventorySlot>());
+        slots.Add(hotbarSlotsHolder.GetChild(i).Find("ItemIcon").GetComponent<InventorySlot>());
         for (int i = 0; i < itemParent.childCount; i++)
-        slots.Add(itemParent.GetChild(i).GetComponent<InventorySlot>());
+        slots.Add(itemParent.GetChild(i).Find("ItemIcon").GetComponent<InventorySlot>());
         foreach (InventorySlot slot in slots)
             slot.InitializeItemSlot();
     }

@@ -15,6 +15,7 @@ MonoBehaviour:
   item: 15
   itemName: iron sword
   itemSprite: {fileID: -6338023803479276477, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  itemIcon: {fileID: -1408988135759366021, guid: 671f07d06cd1b7246b3b3d0e90cf53e1, type: 3}
   stackSize: 1
   isPickaxe: 0
   isHammer: 0

@@ -15,6 +15,7 @@ MonoBehaviour:
   item: 8
   itemName: crystal ore
   itemSprite: {fileID: 980155311395259703, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  itemIcon: {fileID: 8572880615693210773, guid: 671f07d06cd1b7246b3b3d0e90cf53e1, type: 3}
   stackSize: 32
   isPickaxe: 0
   isHammer: 0

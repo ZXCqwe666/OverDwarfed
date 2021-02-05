@@ -6,7 +6,7 @@ public class ItemData : ScriptableObject
 {
     public Item item; // used to collect dropped item
     public string itemName;
-    public Sprite itemSprite;
+    public Sprite itemSprite, itemIcon;
     public int stackSize;
 
     public bool isPickaxe;

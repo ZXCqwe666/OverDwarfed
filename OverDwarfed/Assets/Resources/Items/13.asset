@@ -15,6 +15,7 @@ MonoBehaviour:
   item: 13
   itemName: iron hammer
   itemSprite: {fileID: -956252262595852801, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
+  itemIcon: {fileID: -2831777690069354342, guid: 671f07d06cd1b7246b3b3d0e90cf53e1, type: 3}
   stackSize: 1
   isPickaxe: 0
   isHammer: 1
