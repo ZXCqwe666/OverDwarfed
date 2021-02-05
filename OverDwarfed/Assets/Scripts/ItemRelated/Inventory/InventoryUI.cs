@@ -114,7 +114,7 @@ public class InventoryUI : MonoBehaviour
         hotbarSlotsHolder = transform.Find("SlotsHolder");
 
         slots = new List<InventorySlot>();
-        for (int i = 0; i < hotbarSlotsHolder.childCount; i++)
+        for (int i = hotbarSlotsHolder.childCount - 1; i >= 0; i--)
         slots.Add(hotbarSlotsHolder.GetChild(i).Find("ItemIcon").GetComponent<InventorySlot>());
         for (int i = 0; i < itemParent.childCount; i++)
         slots.Add(itemParent.GetChild(i).Find("ItemIcon").GetComponent<InventorySlot>());

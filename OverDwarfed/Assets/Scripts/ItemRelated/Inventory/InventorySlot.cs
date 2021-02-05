@@ -143,8 +143,8 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
             if(slotWePutting.isEmpty == false)
             {
                 Item thisItem = item; int thisAmount = amount;
-                AddItem(slotWePutting.item, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.item].itemSprite);
-                slotWePutting.AddItem(thisItem, thisAmount, ItemSpawner.instance.items[thisItem].itemSprite);
+                AddItem(slotWePutting.item, slotWePutting.amount, ItemSpawner.instance.items[slotWePutting.item].itemIcon);
+                slotWePutting.AddItem(thisItem, thisAmount, ItemSpawner.instance.items[thisItem].itemIcon);
             }
         }
     }
