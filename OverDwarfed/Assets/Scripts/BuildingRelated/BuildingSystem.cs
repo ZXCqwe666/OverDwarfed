@@ -28,7 +28,7 @@ public class BuildingSystem : MonoBehaviour
     private void Update()
     {
         if (blueprintActive) UpdateBlueprintPosition();
-        if (Input.GetMouseButtonDown(0)) SpawnBuilding(cellPosition);
+        if (Input.GetMouseButtonDown(0)) SpawnBuilding(buildingBlueprint.position);
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)) SetSpriteAndActivity(null, false);
     }
     private void SpawnBuilding(Vector2 position)
@@ -59,9 +59,8 @@ public class BuildingSystem : MonoBehaviour
     private void UpdateBlueprintPosition()
     {
         Vector2 mousePosition = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        cellPosition = new Vector2(Mathf.FloorToInt(mousePosition.x / 1f), Mathf.FloorToInt(mousePosition.y / 1f));
-        cellPosition += cellOffset;
-        buildingBlueprint.position = cellPosition;
+        cellPosition = new Vector2(Mathf.FloorToInt(mousePosition.x * 3f), Mathf.FloorToInt(mousePosition.y * 3f));
+        buildingBlueprint.position = cellPosition / 3f ;
 
         if (cellPosition != previousCellPosition)
             CheckPlacing();
@@ -69,7 +68,8 @@ public class BuildingSystem : MonoBehaviour
     }
     private void CheckPlacing()
     {
-        canPlaceBuilding = !Physics2D.OverlapArea(cellPosition - cellOffset + Vector2.one * 0.1f, cellPosition + cellOffset - Vector2.one * 0.1f, blockerLayer);
+        canPlaceBuilding = !Physics2D.OverlapArea((Vector2)buildingBlueprint.position - cellOffset + Vector2.one * 0.1f, 
+                            (Vector2)buildingBlueprint.position + cellOffset - Vector2.one * 0.1f, blockerLayer);
         blueprintRenderer.color = canPlaceBuilding ? new Color(0f, 0.5f, 0f) : new Color(0.5f, 0f, 0f);
     }
     public void UpdateBlueprint(int index)
@@ -77,7 +77,7 @@ public class BuildingSystem : MonoBehaviour
         selectedData = buildings[index];
         if (PlayerInventory.instance.CanBuy(CraftingRecipeList.instance.recipes[selectedData.recipeId]))
         {
-            cellOffset = new Vector2(selectedData.size.x / 2, selectedData.size.y / 2);
+            cellOffset = new Vector2(selectedData.size.x / 6, selectedData.size.y / 6);
             SetSpriteAndActivity(selectedData.buildingSprite, true);
         }
     }

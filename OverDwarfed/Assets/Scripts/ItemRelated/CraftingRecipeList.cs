@@ -15,16 +15,16 @@ public class CraftingRecipeList : MonoBehaviour
         recipes = new List<Recipe>() 
         {
             new Recipe(0, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.log, 8)}), // crafting table
-            new Recipe(1, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.rock, 20), new Cost(Item.log, 12)}), // smelter lvl1
+            new Recipe(1, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.rock, 20), new Cost(Item.log, 12)}),
             new Recipe(2, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.stone_block, 20), new Cost(Item.plank, 12), new Cost(Item.iron_ingot, 4)}), // smelter lvl2
             new Recipe(3, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.iron_ingot, 8)}), // anvil
-            new Recipe(4, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.log, 8), new Cost(Item.iron_ingot, 6), new Cost(Item.gear, 2)}), // wood cutter
-            new Recipe(5, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.plank, 8), new Cost(Item.gold_ingot, 1), new Cost(Item.lifeforce_crystal, 1)}), // jewelry table
+            new Recipe(4, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.log, 8), new Cost(Item.iron_ingot, 6), new Cost(Item.gear, 2)}),
+            new Recipe(5, 1, 0f, Item.log, new List<Cost>(){new Cost(Item.plank, 8), new Cost(Item.gold_ingot, 1), new Cost(Item.polished_crystal, 1)}), // jewelry table
             
             // smelter lvl1
             new Recipe(6, 1, 6f, Item.stone_block, new List<Cost>(){new Cost(Item.rock, 2), new Cost(Item.log, 2)}),
             new Recipe(7, 1, 9f, Item.iron_ingot, new List<Cost>(){new Cost(Item.iron_ore, 3), new Cost(Item.log, 2)}),
-            new Recipe(8, 1, 12f, Item.gold_ingot, new List<Cost>(){new Cost(Item.iron_ore, 5), new Cost(Item.log, 2)}),
+            new Recipe(8, 1, 12f, Item.gold_ingot, new List<Cost>(){new Cost(Item.gold_ore, 5), new Cost(Item.log, 2)}),
 
             // smelter lvl2
             new Recipe(9, 1, 3f, Item.coal, new List<Cost>(){new Cost(Item.log, 2) }),
@@ -34,10 +34,10 @@ public class CraftingRecipeList : MonoBehaviour
             new Recipe(13, 1, 12f, Item.polished_crystal, new List<Cost>(){new Cost(Item.crystal_ore, 7), new Cost(Item.coal, 1)}),
 
             // crafting table
-            new Recipe(14, 1, 12f, Item.stone_pickaxe, new List<Cost>(){new Cost(Item.log, 4), new Cost(Item.rock, 12)}),
-            new Recipe(15, 1, 12f, Item.stone_hammer, new List<Cost>(){new Cost(Item.log, 4), new Cost(Item.rock, 20)}),
-            new Recipe(16, 1, 12f, Item.iron_pickaxe, new List<Cost>(){new Cost(Item.plank, 4), new Cost(Item.iron_ingot, 12)}),
-            new Recipe(17, 1, 12f, Item.iron_hammer, new List<Cost>(){new Cost(Item.plank, 4), new Cost(Item.iron_ingot, 20)}),
+            new Recipe(14, 1, 12f, Item.stone_pickaxe, new List<Cost>(){new Cost(Item.rock, 12), new Cost(Item.log, 4) }),
+            new Recipe(15, 1, 12f, Item.stone_hammer, new List<Cost>(){new Cost(Item.rock, 20), new Cost(Item.log, 4) }),
+            new Recipe(16, 1, 12f, Item.iron_pickaxe, new List<Cost>(){new Cost(Item.iron_ingot, 12), new Cost(Item.plank, 4) }),
+            new Recipe(17, 1, 12f, Item.iron_hammer, new List<Cost>(){new Cost(Item.iron_ingot, 20),new Cost(Item.plank, 4) }),
             new Recipe(18, 1, 6f, Item.gear, new List<Cost>(){new Cost(Item.iron_ingot, 1), new Cost(Item.stone_block, 2)}),
 
             // anvil

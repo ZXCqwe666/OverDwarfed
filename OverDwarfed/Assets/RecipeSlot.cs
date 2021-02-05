@@ -5,7 +5,7 @@ using UnityEngine;
 public class RecipeSlot : MonoBehaviour
 {
     public Transform popUpList;
-    private Text recipeName;
+    private Text recipeName, craftingAmount;
     private Image resultIcon;
     private Button infoButton;
 
@@ -31,6 +31,7 @@ public class RecipeSlot : MonoBehaviour
         ItemData resultItem = ItemSpawner.instance.items[_recipe.resultItem];
         resultIcon.sprite = resultItem.itemSprite;
         recipeName.text = resultItem.itemName;
+        craftingAmount.text = (_recipe.resultItemAmount == 1) ? "" : _recipe.resultItemAmount.ToString();
     }
     public void UpdatePopUpList()
     {
@@ -49,6 +50,7 @@ public class RecipeSlot : MonoBehaviour
     {
         popUpList = transform.Find("PopUpList");
         recipeName = transform.Find("RecipeName").GetComponent<Text>();
+        craftingAmount = transform.Find("CraftingAmount").GetComponent<Text>();
         resultIcon = transform.Find("ResultIcon").GetComponent<Image>(); 
         infoButton = transform.Find("PopUpListButton").GetComponent<Button>();
 

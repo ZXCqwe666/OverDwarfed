@@ -15,8 +15,8 @@ MonoBehaviour:
   recipeId: 2
   maxHealth: 1
   buildingSprite: {fileID: 21300000, guid: fcb112250f89b3845a00caaf660e39c9, type: 3}
-  size: {x: 1, y: 1}
-  colliderSize: {x: 0, y: 0}
-  colliderOffset: {x: 0, y: 0}
+  size: {x: 6, y: 5}
+  colliderSize: {x: 1.5, y: 0.66}
+  colliderOffset: {x: 0, y: 0.016}
   isProductionBuilding: 1
   recipeIds: 090000000a0000000b0000000c0000000d000000
