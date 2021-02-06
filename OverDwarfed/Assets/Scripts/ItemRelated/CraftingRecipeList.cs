@@ -104,12 +104,12 @@ public struct Recipe
 {
     public List<Cost> CostList;
     public Item resultItem;
-    public int resultItemAmount, id;
+    public int resultAmount, id;
     public float creationTime;
-    public Recipe(int _id, int _resultsItemAmount, float _creationTime, Item _resultItem, List<Cost> _CostList)
+    public Recipe(int _id, int _resultsAmount, float _creationTime, Item _resultItem, List<Cost> _CostList)
     {
         id = _id;
-        resultItemAmount = _resultsItemAmount;
+        resultAmount = _resultsAmount;
         creationTime = _creationTime;
         resultItem = _resultItem;
         CostList = _CostList;

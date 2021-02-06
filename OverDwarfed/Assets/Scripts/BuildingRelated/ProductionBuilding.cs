@@ -35,7 +35,7 @@ public class ProductionBuilding : MonoBehaviour
 
             if (PlayerInventory.instance.Buy(recipe)) 
             {
-                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItem, recipe.resultItemAmount);
+                ItemSpawner.instance.SpawnItem(transform.position + Vector3.down, recipe.resultItem, recipe.resultAmount);
                 if(isInfinite == false) itemsToProduce -= 1;
             }
         }

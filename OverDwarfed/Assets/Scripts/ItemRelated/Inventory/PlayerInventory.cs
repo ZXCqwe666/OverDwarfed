@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System.Linq;
 using System;
@@ -10,6 +11,8 @@ public class PlayerInventory : MonoBehaviour
     private Dictionary<Item, int> InventorySlots;
     public delegate void InventoryChanged(object sender, ChangeArgs inventoryChange);
     public InventoryChanged onInventoryChanged;
+    public delegate void InventoryChangedUpdate();
+    public InventoryChangedUpdate onInventoryChangedUpdate;
 
     private void Awake()
     {
@@ -18,6 +21,22 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         InventorySlots = new Dictionary<Item, int>();
+        StartCoroutine(GivePickaxe());
+    }
+    private IEnumerator GivePickaxe()
+    {
+        yield return new WaitForSeconds(0.1f);
+        AddItem(Item.iron_pickaxe, 1);
+        AddItem(Item.log, 64);
+        AddItem(Item.rock, 64);
+        AddItem(Item.iron_hammer, 1);
+        AddItem(Item.iron_sword, 1);
+        AddItem(Item.bow, 1);
+        AddItem(Item.battle_axe, 1);
+        AddItem(Item.crossbow, 1);
+        AddItem(Item.platemail, 1);
+        AddItem(Item.iron_helmet, 1);
+        Debug.Log("enjoy free loot");
     }
     public int CanAddCapacity(Item item)
     {
@@ -32,9 +51,9 @@ public class PlayerInventory : MonoBehaviour
     }
     public void AddItem(Item item, int amount)
     {
-        if (InventorySlots.ContainsKey(item)) 
-             InventorySlots[item] += amount;
-        else InventorySlots.Add(item, amount);
+        if (InventorySlots.ContainsKey(item))
+            InventorySlots[item] += amount;
+        else { InventorySlots.Add(item, amount); }
         onInventoryChanged?.Invoke(this, new ChangeArgs(item, amount));
     }
     public void RemoveItem(Item item, int amount, bool slotDropping)

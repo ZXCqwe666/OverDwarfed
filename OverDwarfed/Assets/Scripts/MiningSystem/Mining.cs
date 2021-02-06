@@ -15,10 +15,9 @@ public class Mining : MonoBehaviour
     private void Start()
     {
         mainCam = Camera.main;
-        PlayerInventory.instance.AddItem(Item.stone_pickaxe, 1);
     }
     void Update() 
-    { 
+    {
         if (Input.GetMouseButton(0)) //check if current slot contains pickaxe 
             MineBlock();
         if (Input.GetMouseButton(1) && lastHit + 0.45f < Time.time) // rofl bombing

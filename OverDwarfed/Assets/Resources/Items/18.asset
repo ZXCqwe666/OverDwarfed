@@ -17,6 +17,7 @@ MonoBehaviour:
   itemSprite: {fileID: 4533227004153260592, guid: 503f0108e988e0a4b9d673fe7d2a2f3a, type: 3}
   itemIcon: {fileID: 1543493514979915550, guid: 671f07d06cd1b7246b3b3d0e90cf53e1, type: 3}
   stackSize: 1
+  description: "\u0434\u043E\u0441\u043F\u0435\u0445\u0438 \u0431\u043E\u0433\u0430 "
   isPickaxe: 0
   isHammer: 0
   isWeapon: 0

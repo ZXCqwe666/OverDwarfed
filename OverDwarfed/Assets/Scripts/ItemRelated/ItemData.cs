@@ -8,6 +8,7 @@ public class ItemData : ScriptableObject
     public string itemName;
     public Sprite itemSprite, itemIcon;
     public int stackSize;
+    public string description;
 
     public bool isPickaxe;
     public bool isHammer;

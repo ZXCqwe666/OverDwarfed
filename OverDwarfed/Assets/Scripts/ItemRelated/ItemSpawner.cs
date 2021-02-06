@@ -9,7 +9,7 @@ public class ItemSpawner : MonoBehaviour
 
     public void SpawnItem(Vector3 position, Item item, int amount)
     {
-        GameObject itemToSpawn = Instantiate(itemPrefab, position /*+ RandomOffset() */, Quaternion.identity, transform);
+        GameObject itemToSpawn = Instantiate(itemPrefab, position, Quaternion.identity, transform);
         itemToSpawn.GetComponent<ItemSpawned>().InitializeItem(items[item], amount);
     }
     public void SpawnLootTable(Vector3 position, Item[] itemsArray, int [] chances)
@@ -22,11 +22,6 @@ public class ItemSpawner : MonoBehaviour
             SpawnItem(position, itemsArray[i], 1);   
         }
     }
-    private Vector3 RandomOffset()
-    {
-        return new Vector3(Random.Range(-0.45f, 0.45f), Random.Range(-0.45f, 0.45f), 0f);
-    }
-
     #region Initialization
     private void Awake()
     {
