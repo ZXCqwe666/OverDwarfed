@@ -11,8 +11,6 @@ public class PlayerInventory : MonoBehaviour
     private Dictionary<Item, int> InventorySlots;
     public delegate void InventoryChanged(object sender, ChangeArgs inventoryChange);
     public InventoryChanged onInventoryChanged;
-    public delegate void InventoryChangedUpdate();
-    public InventoryChangedUpdate onInventoryChangedUpdate;
 
     private void Awake()
     {
@@ -21,9 +19,9 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         InventorySlots = new Dictionary<Item, int>();
-        StartCoroutine(GivePickaxe());
+        StartCoroutine(GiveStartingLoot());
     }
-    private IEnumerator GivePickaxe()
+    private IEnumerator GiveStartingLoot()
     {
         yield return new WaitForSeconds(0.1f);
         AddItem(Item.iron_pickaxe, 1);
