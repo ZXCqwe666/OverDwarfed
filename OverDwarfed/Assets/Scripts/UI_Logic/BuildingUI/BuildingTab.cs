@@ -5,24 +5,24 @@ public class BuildingTab : MonoBehaviour
 {
     public GameObject[] tabs;
     private Button openTabsButton;
-    private int unlockedTabs;
     private bool isOpen;
 
     private void Start()
     {
         openTabsButton = GetComponent<Button>();
-        openTabsButton.onClick.AddListener(openTabs);
+        openTabsButton.onClick.AddListener(SwitchTabsState);
     }
 
-    private void openTabs()
+    private void SwitchTabsState()
     {
         isOpen = !isOpen;
         foreach (GameObject tab in tabs)
             tab.gameObject.SetActive(isOpen);
-    }
-    private void InitializeBuildingTab()
-    {
-        foreach (GameObject tab in tabs)
-            tab.gameObject.SetActive(false);
+
+        if(isOpen == false)
+            BuildingUI.instance.CloseBuildingMenu();
+
+        int change = isOpen ? tabs.Length : -tabs.Length;
+        BuildingUI.instance.ChangeLayoutSize(change);
     }
 }

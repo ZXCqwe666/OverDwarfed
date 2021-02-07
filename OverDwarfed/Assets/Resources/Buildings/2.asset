@@ -15,8 +15,12 @@ MonoBehaviour:
   recipeId: 2
   maxHealth: 1
   buildingSprite: {fileID: 21300000, guid: fcb112250f89b3845a00caaf660e39c9, type: 3}
+  buildingIcon: {fileID: 529600032913084965, guid: 7c61b63b05d988841be0c59a9647a2dd, type: 3}
   size: {x: 6, y: 5}
   colliderSize: {x: 1.5, y: 0.66}
   colliderOffset: {x: 0, y: 0.016}
+  buildingName: smelter good
+  description: "\u0443\u043B\u0443\u0447\u0448\u0435\u043D\u043D\u0430\u044F \u043F\u0435\u0447\u044C
+    \u043D\u0430 \u0443\u0433\u043B\u0435"
   isProductionBuilding: 1
   recipeIds: 090000000a0000000b0000000c0000000d000000

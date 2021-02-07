@@ -34,7 +34,6 @@ public class PlayerInventory : MonoBehaviour
         AddItem(Item.crossbow, 1);
         AddItem(Item.platemail, 1);
         AddItem(Item.iron_helmet, 1);
-        Debug.Log("enjoy free loot");
     }
     public int CanAddCapacity(Item item)
     {

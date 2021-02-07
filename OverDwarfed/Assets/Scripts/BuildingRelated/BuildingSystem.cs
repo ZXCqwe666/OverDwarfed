@@ -4,13 +4,13 @@ using UnityEngine;
 public class BuildingSystem : MonoBehaviour
 {
     public static BuildingSystem instance;
+    public List<BuildingData> buildings;
 
     private Camera mainCam;
     private GameObject buildingPrefab;
     private Transform buildingBlueprint;
     private SpriteRenderer blueprintRenderer;
 
-    private List<BuildingData> buildings;
     private BuildingData selectedData;
     private Vector2 cellPosition, previousCellPosition, cellOffset;
     private bool blueprintActive, canPlaceBuilding;

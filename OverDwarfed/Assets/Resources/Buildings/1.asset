@@ -15,8 +15,12 @@ MonoBehaviour:
   recipeId: 1
   maxHealth: 1
   buildingSprite: {fileID: 21300000, guid: 5abd9bd4f89001a458ab20eaa1ff1fc4, type: 3}
+  buildingIcon: {fileID: 6799085399157054996, guid: 7c61b63b05d988841be0c59a9647a2dd, type: 3}
   size: {x: 3, y: 3}
   colliderSize: {x: 0.833, y: 0.625}
   colliderOffset: {x: 0, y: -0.0208}
+  buildingName: smelter weak
+  description: "\u0434\u043E\u043C\u0435\u043D\u043D\u0430\u044F \u043F\u0435\u0447\u044C
+    \u043D\u0430 \u0434\u0440\u043E\u0432\u0430\u0445"
   isProductionBuilding: 1
   recipeIds: 060000000700000008000000
