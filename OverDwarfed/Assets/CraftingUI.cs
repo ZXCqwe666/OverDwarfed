@@ -4,8 +4,10 @@ public class CraftingUI : MonoBehaviour
 {
     public static CraftingUI instance;
     private const float interactDistance = 3f;
+    private const int buttonHeight = 150, buttonWidht = 504;  
 
-    private Transform craftingUIParent, recipeLayout, player;
+    private Transform craftingUIParent, player;
+    private RectTransform recipeLayout;
     private Vector3 buildingPosition, craftingUIParentStartPosition, craftingUIParentEndPosition;
 
     private GameObject recipeSlotPrefab;
@@ -52,6 +54,7 @@ public class CraftingUI : MonoBehaviour
             GameObject newSlot = Instantiate(recipeSlotPrefab, Vector3.zero, Quaternion.identity, recipeLayout);
             newSlot.GetComponent<RecipeSlot>().UpdateRecipeSlot(CraftingRecipeList.instance.recipes[id]);
         }
+        recipeLayout.sizeDelta = new Vector2(buttonWidht, buttonHeight * building.recipeIdList.Count - 6); //-6 to avoid double outline
     }
     public void OpenCraftingMenu(Recipe recipe)
     {
@@ -62,7 +65,7 @@ public class CraftingUI : MonoBehaviour
     {
         player = FindObjectOfType<PlayerController>().transform;
         craftingUIParent = transform.Find("CraftingUIParent");
-        recipeLayout = craftingUIParent.Find("ScrollRect").Find("RecipeLayout");
+        recipeLayout = craftingUIParent.Find("ScrollRect").Find("RecipeLayout").GetComponent<RectTransform>();
         recipeSlotPrefab = Resources.Load<GameObject>("UI/RecipeSlot");
         craftingUIParentStartPosition = craftingUIParent.position;
         craftingUIParentEndPosition = craftingUIParentStartPosition + Vector3.left * 270;
