@@ -83,7 +83,7 @@ namespace MapGeneration
 				if (map[x, y] && edgeMap[x, y] == false)
 				{
 					if (noiseMap[x, y] <= curretBiom.tileSpawnChances[i])
-					blockTilemap.SetTile(new Vector3Int(x, y, 0), curretBiom.tileBases[i]);
+						blockTilemap.SetTile(new Vector3Int(x, y, 0), curretBiom.tileBases[i]);
 				}
 				else if (edgeMap[x, y])
 				blockTilemap.SetTile(new Vector3Int(x, y, 0), NonDistructableTile);
@@ -123,8 +123,8 @@ namespace MapGeneration
 
 			for(int x = startPosition.x; x < startPosition.x + areaDiameter; x++)
 			for (int y = startPosition.y; y < startPosition.y + areaDiameter; y++)
-			blockTilemap.SetTile(new Vector3Int(x, y, 0), null);	
-			
+					blockTilemap.SetTile(new Vector3Int(x, y, 0), null);
+					
 			FindObjectOfType<PlayerController>().transform.position = //// TEMPORARY PLAYER SEARCH
 				new Vector3(startPosition.x + areaDiameter / 2, startPosition.y + areaDiameter / 2, 0f);
 

@@ -73,7 +73,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b20e67d2a2ba954f8b144dccc3329e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: []
 --- !u!114 &6486416276678167628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +85,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee22184363ba3f4aa9d76e007194e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shapkaTilemap: {fileID: 0}
+  shapka: {fileID: 11400000, guid: 05c1958c8e8ef6a4c80ba78e9b06da73, type: 2}
   generatedMapSize:
     x: 300
     y: 75
