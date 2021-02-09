@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using PathFinder;
 
 namespace MapGeneration
 {
@@ -48,6 +49,11 @@ namespace MapGeneration
 			FillTiles(ref map, ref edgeMap); yield return new WaitForSeconds(genStepTime);
 			FillAreaAround(); yield return new WaitForSeconds(genStepTime);
 			CarveStartingArea(); yield return new WaitForSeconds(genStepTime);
+
+			for (int x = 0; x < mapSize.x; x++)
+		    for (int y = 0; y < mapSize.y; y++)
+			map[x, y] = !map[x, y];
+			Pathfinding.pathGrid = new PathGrid(mapSize, map);
 
 			MiningManager.instance.InitializeBlockData(mapSize.x, mapSize.y);
 			blockTilemap.GetComponent<TilemapCollider2D>().enabled = true;
