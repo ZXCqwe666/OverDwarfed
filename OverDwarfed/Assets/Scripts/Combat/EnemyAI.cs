@@ -4,7 +4,6 @@ using PathFinder;
 
 public class EnemyAI : MonoBehaviour
 {
-    private List<PathPoint> pathPoints;
     private List<Vector3> pathPositions; 
     private readonly float speed = 7f;
 
@@ -15,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     private void Start() // temp
     {
         mainCam = Camera.main;
-        pathPoints = new List<PathPoint>();
+        pathPositions = new List<Vector3>();
     }
     private void Update()
     {
@@ -31,7 +30,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Move()
     {
-        if(pathPoints.Count != 0)
+        if(pathPositions.Count != 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, pathPositions[0], speed * Time.deltaTime);
             if (Vector3.Distance(transform.position, pathPositions[0]) < 0.1f)
