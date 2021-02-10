@@ -6,7 +6,7 @@ namespace PathFinder
     public class PathGrid
     {
         public Node[,] nodes;
-        private int2 gridSize;
+        public int2 gridSize;
 
         public PathGrid(int2 _gridSize, bool[,] walkable_tiles)
         {
@@ -29,8 +29,9 @@ namespace PathFinder
                 int checkX = node.gridX + x;
                 int checkY = node.gridY + y;
 
-                if (checkX >= 0 && checkX < gridSize.x && checkY >= 0 && checkY < gridSize.y)
-                    neighbours.Add(nodes[checkX, checkY]);     
+                if (checkX < 0 || checkX >= gridSize.x || checkY < 0 || checkY >= gridSize.y)
+                    continue;
+                else neighbours.Add(nodes[checkX, checkY]);     
             }
             return neighbours;
         }

@@ -19,6 +19,10 @@ namespace PathFinder
         }
         private static List<Node> ImpFindPath(PathPoint startPos, PathPoint targetPos)
         {
+            if (startPos.x < 0 || startPos.x >= pathGrid.gridSize.x || startPos.y < 0 || startPos.y >= pathGrid.gridSize.y ||
+               targetPos.x < 0 || targetPos.x >= pathGrid.gridSize.x || targetPos.y < 0 || targetPos.y >= pathGrid.gridSize.y)
+                return null;
+
             Node startNode = pathGrid.nodes[startPos.x, startPos.y];
             Node targetNode = pathGrid.nodes[targetPos.x, targetPos.y];
 
