@@ -34,5 +34,9 @@ namespace PathFinder
             }
             return neighbours;
         }
+        public void ChangeNode(int2 coord, bool walkable)
+        {
+            nodes[coord.x, coord.y].walkable = walkable;
+        }
     }
 }

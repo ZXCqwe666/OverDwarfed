@@ -2,6 +2,7 @@
 
 public class PlayerController : MonoBehaviour
 {
+    private int id = 0;
     private Rigidbody2D rb;
     private Vector2 inputs;
     private readonly float speed = 5f;
@@ -17,6 +18,8 @@ public class PlayerController : MonoBehaviour
         inputs.Normalize();
 
         rb.velocity = inputs * speed;
+
+        PlayersPositions.instance.playerPositions[id] = new Vector3(transform.position.x, transform.position.y, 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -39,3 +42,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+

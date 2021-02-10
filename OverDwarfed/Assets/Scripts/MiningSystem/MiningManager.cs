@@ -32,6 +32,7 @@ public class MiningManager : MonoBehaviour
 
             if (block.health <= 0)
             {
+                PathFinder.Pathfinding.pathGrid.ChangeNode(index, true);
                 blockData[index.x, index.y].isEmpty = true;
 
                 blockTilemap.SetTile(tilePosition, null);
