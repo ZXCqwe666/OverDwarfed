@@ -10,7 +10,7 @@ public class EnemyAttrackter : MonoBehaviour
             {
                 enemy.targets.Add(0);
             }
-            enemy.SetState(States.scared);
+            enemy.SetState(States.chase);
         }
     }
 }
