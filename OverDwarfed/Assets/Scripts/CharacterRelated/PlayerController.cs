@@ -6,10 +6,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 inputs;
     private readonly float speed = 5f;
+    private PlayerHealth health;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        health = GetComponent<PlayerHealth>();
     }
     void Update()
     {

@@ -5,7 +5,8 @@ using PathFinder;
 
 public class EnemyAI : MonoBehaviour
 {
-    private const float pathUpdateRate = 0.25f, deagringRadius = 7f, wanderingDelay = 2f, wanderingRadius = 4f;
+    private const float pathUpdateRate = 0.25f, damageOnTouchInterval = 1f, deagringRadius = 7f, wanderingDelay = 2f, wanderingRadius = 4f;
+    private int damage = 1;
 
     private List<Vector3> pathPositions;
     private float speed = 4f;
@@ -13,6 +14,8 @@ public class EnemyAI : MonoBehaviour
 
     public List<int> targets;
     public States state;
+
+    public LayerMask playerLayer;
 
     private void Start()
     {
@@ -46,6 +49,7 @@ public class EnemyAI : MonoBehaviour
             speed = 4f;
             StopAllCoroutines();
             StartCoroutine(ChasePathUpdater());
+            StartCoroutine(DamageOnTouch());
         }
         if (_state == States.idle)
         {
@@ -54,6 +58,19 @@ public class EnemyAI : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(WanderPathUpdater());
         }
+    }
+    private IEnumerator DamageOnTouch()
+    {
+        while (state == States.chase)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, playerLayer);
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.TryGetComponent(out PlayerHealth health))
+                    health.TakeDamage(damage);
+            }
+            yield return new WaitForSeconds(damageOnTouchInterval);
+        }  
     }
     private IEnumerator WanderPathUpdater()
     {

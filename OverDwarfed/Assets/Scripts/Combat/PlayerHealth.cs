@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     private const float flashDuration = 0.1f;
-    private int hp;
+    public int hp;
     public int maxHp;
     //public Action characterDied; // maybe death will be handled here too
 
@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
     {
         rend = GetComponent<SpriteRenderer>();
         defaultMaterial = rend.material;
-        whiteFlashMatherial = Resources.Load<Material>("whiteFlash");
+        whiteFlashMatherial = Resources.Load<Material>("Materials/whiteFlash");
         hp = maxHp;
     }
     public void TakeDamage(int _amount)
@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
         StartCoroutine(WhiteFlashEffect());
         hp -= _amount;
         if (hp <= 0)
-            Destroy(gameObject); // DEATH LOGIC
+            Debug.Log("Destroy(gameObject)"); //DEATH LOGIC
     }
     public void Heal(int _amount)
     {
