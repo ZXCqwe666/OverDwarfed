@@ -15,4 +15,6 @@ public class ItemData : ScriptableObject
     public bool isWeapon;
     public float attackInterval;
     public int2 damageRange;
+    public float attackRadius;
+    public float attackDistance;
 }

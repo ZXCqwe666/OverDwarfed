@@ -16,7 +16,7 @@ public class EnemyAttractor : MonoBehaviour
         while (playerAlive)
         {
             Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 5f, enemyLayer);
-            Debug.Log(enemies.Length);
+
             foreach (Collider2D collider in enemies)
             {
                 if (collider.TryGetComponent(out EnemyAI enemy))

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 public class PlayerHotbar : MonoBehaviour
 {
     public static PlayerHotbar instance;
-    private const int hotbarSize = 5;
+    public Action OnCurrentSlotChanged;
 
+    private const int hotbarSize = 5;
     private List<Image> slots;
     public int currentSlot;
 
@@ -36,17 +38,18 @@ public class PlayerHotbar : MonoBehaviour
     private void CheckForNumberInput()
     {
         if (Input.anyKeyDown)
-        for (int i = 1; i < 6; ++i)
-        if (Input.GetKeyDown("" + i))
-        {
-        currentSlot = i - 1;
-        ChangeSelectedSlot();
-        } 
+            for (int i = 1; i < 6; ++i)
+                if (Input.GetKeyDown("" + i))
+                {
+                    currentSlot = i - 1;
+                    ChangeSelectedSlot();
+                }
     }
     private void ChangeSelectedSlot()
     {
         for (int i = 0; i < hotbarSize; i++)
-            slots[i].color = (i == currentSlot) ? Color.white : Color.clear;
+        slots[i].color = (i == currentSlot) ? Color.white : Color.clear;
+        OnCurrentSlotChanged?.Invoke();
     }
     private void InitializePlayerHotbar()
     {
@@ -54,6 +57,5 @@ public class PlayerHotbar : MonoBehaviour
         for (int i = 0; i < hotbarSize; i++)
             slots.Add(transform.Find(i.ToString()).GetComponent<Image>());
         currentSlot = 0;
-        ChangeSelectedSlot();
     }
 }

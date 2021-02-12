@@ -54,9 +54,9 @@ public class CraftingMenu : MonoBehaviour
         produceInfinite.onClick.AddListener(CraftingUI.instance.DisableCraftingUI);
 
         SetActive(true);
-        UpdateInfoText(null, null);
+        UpdateInfoText(Item.log, 0);
     }
-    public void UpdateInfoText(object sender, ChangeArgs changeArgs)
+    public void UpdateInfoText(Item _item, int amount)
     {
         if(isOpen)
         {

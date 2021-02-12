@@ -9,8 +9,7 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory instance;
 
     private Dictionary<Item, int> InventorySlots;
-    public delegate void InventoryChanged(object sender, ChangeArgs inventoryChange);
-    public InventoryChanged onInventoryChanged;
+    public Action<Item, int> onInventoryChanged;
 
     private void Awake()
     {
@@ -51,7 +50,7 @@ public class PlayerInventory : MonoBehaviour
         if (InventorySlots.ContainsKey(item))
             InventorySlots[item] += amount;
         else { InventorySlots.Add(item, amount); }
-        onInventoryChanged?.Invoke(this, new ChangeArgs(item, amount));
+        onInventoryChanged?.Invoke(item, amount);
     }
     public void RemoveItem(Item item, int amount, bool slotDropping)
     {
@@ -59,7 +58,7 @@ public class PlayerInventory : MonoBehaviour
         {
             InventorySlots[item] -= amount;
             if (slotDropping) ItemSpawner.instance.SpawnItem(transform.position + Vector3.down * 1.5f, item, amount); // temp position
-            else onInventoryChanged?.Invoke(this, new ChangeArgs(item, -amount));
+            else onInventoryChanged?.Invoke(item, -amount);
             if (InventorySlots[item] <= 0) InventorySlots.Remove(item);
         }
     }

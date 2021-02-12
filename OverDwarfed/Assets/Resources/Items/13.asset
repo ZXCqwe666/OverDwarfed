@@ -25,3 +25,5 @@ MonoBehaviour:
   damageRange:
     x: 0
     y: 0
+  attackRadius: 0.5
+  attackDistance: 0.5

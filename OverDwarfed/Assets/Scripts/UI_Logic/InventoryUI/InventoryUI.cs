@@ -31,13 +31,13 @@ public class InventoryUI : MonoBehaviour
         itemParent.gameObject.SetActive(isOpen);
     }
     #region SlotsUpdating
-    private void UpdateSlot(object sender, ChangeArgs inventoryChange)
+    private void UpdateSlot(Item changedItem, int changeAmount)
     {
         List<InventorySlot> emptySlots = new List<InventorySlot>(), slotsWithThisId = new List<InventorySlot>();
-        FillLists(ref emptySlots, ref slotsWithThisId, inventoryChange.item);
+        FillLists(ref emptySlots, ref slotsWithThisId, changedItem);
 
-        int stackSize = ItemSpawner.instance.items[inventoryChange.item].stackSize;
-        int amountChange = inventoryChange.amount;
+        int stackSize = ItemSpawner.instance.items[changedItem].stackSize;
+        int amountChange = changeAmount;
 
         if(amountChange > 0) // adding
         {
@@ -65,12 +65,12 @@ public class InventoryUI : MonoBehaviour
                 {
                     if(amountChange >= stackSize)
                     {
-                        slot.AddItem(inventoryChange.item, stackSize, ItemSpawner.instance.items[inventoryChange.item].itemIcon);
+                        slot.AddItem(changedItem, stackSize, ItemSpawner.instance.items[changedItem].itemIcon);
                         amountChange -= stackSize;
                     }
                     else
                     {
-                        slot.AddItem(inventoryChange.item, amountChange, ItemSpawner.instance.items[inventoryChange.item].itemIcon);
+                        slot.AddItem(changedItem, amountChange, ItemSpawner.instance.items[changedItem].itemIcon);
                         amountChange = 0;
                     }
                 }

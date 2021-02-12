@@ -44,9 +44,9 @@ public class BuildingMenu : MonoBehaviour
         spawnBuilding.onClick.AddListener(BuildingUI.instance.DisableBuildingUI);
 
         SetActive(true);
-        UpdateInfoText(null, null);
+        UpdateInfoText(Item.log, 0);
     }
-    public void UpdateInfoText(object sender, ChangeArgs changeArgs)
+    public void UpdateInfoText(Item _item, int _amount)
     {
         if (isOpen)
         {

@@ -20,6 +20,8 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         icon.color = Color.white;
         item = _item;
         SetItemAmount(_amount);
+
+        EquippedTool.instance.OnSlotChanged?.Invoke();
     }
     public void SetItemAmount(int _amount)
     {
@@ -34,6 +36,8 @@ public class InventorySlot : MonoBehaviour , IPointerDownHandler, IBeginDragHand
         icon.color = Color.clear;
         text.text = "";
         amount = 0;
+
+        EquippedTool.instance.OnSlotChanged?.Invoke();
     }
 
     #region Initialization
