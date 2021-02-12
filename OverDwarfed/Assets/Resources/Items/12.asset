@@ -22,7 +22,7 @@ MonoBehaviour:
   isPickaxe: 1
   isHammer: 0
   isWeapon: 1
-  attackInterval: 0.35
+  attackInterval: 0.3
   damageRange:
     x: 5
     y: 7

@@ -7,7 +7,7 @@ public class EquippedTool : MonoBehaviour
 {
     public static EquippedTool instance;
 
-    private const float miningDistance = 1.5f, colliderPenetration = 0.02f, weaponSwapDelay = 0.25f;
+    private const float miningDistance = 1.5f, colliderPenetration = 0.02f, weaponSwapDelay = 0.75f; //delay must be equal tolongest attackinterval
 
     private SpriteRenderer toolSprite, playerSprite;
     private Transform tool, toolHolder;
@@ -30,7 +30,7 @@ public class EquippedTool : MonoBehaviour
     }
     private void Update()
     {
-        UpdatePlayerAndGunRotation();
+        UpdatePlayerAndToolRotation();
         ClickDetector();
     }
     private void ClickDetector()
@@ -66,11 +66,11 @@ public class EquippedTool : MonoBehaviour
             // hammer logic (building repair and anvil craft speed up)
         }
     }
-    private void UpdatePlayerAndGunRotation()
+    private void UpdatePlayerAndToolRotation()
     {
         Vector3 mouseViewportPos = mainCam.ScreenToViewportPoint(Input.mousePosition) * 2f - Vector3.one;
-        playerSprite.flipX = (mouseViewportPos.x > 0f) ? false : true;
-        playerSprite.flipY = (mouseViewportPos.x > 0f) ? false : true;
+        playerSprite.flipX = mouseViewportPos.x > 0f ? false : true;
+        playerSprite.flipY = mouseViewportPos.x > 0f ? false : true;
 
         Vector2 aimDirection = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
@@ -78,17 +78,20 @@ public class EquippedTool : MonoBehaviour
     }
     private void GetEquippedItem()
     {
-        Debug.Log("event fired");
         if (InventoryUI.instance.slots[PlayerHotbar.instance.currentSlot].isEmpty == false)
         {
-            ItemData previosItem = equippedItem;
+            ItemData previousItem = equippedItem; 
             equippedItem = ItemSpawner.instance.items[InventoryUI.instance.slots[PlayerHotbar.instance.currentSlot].item];
             itemValid = true;
 
-            if (equippedItem.isWeapon && previosItem != equippedItem)
+            if (equippedItem.isWeapon)
             {
                 toolSprite.sprite = equippedItem.itemIcon;
-                lastHit = Time.time - equippedItem.attackInterval + weaponSwapDelay;
+                if (previousItem.item != equippedItem.item && previousItem.isWeapon)
+                {
+                    float previousRecharge = Mathf.Clamp(Time.time - lastHit, 0f, previousItem.attackInterval);
+                    lastHit = Time.time - previousRecharge;
+                }
             }
             else toolSprite.sprite = null;
         }
@@ -105,6 +108,8 @@ public class EquippedTool : MonoBehaviour
         tool = toolHolder.Find("Tool");
         toolSprite = tool.GetComponent<SpriteRenderer>();
         playerSprite = GetComponent<SpriteRenderer>();
+        equippedItem = ItemSpawner.instance.items[Item.log]; //avoiding null item on start
+        lastHit = -1000f;
 
         PlayerHotbar.instance.OnCurrentSlotChanged += GetEquippedItem;
         OnSlotChanged += GetEquippedItem;
