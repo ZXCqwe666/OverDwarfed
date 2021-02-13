@@ -1,23 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using Random = UnityEngine.Random;
+using System.Collections.Generic;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using System.Linq;
-using Unity.Mathematics;
-using Random = UnityEngine.Random;
-using System.ComponentModel;
 
 public class TaskManager : MonoBehaviour
 {
     private List<Cost> taskCosts, currentCosts;
 
     private TaskDifficulty currentDifficulty;
-    private int tasksElapsed;
+    private int tasksElapsed, tasksBurned;
     private const int tasksToDifficulty2 = 2, tasksToDifficulty3 = 4, tasksToDifficulty4 = 6;
+    private const float escapeTime = 600f;
+    private float timeOnThisStage = 0f;
 
-    void Start()
+    private void Start()
     {
         InitializeTaskManager();
         AddTask();
+    }
+    private void FixedUpdate()
+    {
+        timeOnThisStage += Time.fixedDeltaTime;
     }
     private void AddTask() 
     {
@@ -53,8 +58,9 @@ public class TaskManager : MonoBehaviour
     }
     private void BurnTask()
     {
-        //Launch wave attacks 
-        AddTask(); 
+        tasksBurned++;
+        AddTask();
+        WaveSpawner.instance.StartSpawn(tasksBurned, timeOnThisStage/escapeTime); //Launch wave attacks 
     }
     private void CalculateDifficulty()
     {
@@ -119,6 +125,7 @@ public class TaskManager : MonoBehaviour
     {
         currentDifficulty = TaskDifficulty.dif_1;
         tasksElapsed = 0;
+        tasksBurned = 0;
         taskCosts = new List<Cost>();
         currentCosts = new List<Cost>();
     }
