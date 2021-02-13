@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7485071283702400004}
   - component: {fileID: 724325375}
   - component: {fileID: 724325376}
+  - component: {fileID: 2971126115119965011}
   m_Layer: 0
   m_Name: TaskManager
   m_TagString: Untagged
@@ -147,3 +148,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5558816e84d676544bbbf3f1586b31a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2971126115119965011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149544682614840245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6e5bcc3d217d645b729ccc0a2e0dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoints: []

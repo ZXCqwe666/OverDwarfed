@@ -54,8 +54,12 @@ namespace MapGeneration
 		    for (int y = 0; y < mapSize.y; y++)
 			map[x, y] = !map[x, y];
 			Pathfinding.pathGrid = new PathGrid(mapSize, map);
+			yield return new WaitForSeconds(genStepTime);
 
-			MiningManager.instance.InitializeBlockData(mapSize.x, mapSize.y);
+			TemporaryPortalGeneration(ref map); // change later
+			yield return new WaitForSeconds(genStepTime);
+
+			MiningManager.instance.InitializeBlockData(mapSize.x, mapSize.y); // dont sample all tiles   set 1 by 1 in  FillTiles method
 			blockTilemap.GetComponent<TilemapCollider2D>().enabled = true;
 		}
 		private void RandomMapFill(ref bool[,] mapArray, int _randomFillPercent)
@@ -89,7 +93,7 @@ namespace MapGeneration
 				if (map[x, y] && edgeMap[x, y] == false)
 				{
 					if (noiseMap[x, y] <= curretBiom.tileSpawnChances[i])
-						blockTilemap.SetTile(new Vector3Int(x, y, 0), curretBiom.tileBases[i]);
+				    blockTilemap.SetTile(new Vector3Int(x, y, 0), curretBiom.tileBases[i]);// dont sample all tiles in InitializeBlockData set 1 by 1 in  FillTiles method
 				}
 				else if (edgeMap[x, y])
 				blockTilemap.SetTile(new Vector3Int(x, y, 0), NonDistructableTile);
@@ -140,6 +144,24 @@ namespace MapGeneration
 				new Vector3(startPosition.x + areaDiameter / 2 + 5, startPosition.y + areaDiameter / 2, 0f);
 
 			// ++++ PLACE BUILDINGS AT START
+		}
+		public GameObject spawnPointPrefab;
+		public SpawnPointData spData;
+		public int tblks;
+		private void TemporaryPortalGeneration(ref bool[,] map) // beta roflan
+		{
+			WaveSpawner.instance.spawnPoints.Clear();
+
+			for (int i = 0; i < tblks; i++)
+			{
+				Vector3 randomSpot = new Vector3(Random.Range(0, mapSize.x), Random.Range(0, mapSize.y), 0f);
+				if(map[Random.Range(0, mapSize.x), Random.Range(0, mapSize.y)] == true) // we revert them for pathfind grid
+				{
+					SpawnPoint point = Instantiate(spawnPointPrefab, randomSpot, Quaternion.identity, transform).GetComponent<SpawnPoint>();
+					point.InitializeSpawnPoint(spData);
+					WaveSpawner.instance.spawnPoints.Add(point);
+				}
+			}
 		}
 	}
 }

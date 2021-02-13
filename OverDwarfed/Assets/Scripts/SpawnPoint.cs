@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnPoint : MonoBehaviour
 {
     private SpawnPointData spData;
-    public Vector3 position;
+    private Vector3 position;
 
     private SpriteRenderer rend;
     //private Animator anim;
@@ -41,7 +41,7 @@ public class SpawnPoint : MonoBehaviour
 
         foreach (Enemy enemy in enemiesToSpawn)
         {
-            Instantiate(WaveSpawner.instance.enemyPrefabs[enemy], transform.position, Quaternion.identity );
+            Instantiate(WaveSpawner.instance.enemyPrefabs[enemy], position, Quaternion.identity );
             float delay = Random.Range(spData.spawnDelayInterval.x, spData.spawnDelayInterval.y);
             yield return new WaitForSeconds(delay);
         }

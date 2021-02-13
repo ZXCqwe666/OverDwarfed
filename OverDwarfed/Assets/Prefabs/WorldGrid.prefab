@@ -85,11 +85,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee22184363ba3f4aa9d76e007194e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shapkaTilemap: {fileID: 0}
-  shapka: {fileID: 11400000, guid: 05c1958c8e8ef6a4c80ba78e9b06da73, type: 2}
   generatedMapSize:
     x: 300
     y: 75
+  spawnPointPrefab: {fileID: 1205084767933043507, guid: fd1d0fd2b502a444f8e3881ba260d402, type: 3}
+  spData: {fileID: 11400000, guid: c3e90b1bb902ec4408eab145785709d2, type: 2}
+  tblks: 100
 --- !u!114 &5840762619916468629
 MonoBehaviour:
   m_ObjectHideFlags: 0

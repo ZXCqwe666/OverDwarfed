@@ -7,7 +7,7 @@ public class WaveSpawner : MonoBehaviour
     private const float taskBurnMultiplier = 0.25f, timePassedMultiplier = 3f;
 
     public Dictionary<Enemy, GameObject> enemyPrefabs;
-    private List<SpawnPoint> spawnPoints;
+    public List<SpawnPoint> spawnPoints;
 
     private void Awake()
     {
