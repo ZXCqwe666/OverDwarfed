@@ -1,17 +1,32 @@
 ﻿using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TaskList : MonoBehaviour
 {
     public static TaskList instance;
-    public List<Task> taskList;
+    public List<TaskTemplate> taskList;
 
     private void Awake()
     {
         instance = this;
-        taskList = new List<Task>()
+        taskList = new List<TaskTemplate>()
         {
-            new Task(20f, TaskDifficulty.difficulty_1, new List<Cost>(){new Cost(Item.log, 8)}), //8 log test task
+            new TaskTemplate(TaskDifficulty.dif_1,
+            new List<Item>() { Item.stone_block }, 
+            new List<int2>{ new int2(10, 16)}),
+
+            new TaskTemplate(TaskDifficulty.dif_2,
+            new List<Item>() { Item.crystal_ore },
+            new List<int2>{ new int2(6, 12)}),
+
+            new TaskTemplate(TaskDifficulty.dif_3,
+            new List<Item>() { Item.gold_coin },
+            new List<int2>{ new int2(100, 240)}),
+
+            new TaskTemplate(TaskDifficulty.dif_4,
+            new List<Item>() { Item.forbidden_crown },
+            new List<int2>{ new int2(2, 5)}),
         };
     }
 }
@@ -29,10 +44,23 @@ public struct Task
         costList = _costList;
     }
 }
+public struct TaskTemplate
+{
+    public TaskDifficulty difficulty;
+    public List<Item> itemsNeeded;
+    public List<int2> amountBounds;
+
+    public TaskTemplate(TaskDifficulty _difficulty, List<Item> _itemsNeeded, List<int2> _amountBounds)
+    {
+        difficulty = _difficulty;
+        itemsNeeded = _itemsNeeded;
+        amountBounds = _amountBounds;
+    }
+}
 public enum TaskDifficulty
 {
-    difficulty_1,
-    difficulty_2,
-    difficulty_3,
-    difficulty_4,
+    dif_1,
+    dif_2,
+    dif_3,
+    dif_4,
 }

@@ -12,7 +12,7 @@ namespace MapGeneration
 		private const int smoothValue = 4, fillAroundSize = 5;
 		private const int randomFillPercent = 52, randomFillPercentND = 24;
 		private const int smoothingIterations = 2, smoothingIterationsND = 3;
-		private const float genStepTime = 0.05f;
+		private const float genStepTime = 0.1f;
 
 		private Tilemap blockTilemap;
 		private TileBase NonDistructableTile;
@@ -48,7 +48,7 @@ namespace MapGeneration
 
 			FillTiles(ref map, ref edgeMap); yield return new WaitForSeconds(genStepTime);
 			FillAreaAround(); yield return new WaitForSeconds(genStepTime);
-			CarveStartingArea(); yield return new WaitForSeconds(genStepTime);
+			CarveStartingArea(ref map); yield return new WaitForSeconds(genStepTime);
 
 			for (int x = 0; x < mapSize.x; x++)
 		    for (int y = 0; y < mapSize.y; y++)
@@ -122,19 +122,24 @@ namespace MapGeneration
 			Vector3Int fillStart = new Vector3Int(bounds.xMin, bounds.yMin + 1, 0);
 			blockTilemap.BoxFill(fillStart, NonDistructableTile, fillStart.x, fillStart.y, bounds.xMax - 1, bounds.yMax - 2);
 		}
-		private void CarveStartingArea() /// BETA SHIT
+		private void CarveStartingArea(ref bool[,] map) /// BETA SHIT
 		{
 			int areaDiameter = 15; // 15 10  temp values
 			int2 startPosition = new int2(10, mapSize.y / 2 - areaDiameter / 2);
 
 			for(int x = startPosition.x; x < startPosition.x + areaDiameter; x++)
 			for (int y = startPosition.y; y < startPosition.y + areaDiameter; y++)
-					blockTilemap.SetTile(new Vector3Int(x, y, 0), null);
+			{
+				map[x, y] = false;
+				blockTilemap.SetTile(new Vector3Int(x, y, 0), null);
+			}
 					
 			FindObjectOfType<PlayerController>().transform.position = //// TEMPORARY PLAYER SEARCH
 				new Vector3(startPosition.x + areaDiameter / 2, startPosition.y + areaDiameter / 2, 0f);
+			FindObjectOfType<TaskManager>().transform.position = //// TEMPORARY PLAYER SEARCH
+				new Vector3(startPosition.x + areaDiameter / 2 + 5, startPosition.y + areaDiameter / 2, 0f);
 
-		   // ++++ PLACE BUILDINGS AT START
+			// ++++ PLACE BUILDINGS AT START
 		}
 	}
 }

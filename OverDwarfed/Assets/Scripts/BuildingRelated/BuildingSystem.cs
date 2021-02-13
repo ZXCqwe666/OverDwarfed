@@ -6,9 +6,11 @@ public class BuildingSystem : MonoBehaviour
     public static BuildingSystem instance;
     public List<BuildingData> buildings;
 
+    private const float buildingRadius = 1.75f;
+
     private Camera mainCam;
     private GameObject buildingPrefab;
-    private Transform buildingBlueprint;
+    private Transform buildingBlueprint, player;
     private SpriteRenderer blueprintRenderer;
 
     private BuildingData selectedData;
@@ -69,7 +71,8 @@ public class BuildingSystem : MonoBehaviour
     private void CheckPlacing()
     {
         canPlaceBuilding = !Physics2D.OverlapArea((Vector2)buildingBlueprint.position - cellOffset + Vector2.one * 0.1f, 
-                            (Vector2)buildingBlueprint.position + cellOffset - Vector2.one * 0.1f, blockerLayer);
+                            (Vector2)buildingBlueprint.position + cellOffset - Vector2.one * 0.1f, blockerLayer) &&
+                            Vector3.Distance(player.position, buildingBlueprint.position) <= buildingRadius;
         blueprintRenderer.color = canPlaceBuilding ? new Color(0f, 0.5f, 0f) : new Color(0.5f, 0f, 0f);
     }
     public void UpdateBlueprint(int index)
@@ -89,6 +92,7 @@ public class BuildingSystem : MonoBehaviour
     private void InitializeBuildingSystem()
     {
         mainCam = Camera.main;
+        player = FindObjectOfType<PlayerController>().transform;
         buildingPrefab = Resources.Load<GameObject>("Buildings/building");
         buildingBlueprint = transform.Find("buildingBlueprint");
         blueprintRenderer = buildingBlueprint.GetComponent<SpriteRenderer>();

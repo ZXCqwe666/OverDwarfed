@@ -18,6 +18,7 @@ MonoBehaviour:
   itemIcon: {fileID: -1934722267695983710, guid: 671f07d06cd1b7246b3b3d0e90cf53e1, type: 3}
   stackSize: 16
   description: .......
+  taskWeight: 5
   isPickaxe: 0
   isHammer: 0
   isWeapon: 0
@@ -25,3 +26,5 @@ MonoBehaviour:
   damageRange:
     x: 0
     y: 0
+  attackRadius: 0
+  attackDistance: 0

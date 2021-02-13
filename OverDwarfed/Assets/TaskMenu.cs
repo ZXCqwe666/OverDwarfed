@@ -30,21 +30,21 @@ public class TaskMenu : MonoBehaviour
         } 
     }
     #region TaskUpdating
-    public void UpdateTaskMenu(Task currentTask)
+    public void UpdateTaskMenu(TaskTemplate currentTask)
     {
         foreach (Image image in costImages) image.color = Color.clear;
-        for (int i = 0; i < currentTask.costList.Count; i++)
+        for (int i = 0; i < currentTask.itemsNeeded.Count; i++)
         {
-            Item item = currentTask.costList[i].item;
+            Item item = currentTask.itemsNeeded[i];
             costImages[i].color = Color.white;
             costImages[i].sprite = ItemSpawner.instance.items[item].itemIcon;
         }
     }
-    public void UpdateInfoText(List<Cost> currentCosts, Task currentTask)
+    public void UpdateInfoText(List<Cost> currentCosts, List<Cost> taskCosts)
     {
         foreach (Text text in resNeededText) text.text = "";
-        for (int i = 0; i < currentTask.costList.Count; i++)
-        resNeededText[i].text = currentCosts[i].amount.ToString() + " / " + currentTask.costList[i].amount.ToString();
+        for (int i = 0; i < taskCosts.Count; i++)
+        resNeededText[i].text = currentCosts[i].amount.ToString() + " / " + taskCosts[i].amount.ToString();
     }
     #endregion
     #region TimerLogic

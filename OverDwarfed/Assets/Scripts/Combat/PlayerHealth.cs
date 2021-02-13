@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
         StartCoroutine(WhiteFlashEffect());
         hp -= _amount;
         if (hp <= 0)
-            Debug.Log("Destroy(gameObject)"); //DEATH LOGIC
+            Debug.Log("you died"); //DEATH LOGIC
     }
     public void Heal(int _amount)
     {

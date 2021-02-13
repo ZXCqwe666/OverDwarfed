@@ -10,6 +10,8 @@ public class ItemData : ScriptableObject
     public int stackSize;
     public string description;
 
+    public float taskWeight; // in seconds
+
     public bool isPickaxe;
     public bool isHammer;
     public bool isWeapon;

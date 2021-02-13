@@ -2,11 +2,13 @@
 using System.Collections;
 using UnityEngine;
 using System.Linq;
+using Unity.Mathematics;
+using Random = UnityEngine.Random;
+using System.ComponentModel;
 
 public class TaskManager : MonoBehaviour
-{   
-    private List<Cost> currentCosts;
-    private Task currentTask;
+{
+    private List<Cost> taskCosts, currentCosts;
 
     private TaskDifficulty currentDifficulty;
     private int tasksElapsed;
@@ -19,28 +21,35 @@ public class TaskManager : MonoBehaviour
     }
     private void AddTask() 
     {
-        List<Task> taskBuffer = new List<Task>();
+        taskCosts.Clear();
+        currentCosts.Clear();
+
+        List<TaskTemplate> taskBuffer = new List<TaskTemplate>();
         taskBuffer = TaskList.instance.taskList.Where(task => task.difficulty == currentDifficulty).ToList();
 
         if (taskBuffer.Count == 0) return;
-        currentTask = taskBuffer[Random.Range(0, taskBuffer.Count)];
+        TaskTemplate taskTemplate = taskBuffer[Random.Range(0, taskBuffer.Count)];
 
-        currentCosts.Clear();
-        foreach (Cost cost in currentTask.costList)
+        for(int i = 0; i < taskTemplate.itemsNeeded.Count; i++)
+        {
+            int2 bounds = taskTemplate.amountBounds[i];
+            int randomAmount = Random.Range(bounds.x, bounds.y);
+            taskCosts.Add(new Cost(taskTemplate.itemsNeeded[i], randomAmount));
+        }
+        foreach (Cost cost in taskCosts)
             currentCosts.Add(new Cost(cost.item, 0));
 
-        tasksElapsed += 1;
         StopAllCoroutines();
         StartCoroutine(TaskLifecycle());
 
-        TaskMenu.instance.UpdateTaskMenu(currentTask);
-        TaskMenu.instance.UpdateInfoText(currentCosts, currentTask);
+        TaskMenu.instance.UpdateTaskMenu(taskTemplate);
+        TaskMenu.instance.UpdateInfoText(currentCosts, taskCosts);
     }
     private void CompleteTask()
     {
+        tasksElapsed += 1;
         CalculateDifficulty();
         AddTask();
-        Debug.Log("Task Completed");
     }
     private void BurnTask()
     {
@@ -49,19 +58,29 @@ public class TaskManager : MonoBehaviour
     }
     private void CalculateDifficulty()
     {
-        if (tasksElapsed >= tasksToDifficulty2 && tasksElapsed < tasksToDifficulty3) currentDifficulty = TaskDifficulty.difficulty_2;
-        else if (tasksElapsed >= tasksToDifficulty3 && tasksElapsed < tasksToDifficulty4) currentDifficulty = TaskDifficulty.difficulty_3;
-        else if (tasksElapsed >= tasksToDifficulty4) currentDifficulty = TaskDifficulty.difficulty_4;
+        if (tasksElapsed >= tasksToDifficulty2 && tasksElapsed < tasksToDifficulty3) currentDifficulty = TaskDifficulty.dif_2;
+        else if (tasksElapsed >= tasksToDifficulty3 && tasksElapsed < tasksToDifficulty4) currentDifficulty = TaskDifficulty.dif_3;
+        else if (tasksElapsed >= tasksToDifficulty4) currentDifficulty = TaskDifficulty.dif_4;
     }
     private IEnumerator TaskLifecycle() 
     {
-        TaskMenu.instance.StartTimer(currentTask.lifeTime);
-        yield return new WaitForSeconds(currentTask.lifeTime);
+        float lifeTime = CalculateTaskDuration();
+        TaskMenu.instance.StartTimer(lifeTime);
+        yield return new WaitForSeconds(lifeTime);
         BurnTask();
+    }
+    private float CalculateTaskDuration()
+    {
+        float lifeTime = 0f;
+        foreach (Cost cost in taskCosts)
+            lifeTime += ItemSpawner.instance.items[cost.item].taskWeight * cost.amount;
+        lifeTime *= 10 - (int)currentDifficulty;
+        lifeTime /= 10;
+        lifeTime = Mathf.FloorToInt(lifeTime);
+        return lifeTime;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger");
         if (collision.gameObject.layer != 9) return;
 
         ItemSpawned itemSpawned = collision.GetComponent<ItemSpawned>();
@@ -71,7 +90,7 @@ public class TaskManager : MonoBehaviour
         if (matchingCost.Count != 0)
         {
             int costIndex = matchingCost.IndexOf(matchingCost[0]);
-            int capacity = currentTask.costList[costIndex].amount - currentCosts[costIndex].amount;
+            int capacity = taskCosts[costIndex].amount - currentCosts[costIndex].amount;
             if (capacity > 0)
             {
                 if (capacity >= itemSpawned.amount)
@@ -85,7 +104,7 @@ public class TaskManager : MonoBehaviour
                     itemSpawned.amount -= capacity;
                     itemSpawned.UpdateAmountDisplay();
                 }
-                TaskMenu.instance.UpdateInfoText(currentCosts, currentTask);
+                TaskMenu.instance.UpdateInfoText(currentCosts, taskCosts);
                 CheckComplition();
             }
         }
@@ -93,13 +112,14 @@ public class TaskManager : MonoBehaviour
     private void CheckComplition()
     {
         for (int i = 0; i < currentCosts.Count; i++)
-        if (currentCosts[i].amount != currentTask.costList[i].amount) return;
+        if (currentCosts[i].amount != taskCosts[i].amount) return;
         CompleteTask();
     }
     private void InitializeTaskManager()
     {
-        currentDifficulty = TaskDifficulty.difficulty_1;
-        tasksElapsed = -1;
+        currentDifficulty = TaskDifficulty.dif_1;
+        tasksElapsed = 0;
+        taskCosts = new List<Cost>();
         currentCosts = new List<Cost>();
     }
 }
