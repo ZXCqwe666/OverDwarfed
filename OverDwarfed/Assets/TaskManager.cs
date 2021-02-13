@@ -21,15 +21,20 @@ public class TaskManager : MonoBehaviour
     {
         List<Task> taskBuffer = new List<Task>();
         taskBuffer = TaskList.instance.taskList.Where(task => task.difficulty == currentDifficulty).ToList();
+
         if (taskBuffer.Count == 0) return;
         currentTask = taskBuffer[Random.Range(0, taskBuffer.Count)];
 
+        currentCosts.Clear();
         foreach (Cost cost in currentTask.costList)
             currentCosts.Add(new Cost(cost.item, 0));
 
         tasksElapsed += 1;
         StopAllCoroutines();
         StartCoroutine(TaskLifecycle());
+
+        TaskMenu.instance.UpdateTaskMenu(currentTask);
+        TaskMenu.instance.UpdateInfoText(currentCosts, currentTask);
     }
     private void CompleteTask()
     {
@@ -50,6 +55,7 @@ public class TaskManager : MonoBehaviour
     }
     private IEnumerator TaskLifecycle() 
     {
+        TaskMenu.instance.StartTimer(currentTask.lifeTime);
         yield return new WaitForSeconds(currentTask.lifeTime);
         BurnTask();
     }
@@ -79,6 +85,7 @@ public class TaskManager : MonoBehaviour
                     itemSpawned.amount -= capacity;
                     itemSpawned.UpdateAmountDisplay();
                 }
+                TaskMenu.instance.UpdateInfoText(currentCosts, currentTask);
                 CheckComplition();
             }
         }

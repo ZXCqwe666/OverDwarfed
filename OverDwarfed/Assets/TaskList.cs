@@ -11,7 +11,7 @@ public class TaskList : MonoBehaviour
         instance = this;
         taskList = new List<Task>()
         {
-            new Task(100f, TaskDifficulty.difficulty_1, new List<Cost>(){new Cost(Item.log, 8)}), //8 log test task
+            new Task(20f, TaskDifficulty.difficulty_1, new List<Cost>(){new Cost(Item.log, 8)}), //8 log test task
         };
     }
 }
