@@ -10,17 +10,22 @@ namespace MapGeneration
 	public class MapGenerator : MonoBehaviour
 	{
 		private const int smoothValue = 4, fillAroundSize = 5;
-		private const int randomFillPercent = 52, randomFillPercentND = 24;
-		private const int smoothingIterations = 2, smoothingIterationsND = 3;
+		private const int randomFillPercent = 52, randomFillPercentEdge = 24;
+		private const int smoothingIterations = 2, smoothingIterationsEdge = 3;
 		private const float genStepTime = 0.1f;
 
 		private Tilemap blockTilemap;
 		private TileBase NonDistructableTile;
+		private TilemapCollider2D blocksCollider;
 
 		private Biom curretBiom;
 		private int2 mapSize;
 
 		public int2 generatedMapSize; // 75,300 medium size
+
+		public GameObject spawnPointPrefab;
+		public SpawnPointData spData;
+		public int randomSamplesForSpawnPoints;
 
 		void Start()
 		{
@@ -31,36 +36,32 @@ namespace MapGeneration
 		{
 			NonDistructableTile = Resources.Load<RuleTile>("Blocks/NonDistructableTile");
 			blockTilemap = transform.Find("blocks").GetComponent<Tilemap>();
+			blocksCollider = blockTilemap.GetComponent<TilemapCollider2D>();
 		}
 		private IEnumerator GenerateMap(int2 _mapSize, int biomId)
 		{
 			ResetPreviosGeneration();
+			MiningManager.instance.InitializeBlockData(_mapSize);
 
 			curretBiom = BiomList.instance.bioms[biomId];
 			mapSize = _mapSize;
+
 			bool[,] map = new bool[mapSize.x, mapSize.y];
 			bool[,] edgeMap = new bool[mapSize.x, mapSize.y];
 
 			RandomMapFill(ref map, randomFillPercent); yield return new WaitForSeconds(genStepTime);
-			RandomMapFill(ref edgeMap, randomFillPercentND); yield return new WaitForSeconds(genStepTime);
+			RandomMapFill(ref edgeMap, randomFillPercentEdge); yield return new WaitForSeconds(genStepTime);
 			SmoothMap(ref map, smoothingIterations); yield return new WaitForSeconds(genStepTime);
-		    SmoothMap(ref edgeMap, smoothingIterationsND); yield return new WaitForSeconds(genStepTime);
+		    SmoothMap(ref edgeMap, smoothingIterationsEdge); yield return new WaitForSeconds(genStepTime);
 
 			FillTiles(ref map, ref edgeMap); yield return new WaitForSeconds(genStepTime);
 			FillAreaAround(); yield return new WaitForSeconds(genStepTime);
 			CarveStartingArea(ref map); yield return new WaitForSeconds(genStepTime);
 
-			for (int x = 0; x < mapSize.x; x++)
-		    for (int y = 0; y < mapSize.y; y++)
-			map[x, y] = !map[x, y];
-			Pathfinding.pathGrid = new PathGrid(mapSize, map);
-			yield return new WaitForSeconds(genStepTime);
+			TemporaryPortalGeneration(ref map); yield return new WaitForSeconds(genStepTime);
+			InitializePathfindingGrid(ref map); yield return new WaitForSeconds(genStepTime);
 
-			TemporaryPortalGeneration(ref map); // change later
-			yield return new WaitForSeconds(genStepTime);
-
-			MiningManager.instance.InitializeBlockData(mapSize.x, mapSize.y); // dont sample all tiles   set 1 by 1 in  FillTiles method
-			blockTilemap.GetComponent<TilemapCollider2D>().enabled = true;
+			blocksCollider.enabled = true;
 		}
 		private void RandomMapFill(ref bool[,] mapArray, int _randomFillPercent)
 		{
@@ -84,7 +85,7 @@ namespace MapGeneration
 		}
 		private void FillTiles(ref bool[,] map, ref bool[,] edgeMap)
 		{
-			for (int i = 0; i < curretBiom.tileBases.Length; i++)
+			for (int i = 0; i < curretBiom.blocks.Count; i++)
 			{
 				float[,] noiseMap = Noise.GenerateNoiseMap(mapSize, curretBiom.noise[i]);
 
@@ -93,11 +94,20 @@ namespace MapGeneration
 				if (map[x, y] && edgeMap[x, y] == false)
 				{
 					if (noiseMap[x, y] <= curretBiom.tileSpawnChances[i])
-				    blockTilemap.SetTile(new Vector3Int(x, y, 0), curretBiom.tileBases[i]);// dont sample all tiles in InitializeBlockData set 1 by 1 in  FillTiles method
+						MiningManager.instance.SetBlock(curretBiom.blocks[i], x, y);
 				}
-				else if (edgeMap[x, y])
-				blockTilemap.SetTile(new Vector3Int(x, y, 0), NonDistructableTile);
 			}
+			for (int x = 0; x < mapSize.x; x++)
+			for (int y = 0; y < mapSize.y; y++)
+			{
+				if(edgeMap[x, y])
+				{
+					blockTilemap.SetTile(new Vector3Int(x, y, 0), NonDistructableTile);
+					MiningManager.instance.SetBlock(Block.empty, x, y);
+				}
+				else if (map[x, y] == false)
+				MiningManager.instance.SetBlock(Block.empty, x, y);
+			}	
 		}
 		private int GetSurroundingWallCount(int2 pos, ref bool[,] map)
 		{
@@ -115,8 +125,9 @@ namespace MapGeneration
 		private void ResetPreviosGeneration()
 		{
 			Random.InitState(Random.Range(int.MinValue, int.MaxValue));
-			blockTilemap.GetComponent<TilemapCollider2D>().enabled = false;
+			WaveSpawner.instance.spawnPoints.Clear();
 			blockTilemap.ClearAllTiles();
+			blocksCollider.enabled = false;
 		}
 		private void FillAreaAround()
 		{
@@ -131,7 +142,7 @@ namespace MapGeneration
 			int areaDiameter = 15; // 15 10  temp values
 			int2 startPosition = new int2(10, mapSize.y / 2 - areaDiameter / 2);
 
-			for(int x = startPosition.x; x < startPosition.x + areaDiameter; x++)
+			for (int x = startPosition.x; x < startPosition.x + areaDiameter; x++)
 			for (int y = startPosition.y; y < startPosition.y + areaDiameter; y++)
 			{
 				map[x, y] = false;
@@ -145,19 +156,21 @@ namespace MapGeneration
 
 			// ++++ PLACE BUILDINGS AT START
 		}
-		public GameObject spawnPointPrefab;
-		public SpawnPointData spData;
-		public int tblks;
+		private void InitializePathfindingGrid(ref bool[,] map)
+		{
+			for (int x = 0; x < mapSize.x; x++)
+	        for (int y = 0; y < mapSize.y; y++)
+				map[x, y] = !map[x, y];
+			Pathfinding.pathGrid = new PathGrid(mapSize, map);
+		}
 		private void TemporaryPortalGeneration(ref bool[,] map) // beta roflan
 		{
-			WaveSpawner.instance.spawnPoints.Clear();
-
-			for (int i = 0; i < tblks; i++)
+			for (int i = 0; i < randomSamplesForSpawnPoints; i++)
 			{
 				Vector3 randomSpot = new Vector3(Random.Range(0, mapSize.x), Random.Range(0, mapSize.y), 0f);
-				if(map[Random.Range(0, mapSize.x), Random.Range(0, mapSize.y)] == true) // we revert them for pathfind grid
+				if (map[(int)randomSpot.x, (int)randomSpot.y] == false)
 				{
-					SpawnPoint point = Instantiate(spawnPointPrefab, randomSpot, Quaternion.identity, transform).GetComponent<SpawnPoint>();
+					SpawnPoint point = Instantiate(spawnPointPrefab, randomSpot + Utility.halfVector, Quaternion.identity, transform).GetComponent<SpawnPoint>();
 					point.InitializeSpawnPoint(spData);
 					WaveSpawner.instance.spawnPoints.Add(point);
 				}

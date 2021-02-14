@@ -20,7 +20,9 @@ public class PlayerController : MonoBehaviour
         inputs.Normalize();
 
         rb.velocity = inputs * speed;
-
+    }
+    private void FixedUpdate()
+    {
         PlayersPositions.instance.playerPositions[id] = new Vector3(transform.position.x, transform.position.y, 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)

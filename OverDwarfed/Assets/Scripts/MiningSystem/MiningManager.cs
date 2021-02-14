@@ -2,91 +2,85 @@
 using UnityEngine.Tilemaps;
 using Unity.Mathematics;
 using UnityEngine;
-using System.Linq;
+using PathFinder;
 
 public class MiningManager : MonoBehaviour
 {
     public static MiningManager instance;
-    public static List<TileInfo> tileTypes;
+    public static Dictionary<Block, TileInfo> blocks;
 
+    private const int breakStages = 4;
     private Tilemap blockTilemap;
     private BlockHp[,] blockData;
-    private int2 blockArraySize;
-    private const int breakStages = 4;
+    private int2 mapSize;
 
-    private void Awake()
-    {
-        instance = this;
-        InitializeMiningManager(); // used by both MapGen and BiomList
-    }
     public void Mine(Vector3 position, int damage)
     {
-        Vector3Int tilePosition = blockTilemap.WorldToCell(position);
-        tilePosition = new Vector3Int(Mathf.Clamp(tilePosition.x, 0, blockArraySize.x), Mathf.Clamp(tilePosition.y, 0, blockArraySize.y), 0);
-        int2 index = new int2(tilePosition.x, tilePosition.y);
+        Vector3Int pos = blockTilemap.WorldToCell(position);
+        pos = new Vector3Int(Mathf.Clamp(pos.x, 0, mapSize.x), Mathf.Clamp(pos.y, 0, mapSize.y), 0);
 
-        if (blockData[index.x, index.y].isEmpty == false)
+        if (blockData[pos.x, pos.y].block != Block.empty)
         {
-            blockData[index.x, index.y].health -= damage;
-            BlockHp block = blockData[index.x, index.y];
+            blockData[pos.x, pos.y].health -= damage;
+            BlockHp tile = blockData[pos.x, pos.y];
 
-            if (block.health <= 0)
+            if (tile.health <= 0)
             {
-                PathFinder.Pathfinding.pathGrid.ChangeNode(index, true);
-                blockData[index.x, index.y].isEmpty = true;
-
-                blockTilemap.SetTile(tilePosition, null);
-                ItemSpawner.instance.SpawnLootTable(tilePosition + new Vector3(0.5f, 0.5f, 0f),
-                tileTypes[block.tileTypeId].itemsDropped, tileTypes[block.tileTypeId].itemDropChances);
+                blockTilemap.SetTile(pos, null);
+                SetBlock(Block.empty, pos.x, pos.y);
+                Pathfinding.pathGrid.ChangeNode(new int2(pos.x, pos.y), true);
+                ItemSpawner.instance.SpawnLootTable(pos + Utility.halfVector,
+                blocks[tile.block].itemsDropped, blocks[tile.block].itemDropChances);
             }
             else
             {
-                int breakIndex = Mathf.CeilToInt(block.health / (float)tileTypes[block.tileTypeId].maxHealth * breakStages);
-                blockTilemap.SetTile(tilePosition, tileTypes[block.tileTypeId].destructionStages[breakIndex - 1]);
+                int breakIndex = Mathf.CeilToInt(tile.health / (float)blocks[tile.block].maxHealth * breakStages);
+                blockTilemap.SetTile(pos, blocks[tile.block].destructionStages[breakIndex - 1]);
             }
         }
     }
-    public void InitializeBlockData(int sizeX, int sizeY)
+    public void InitializeBlockData(int2 _mapSize)
     {
-        blockData = new BlockHp[sizeX, sizeY];
-        blockArraySize = new int2(sizeX - 1, sizeY - 1);
-
-        for (int x = 0; x < sizeX; x++)
-        for (int y = 0; y < sizeY; y++)
+        mapSize = _mapSize;
+        blockData = new BlockHp[_mapSize.x, _mapSize.y];
+    }
+    public void SetBlock(Block block, int x, int y)
+    {
+        if(block != Block.empty)
+        blockTilemap.SetTile(new Vector3Int(x, y, 0), blocks[block].destructionStages[3]);
+        blockData[x, y] = new BlockHp(block);
+    }
+    private struct BlockHp
+    {
+        public Block block;
+        public int health;
+        public BlockHp(Block _block)
         {
-            TileBase sampledTile = blockTilemap.GetTile(new Vector3Int(x, y, 0));
-            if (sampledTile != null)
-            {
-                List<TileInfo> matchingName = tileTypes.Where(tile => tile.blockName == sampledTile.name).ToList();
-                if (matchingName.Count > 0)
-                    blockData[x, y] = new BlockHp(tileTypes.IndexOf(matchingName[0]));
-                else blockData[x, y] = new BlockHp(-1);
-            }
-            else blockData[x, y] = new BlockHp(-1); // -1 means EmptyTile
+            health = (_block == Block.empty) ? 0 : blocks[_block].maxHealth;
+            block = _block;
         }
+    }
+    #region Initialization
+    private void Awake()
+    {
+        instance = this;
+    }
+    private void Start()
+    {
+        InitializeMiningManager();
     }
     private void InitializeMiningManager()
     {
         blockTilemap = transform.Find("blocks").GetComponent<Tilemap>();
-        tileTypes = new List<TileInfo>();
+        blocks = new Dictionary<Block, TileInfo>();
 
         for (int i = 0; i < 100; i++)
         {
             TileInfo loadedBlock = Resources.Load<TileInfo>("Blocks/" + i.ToString());
             if (loadedBlock != null)
-                tileTypes.Add(loadedBlock);
+                blocks.Add((Block)(i + 1), loadedBlock);
             else break;
         }
     }
-    private struct BlockHp
-    {
-        public int health, tileTypeId;
-        public bool isEmpty;
-        public BlockHp(int _tileTypeId)
-        {
-            isEmpty = (_tileTypeId < 0) ? true : false;
-            health = (isEmpty) ? 0 : tileTypes[_tileTypeId].maxHealth;
-            tileTypeId = _tileTypeId;
-        }
-    }
+    #endregion
 }

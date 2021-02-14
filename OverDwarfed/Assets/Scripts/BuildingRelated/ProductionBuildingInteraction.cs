@@ -4,11 +4,11 @@ using UnityEngine;
 public class ProductionBuildingInteraction : MonoBehaviour
 {
     private const float interactDistance = 3f;
+    private const KeyCode interactKey = KeyCode.E;
 
     private ProductionBuilding productionBuilding;
     private Transform player, buttonCanvas;
     private Button button;
-    private bool isButtonActive;
 
     void Start()
     {
@@ -16,7 +16,11 @@ public class ProductionBuildingInteraction : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        ChangeButtonState(Vector3.Distance(transform.position, player.position) < interactDistance);
+        bool isCloseEnough = Vector3.Distance(transform.position, player.position) <= interactDistance;
+        ChangeButtonState(isCloseEnough);
+
+        if (isCloseEnough && Input.GetKeyDown(interactKey))
+            CraftingUI.instance.EnableCraftingUI(productionBuilding);
     }
     private void OnMouseExit()
     {
@@ -24,11 +28,7 @@ public class ProductionBuildingInteraction : MonoBehaviour
     }
     private void ChangeButtonState(bool isActive)
     {
-        if (isButtonActive != isActive)
-        {
-            buttonCanvas.gameObject.SetActive(isActive);
-            isButtonActive = isActive;
-        }
+        buttonCanvas.gameObject.SetActive(isActive);
     }
     private void InitializeProductionBuildingInteraction()
     {

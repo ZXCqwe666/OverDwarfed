@@ -8,21 +8,22 @@ public class EnemyAI : MonoBehaviour
     private const float damageOnTouchInterval = 1f, deagringRadius = 7f, wanderingDelay = 2f, wanderingRadius = 4f;
     private int damage = 1;
 
+    private const float chasePathUpdateRate = 0.25f, globalChasePathUpdateRate = 3f;
+
     private List<Vector3> pathPositions;
     private float speed = 4f;
-    private Rigidbody2D rb;
+    private Rigidbody2D rb; // mb dont use rigidbody
 
     public List<int> targets;
     public States state;
 
     public LayerMask playerLayer;
 
-    private void Start()
+    public void Initialize()
     {
         rb = GetComponent<Rigidbody2D>();
         pathPositions = new List<Vector3>();
-        targets = new List<int>();
-        //SetState(States.idle);  enable later when map 
+        targets = new List<int>() { 0 };
     }
     private void FixedUpdate()
     {
@@ -41,21 +42,28 @@ public class EnemyAI : MonoBehaviour
 
     #region StateLogic
 
-    public void SetState(States _state, float pathUpdateRate)
+    public void SetState(States _state)
     {
         state = _state;
+        rb.interpolation = RigidbodyInterpolation2D.None;
+        StopAllCoroutines();
+
         if (_state == States.chase)
         {
+            Debug.Log("setState to normal chase");
             speed = 4f;
-            StopAllCoroutines();
-            StartCoroutine(ChasePathUpdater(pathUpdateRate));
+            StartCoroutine(ChasePathUpdater());
             StartCoroutine(DamageOnTouch());
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
+        if (_state == States.globalChase)
+        {
+            speed = 4f;
+            StartCoroutine(GlobalChasePathUpdater());
         }
         if (_state == States.idle)
         {
             speed = 2f;
-            if (targets.Count != 0) targets.RemoveAt(0);
-            StopAllCoroutines();
             StartCoroutine(WanderPathUpdater());
         }
     }
@@ -80,17 +88,27 @@ public class EnemyAI : MonoBehaviour
             UpdatePath((Vector2)transform.position + Random.insideUnitCircle * wanderingRadius);
         }
     }
-    private IEnumerator ChasePathUpdater(float pathUpdateRate)
+    private IEnumerator ChasePathUpdater()
     {
         while (state == States.chase)
         {
             float distanceToTarget = Vector3.Distance(transform.position, PlayersPositions.instance.playerPositions[targets[0]]);
             if (distanceToTarget < deagringRadius)
             {
-                UpdatePath(PlayersPositions.instance.playerPositions[targets[0]]);
-                yield return new WaitForSeconds(pathUpdateRate);
+                UpdatePath(PlayersPositions.instance.playerPositions[targets[0]]); // bad indexing fix later
+                yield return new WaitForSeconds(chasePathUpdateRate);
             }
-            else SetState(States.idle, 3f);
+            else SetState(States.idle);
+        }
+    }
+    private IEnumerator GlobalChasePathUpdater()
+    {
+        while (state == States.globalChase)
+        {
+            UpdatePath(PlayersPositions.instance.playerPositions[targets[0]]); // bad indexing fix later
+            if (pathPositions.Count == 0) SetState(States.idle);
+
+            yield return new WaitForSeconds(globalChasePathUpdateRate);
         }
     }
     #endregion
@@ -103,6 +121,7 @@ public class EnemyAI : MonoBehaviour
         PathPoint endPoint = PointFromVector3(endPosition);
 
         pathPositions.Clear();
+
         foreach (PathPoint point in Pathfinding.FindPath(startPoint, endPoint))
             pathPositions.Add(PointToVector3(point));
         if (pathPositions.Count > 0)
@@ -121,5 +140,6 @@ public class EnemyAI : MonoBehaviour
 public enum States
 {
     idle,
-    chase
+    chase,
+    globalChase,
 }

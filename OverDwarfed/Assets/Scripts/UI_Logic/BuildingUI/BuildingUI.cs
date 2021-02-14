@@ -28,6 +28,8 @@ public class BuildingUI : MonoBehaviour
     }
     public void EnableBuildingUI()
     {
+        DisableOtherUIPanels();
+
         buildingUIParent.gameObject.SetActive(true);
         isOpen = true;
     }
@@ -50,6 +52,11 @@ public class BuildingUI : MonoBehaviour
     public void ChangeLayoutSize(int slotsChange)
     {
         recipeLayout.sizeDelta += new Vector2(0, buttonHeight * slotsChange);
+    }
+    private void DisableOtherUIPanels()
+    {
+        StartCoroutine(InventoryUI.instance.ChangeOpenState(false));
+        CraftingUI.instance.DisableCraftingUI();
     }
     private void InitializeBuidingUI()
     {

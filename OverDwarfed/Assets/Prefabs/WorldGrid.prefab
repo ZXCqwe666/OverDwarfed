@@ -90,7 +90,7 @@ MonoBehaviour:
     y: 75
   spawnPointPrefab: {fileID: 1205084767933043507, guid: fd1d0fd2b502a444f8e3881ba260d402, type: 3}
   spData: {fileID: 11400000, guid: c3e90b1bb902ec4408eab145785709d2, type: 2}
-  tblks: 100
+  randomSamplesForSpawnPoints: 50
 --- !u!114 &5840762619916468629
 MonoBehaviour:
   m_ObjectHideFlags: 0

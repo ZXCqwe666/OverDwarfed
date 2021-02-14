@@ -21,14 +21,22 @@ public class InventoryUI : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))
-            StartCoroutine(ChangeOpenState()); 
+        if (isOpen && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Escape)))
+            StartCoroutine(ChangeOpenState(false));
+        else if (isOpen == false && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I)))
+            StartCoroutine(ChangeOpenState(true));
     }
-    private IEnumerator ChangeOpenState()
+    public IEnumerator ChangeOpenState(bool activity)
     {
-        isOpen = !itemParent.gameObject.activeSelf;
-        yield return new WaitForSeconds(Time.fixedDeltaTime * 2f);
+        if (activity) DisableOtherUIPanels();
+        isOpen = activity;
+        yield return new WaitForSeconds(Time.fixedDeltaTime); // allows to cancel DragOnSlots (they check isOpen variable)
         itemParent.gameObject.SetActive(isOpen);
+    }
+    private void DisableOtherUIPanels()
+    {
+        CraftingUI.instance.DisableCraftingUI();
+        BuildingUI.instance.DisableBuildingUI();
     }
     #region SlotsUpdating
     private void UpdateSlot(Item changedItem, int changeAmount)

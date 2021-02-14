@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class CraftingUI : MonoBehaviour
 {
@@ -31,19 +32,34 @@ public class CraftingUI : MonoBehaviour
     }
     public void EnableCraftingUI(ProductionBuilding building)
     {
+        if (isOpen) return;
+        DisableOtherUIPanels();
+
         currentBuilding = building;
 
         UpdateRecipeSlots(currentBuilding);
         buildingPosition = building.gameObject.transform.position;
         craftingUIParent.gameObject.SetActive(true);
-        isOpen = true;
+        StartCoroutine(DelayedIsOpen(true));
     }
     public void DisableCraftingUI()
     {
+        if (isOpen == false) return;
+
         craftingUIParent.gameObject.SetActive(false);
         CraftingMenu.instance.SetActive(false);
         craftingUIParent.position = craftingUIParentStartPosition;
         isOpen = false;
+    }
+    private void DisableOtherUIPanels()
+    {
+        StartCoroutine(InventoryUI.instance.ChangeOpenState(false));
+        BuildingUI.instance.DisableBuildingUI();
+    }
+    private IEnumerator DelayedIsOpen(bool value) // prevents immediate closing in update()
+    {
+        yield return new WaitForEndOfFrame();
+        isOpen = value;
     }
     private void UpdateRecipeSlots(ProductionBuilding building)
     {

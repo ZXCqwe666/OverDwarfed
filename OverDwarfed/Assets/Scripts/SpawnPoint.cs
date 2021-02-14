@@ -27,24 +27,44 @@ public class SpawnPoint : MonoBehaviour
     }
     private IEnumerator Spawning(float difficulty, float spawningDelay)
     {
-        List<int> spawnAmount = new List<int>();
-        for (int i = 0; i < spData.enemiesToSpawn.Count; i++)
-            spawnAmount.Add(Mathf.FloorToInt(spData.minSpawningAmount[i] * difficulty));
-
-        List<Enemy> enemiesToSpawn = new List<Enemy>();
-        for (int i = 0; i < spawnAmount.Count; i++)
-        for (int k = 0; k <= spawnAmount[i]; k++)
-        enemiesToSpawn.Add(spData.enemiesToSpawn[i]);
-        enemiesToSpawn.Shuffle();
-
         yield return new WaitForSeconds(Random.Range(0, spawningDelay));
+
+        List<int> spawnAmounts = CalculateSpawnAmount(difficulty);
+        List<Enemy> enemiesToSpawn = GenerateEnemySpawnQueue(ref spawnAmounts);
 
         foreach (Enemy enemy in enemiesToSpawn)
         {
-            Instantiate(WaveSpawner.instance.enemyPrefabs[enemy], position, Quaternion.identity ).GetComponent<EnemyAI>().SetState(States.chase, 3f);
-            float delay = Random.Range(spData.spawnDelayInterval.x, spData.spawnDelayInterval.y);
+            if (WaveSpawner.instance.enemyCount >= WaveSpawner.maxEnemyCount) 
+            yield break;
 
+            SpawnEnemy(enemy);
+
+            float delay = Random.Range(spData.spawnDelayInterval.x, spData.spawnDelayInterval.y);
             yield return new WaitForSeconds(delay);
         }
+    }
+    private void SpawnEnemy(Enemy enemyType)
+    {
+        GameObject enemySpawned = Instantiate(WaveSpawner.instance.enemyPrefabs[enemyType], position, Quaternion.identity, transform);
+        EnemyAI enemyAI = enemySpawned.GetComponent<EnemyAI>();
+        enemyAI.Initialize();
+        enemyAI.SetState(States.globalChase);
+        WaveSpawner.instance.enemyCount += 1;
+    }
+    private List<int> CalculateSpawnAmount(float difficulty)
+    {
+        List<int> spawnAmounts = new List<int>();
+        for (int i = 0; i < spData.enemiesToSpawn.Count; i++)
+            spawnAmounts.Add(Mathf.FloorToInt(spData.minSpawningAmount[i] * difficulty));
+        return spawnAmounts;
+    }
+    private List<Enemy> GenerateEnemySpawnQueue(ref List<int> spawnAmounts)
+    {
+        List<Enemy> enemiesToSpawn = new List<Enemy>();
+        for (int i = 0; i < spawnAmounts.Count; i++)
+            for (int k = 0; k <= spawnAmounts[i]; k++)
+                enemiesToSpawn.Add(spData.enemiesToSpawn[i]);
+        enemiesToSpawn.Shuffle();
+        return enemiesToSpawn;
     }
 }

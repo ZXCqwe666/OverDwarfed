@@ -14,19 +14,19 @@ public class TaskList : MonoBehaviour
         {
             new TaskTemplate(TaskDifficulty.dif_1,
             new List<Item>() { Item.stone_block }, 
-            new List<int2>{ new int2(10, 16)}),
+            new List<int2>{ new int2(20, 30)}),
 
             new TaskTemplate(TaskDifficulty.dif_2,
             new List<Item>() { Item.crystal_ore },
-            new List<int2>{ new int2(6, 12)}),
+            new List<int2>{ new int2(30, 40)}),
 
             new TaskTemplate(TaskDifficulty.dif_3,
             new List<Item>() { Item.gold_coin },
-            new List<int2>{ new int2(100, 240)}),
+            new List<int2>{ new int2(400, 500)}),
 
             new TaskTemplate(TaskDifficulty.dif_4,
             new List<Item>() { Item.forbidden_crown },
-            new List<int2>{ new int2(2, 5)}),
+            new List<int2>{ new int2(4, 8)}),
         };
     }
 }

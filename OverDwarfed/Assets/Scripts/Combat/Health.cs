@@ -10,9 +10,6 @@ public class Health : MonoBehaviour
     private SpriteRenderer rend;
     private Material defaultMaterial, whiteFlashMatherial;
 
-    public delegate void EnemyDied();
-    public event EnemyDied enemyDied;
-
     private void Start()
     {
         InitializeHealth();
@@ -29,16 +26,18 @@ public class Health : MonoBehaviour
         StartCoroutine(WhiteFlashEffect());
         hp -= _amount;
         if (hp <= 0)
-        {
-            enemyDied?.Invoke();
-            Destroy(gameObject);
-        }
+            Die();
     }
     public void Heal(int _amount)
     {
         hp += _amount;
         if (hp > maxHp)
             hp = maxHp;
+    }
+    private void Die()
+    {
+        WaveSpawner.instance.enemyCount -= 1;
+        Destroy(gameObject);
     }
     private IEnumerator WhiteFlashEffect()
     {
