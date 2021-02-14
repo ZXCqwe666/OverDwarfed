@@ -41,8 +41,9 @@ public class SpawnPoint : MonoBehaviour
 
         foreach (Enemy enemy in enemiesToSpawn)
         {
-            Instantiate(WaveSpawner.instance.enemyPrefabs[enemy], position, Quaternion.identity );
+            Instantiate(WaveSpawner.instance.enemyPrefabs[enemy], position, Quaternion.identity ).GetComponent<EnemyAI>().SetState(States.chase, 3f);
             float delay = Random.Range(spData.spawnDelayInterval.x, spData.spawnDelayInterval.y);
+
             yield return new WaitForSeconds(delay);
         }
     }

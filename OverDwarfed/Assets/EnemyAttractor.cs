@@ -24,7 +24,7 @@ public class EnemyAttractor : MonoBehaviour
                     if (enemy.targets.Contains(0) == false)
                     {
                         enemy.targets.Add(0);// playerID
-                        enemy.SetState(States.chase);
+                        enemy.SetState(States.chase, 0.25f);
                     }
                 }
             }

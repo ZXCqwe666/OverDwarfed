@@ -5,7 +5,7 @@ using PathFinder;
 
 public class EnemyAI : MonoBehaviour
 {
-    private const float pathUpdateRate = 0.25f, damageOnTouchInterval = 1f, deagringRadius = 7f, wanderingDelay = 2f, wanderingRadius = 4f;
+    private const float damageOnTouchInterval = 1f, deagringRadius = 7f, wanderingDelay = 2f, wanderingRadius = 4f;
     private int damage = 1;
 
     private List<Vector3> pathPositions;
@@ -41,14 +41,14 @@ public class EnemyAI : MonoBehaviour
 
     #region StateLogic
 
-    public void SetState(States _state)
+    public void SetState(States _state, float pathUpdateRate)
     {
         state = _state;
         if (_state == States.chase)
         {
             speed = 4f;
             StopAllCoroutines();
-            StartCoroutine(ChasePathUpdater());
+            StartCoroutine(ChasePathUpdater(pathUpdateRate));
             StartCoroutine(DamageOnTouch());
         }
         if (_state == States.idle)
@@ -80,7 +80,7 @@ public class EnemyAI : MonoBehaviour
             UpdatePath((Vector2)transform.position + Random.insideUnitCircle * wanderingRadius);
         }
     }
-    private IEnumerator ChasePathUpdater()
+    private IEnumerator ChasePathUpdater(float pathUpdateRate)
     {
         while (state == States.chase)
         {
@@ -90,7 +90,7 @@ public class EnemyAI : MonoBehaviour
                 UpdatePath(PlayersPositions.instance.playerPositions[targets[0]]);
                 yield return new WaitForSeconds(pathUpdateRate);
             }
-            else SetState(States.idle);
+            else SetState(States.idle, 3f);
         }
     }
     #endregion
