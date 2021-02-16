@@ -1165,17 +1165,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 866311713}
     m_Modifications:
     - target: {fileID: 1703916055, guid: 8458df39b1817a346acf0a930d90f6a5, type: 3}
-      propertyPath: canvas
-      value: 
-      objectReference: {fileID: 298824548}
-    - target: {fileID: 1703916055, guid: 8458df39b1817a346acf0a930d90f6a5, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 179499077}
-    - target: {fileID: 1793134725, guid: 8458df39b1817a346acf0a930d90f6a5, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: c6d03009fff5bb8498c943bbceff53ac, type: 3}
     - target: {fileID: 3334278888229370859, guid: 8458df39b1817a346acf0a930d90f6a5, type: 3}
       propertyPath: m_Name
       value: TaskMenu
