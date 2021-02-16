@@ -128,5 +128,6 @@ public class TaskManager : MonoBehaviour
         tasksBurned = 0;
         taskCosts = new List<Cost>();
         currentCosts = new List<Cost>();
+        PlayersPositions.instance.TaskDropOffPosition = transform.position;
     }
 }

@@ -8,7 +8,7 @@ public class ProductionBuildingInteraction : MonoBehaviour
 
     private ProductionBuilding productionBuilding;
     private Transform player, buttonCanvas;
-    private Button button;
+    public Button interactButton, cancelButton;
 
     void Start()
     {
@@ -28,14 +28,26 @@ public class ProductionBuildingInteraction : MonoBehaviour
     }
     private void ChangeButtonState(bool isActive)
     {
-        buttonCanvas.gameObject.SetActive(isActive);
+        interactButton.gameObject.SetActive(isActive);
+        if (productionBuilding.isProducing)
+        {
+            cancelButton.gameObject.SetActive(isActive);
+            interactButton.transform.position = transform.position + new Vector3(-0.3f, -0.25f, 0f);
+        }
+        else
+        {
+            cancelButton.gameObject.SetActive(false);
+            interactButton.transform.position = transform.position + new Vector3(0, -0.25f, 0f);
+        }
     }
     private void InitializeProductionBuildingInteraction()
     {
         productionBuilding = GetComponent<ProductionBuilding>();
         player = FindObjectOfType<PlayerController>().transform;
         buttonCanvas = transform.Find("ButtonCanvas");
-        button = buttonCanvas.Find("Button").GetComponent<Button>();
-        button.onClick.AddListener(() => { CraftingUI.instance.EnableCraftingUI(productionBuilding); });
+        interactButton = buttonCanvas.Find("InteractButton").GetComponent<Button>();
+        cancelButton = buttonCanvas.Find("CancelButton").GetComponent<Button>();
+        interactButton.onClick.AddListener(() => { CraftingUI.instance.EnableCraftingUI(productionBuilding); });
+        cancelButton.onClick.AddListener(() => { productionBuilding.CancelProduction(); });
     }
 }

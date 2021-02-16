@@ -5,6 +5,7 @@ public class PlayersPositions : MonoBehaviour
 {
     public static PlayersPositions instance;
     public Dictionary<int,Vector3> playerPositions;
+    public Vector3 TaskDropOffPosition;
 
     private void Awake()
     {

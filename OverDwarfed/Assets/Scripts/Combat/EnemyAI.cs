@@ -47,42 +47,23 @@ public class EnemyAI : MonoBehaviour
         state = _state;
         rb.interpolation = RigidbodyInterpolation2D.None;
         StopAllCoroutines();
-
-        if (_state == States.chase)
-        {
-            Debug.Log("setState to normal chase");
-            speed = 4f;
-            StartCoroutine(ChasePathUpdater());
-            StartCoroutine(DamageOnTouch());
-            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
-        }
-        if (_state == States.globalChase)
-        {
-            speed = 4f;
-            StartCoroutine(GlobalChasePathUpdater());
-        }
-        if (_state == States.idle)
-        {
-            speed = 2f;
-            StartCoroutine(WanderPathUpdater());
-        }
+        StartCoroutine(state.ToString() + "PathUpdater");
     }
     private IEnumerator DamageOnTouch()
     {
-        while (state == States.chase)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, playerLayer);
+        foreach (Collider2D collider in colliders)
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, playerLayer);
-            foreach (Collider2D collider in colliders)
-            {
-                if (collider.TryGetComponent(out PlayerHealth health))
-                    health.TakeDamage(damage);
-            }
-            yield return new WaitForSeconds(damageOnTouchInterval);
-        }  
+            if (collider.TryGetComponent(out PlayerHealth health))
+                health.TakeDamage(damage);
+        }
+        yield return new WaitForSeconds(damageOnTouchInterval);
     }
-    private IEnumerator WanderPathUpdater()
+    private IEnumerator IdlePathUpdater()
     {
-        while (state == States.idle)
+        speed = 2f;
+
+        while (state == States.Idle)
         {
             yield return new WaitForSeconds(Random.Range(0.25f, 1f) * wanderingDelay);
             UpdatePath((Vector2)transform.position + Random.insideUnitCircle * wanderingRadius);
@@ -90,7 +71,11 @@ public class EnemyAI : MonoBehaviour
     }
     private IEnumerator ChasePathUpdater()
     {
-        while (state == States.chase)
+        speed = 4f;
+        StartCoroutine(DamageOnTouch());
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        while (state == States.Chase)
         {
             float distanceToTarget = Vector3.Distance(transform.position, PlayersPositions.instance.playerPositions[targets[0]]);
             if (distanceToTarget < deagringRadius)
@@ -98,15 +83,17 @@ public class EnemyAI : MonoBehaviour
                 UpdatePath(PlayersPositions.instance.playerPositions[targets[0]]); // bad indexing fix later
                 yield return new WaitForSeconds(chasePathUpdateRate);
             }
-            else SetState(States.idle);
+            else SetState(States.Idle);
         }
     }
     private IEnumerator GlobalChasePathUpdater()
     {
-        while (state == States.globalChase)
+        speed = 4f;
+
+        while (state == States.GlobalChase)
         {
             UpdatePath(PlayersPositions.instance.playerPositions[targets[0]]); // bad indexing fix later
-            if (pathPositions.Count == 0) SetState(States.idle);
+            if (pathPositions.Count == 0) SetState(States.Idle);
 
             yield return new WaitForSeconds(globalChasePathUpdateRate);
         }
@@ -139,7 +126,7 @@ public class EnemyAI : MonoBehaviour
 }
 public enum States
 {
-    idle,
-    chase,
-    globalChase,
+    Idle,
+    Chase,
+    GlobalChase,
 }

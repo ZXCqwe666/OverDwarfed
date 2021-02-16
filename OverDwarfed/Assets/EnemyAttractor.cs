@@ -21,8 +21,8 @@ public class EnemyAttractor : MonoBehaviour
             {
                 if (collider.TryGetComponent(out EnemyAI enemy))
                 {
-                    if (enemy.state != States.chase)
-                        enemy.SetState(States.chase);     
+                    if (enemy.state != States.Chase)
+                        enemy.SetState(States.Chase);     
                 }
             }
             yield return new WaitForSeconds(tickRate);

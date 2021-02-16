@@ -151,8 +151,6 @@ namespace MapGeneration
 					
 			FindObjectOfType<PlayerController>().transform.position = //// TEMPORARY PLAYER SEARCH
 				new Vector3(startPosition.x + areaDiameter / 2, startPosition.y + areaDiameter / 2, 0f);
-			FindObjectOfType<TaskManager>().transform.position = //// TEMPORARY PLAYER SEARCH
-				new Vector3(startPosition.x + areaDiameter / 2 + 5, startPosition.y + areaDiameter / 2, 0f);
 
 			// ++++ PLACE BUILDINGS AT START
 		}

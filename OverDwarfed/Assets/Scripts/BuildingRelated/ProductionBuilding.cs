@@ -6,7 +6,7 @@ public class ProductionBuilding : MonoBehaviour
 {
     public List<int> recipeIdList;
     private int itemsToProduce, currentRecipeId;
-    private bool isProducing, isInfinite;
+    public bool isProducing, isInfinite;
 
     public void StartProduction(Recipe recipe, bool single, bool half, bool max, bool infinite) 
     {
@@ -41,7 +41,7 @@ public class ProductionBuilding : MonoBehaviour
         }
         CancelProduction();
     }
-    private void CancelProduction()
+    public void CancelProduction()
     {
         isProducing = false;
         itemsToProduce = 0;

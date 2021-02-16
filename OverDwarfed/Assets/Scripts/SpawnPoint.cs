@@ -48,7 +48,7 @@ public class SpawnPoint : MonoBehaviour
         GameObject enemySpawned = Instantiate(WaveSpawner.instance.enemyPrefabs[enemyType], position, Quaternion.identity, transform);
         EnemyAI enemyAI = enemySpawned.GetComponent<EnemyAI>();
         enemyAI.Initialize();
-        enemyAI.SetState(States.globalChase);
+        enemyAI.SetState(States.GlobalChase);
         WaveSpawner.instance.enemyCount += 1;
     }
     private List<int> CalculateSpawnAmount(float difficulty)
